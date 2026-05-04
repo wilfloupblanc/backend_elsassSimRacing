@@ -1,0 +1,12 @@
+parameters:
+  api_name: "LyraJS API"
+  api_version: "1.0.0"
+  api_host: "%env(HOST)%"
+  api_port: "%env(PORT)%"
+  api_env: "%env(NODE_ENV)%"
+  api_timezone: "%env(TZ)%"
+  stripe:
+    sk: "%env(NODE_ENV)%"
+    pk: "%env(NODE_ENV)%"
+    sk_test: "%env(STRIPE_SK_TEST)%"
+    pk_test: "%env(STRIPE_PK_TEST)%"

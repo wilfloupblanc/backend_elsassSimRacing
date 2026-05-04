@@ -1,0 +1,158 @@
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    background-color: #1f202a;
+    color: #dedff6;
+    font-size: 1.8rem;
+    font-family: sans-serif;
+    text-align: center;
+}
+
+h1 {
+    font-size: 5rem;
+}
+
+a {
+    color: #ffad70;
+    text-decoration: none;
+    transition: color .2s;
+}
+
+a:hover {
+    color: #ff657d;
+    transition: color .2s;
+}
+
+header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 7rem;
+    box-shadow: 0 4px 6px -1px #0000001a,0 2px 4px -2px #0000001a;
+}
+
+header nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+header nav a {
+    margin: .5rem 1rem;
+}
+
+header nav a:not(:last-of-type)::after {
+    content: "|";
+    margin-left: 2rem;
+    color: #dedff6;
+}
+
+main {
+    height: calc(100vh - 14rem);
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+main > section {
+    width: 50%;
+}
+
+footer {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: center;
+    height: 7rem;
+}
+
+footer > p {
+    margin: 0;
+    padding-top: 1.3rem;
+    border-top: 1px solid #dedff61a;
+    width: 60%;
+}
+
+footer span {
+    color: #ef4444;
+    margin: 0 .5rem;
+}
+
+footer a {
+    color: #dedff6;
+}
+
+footer a:hover {
+    color: #dedff6;
+    text-decoration: underline;
+}
+
+.logo {
+    width: fit-content;
+    margin: 0 auto;
+}
+
+.logo > img {
+    max-height: 180px;
+}
+
+.text-gradient {
+    background-color: #ffad70;
+    background-image: linear-gradient(45deg, #ffad70, #ff657d);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -moz-background-clip: text;
+    -moz-text-fill-color: transparent;
+    background-clip: text;
+    width: fit-content;
+    padding-bottom: .2em;
+    margin: 0 auto;
+}
+
+.doc-links {
+    margin-top: 6rem;
+}
+
+.btn, .btn-outline {
+    font-weight: 700;
+    font-size: 2rem;
+    border-radius: 3.4rem;
+    margin: 1rem;
+    padding: 2rem 2rem;
+    transition: all .2s;
+}
+
+.btn {
+    color: oklch(15.092% .036 346.812);
+    background-color: #ffad70;
+}
+
+.btn:hover {
+    color: oklch(15.092% .036 346.812);
+    background-color: #c68755;
+    transition: all .2s;
+}
+
+.btn-outline {
+    color: #ffad70;
+    border: 1px solid #ffad70;
+}
+
+.btn-outline:hover {
+    color: oklch(15.092% .036 346.812);
+    background-color: #ffad70;
+    transition: all .2s;
+}

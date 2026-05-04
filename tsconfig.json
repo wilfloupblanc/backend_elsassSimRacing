@@ -1,0 +1,66 @@
+{
+  "compilerOptions": {
+    "module": "esnext",
+    "baseUrl": ".",
+    "target": "es2017",
+    "lib": [
+      "esnext"
+    ],
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "resolveJsonModule": true,
+    "skipDefaultLibCheck": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "outDir": "./dist",
+    "strictPropertyInitialization": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "paths": {
+      "@app/*": [
+        "./src/*"
+      ],
+      "@config/*": [
+        "./config/*"
+      ],
+      "@controller/*": [
+        "./src/controller/*"
+      ],
+      "@entity/*": [
+        "./src/entity/*"
+      ],
+      "@fixtures/*": [
+        "./src/fixtures/*"
+      ],
+      "@middleware/*": [
+        "./src/middleware/*"
+      ],
+      "@repository/*": [
+        "./src/repository/*"
+      ],
+      "@router/*": [
+        "./src/router/*"
+      ],
+      "@services/*": [
+        "./src/services/*"
+      ],
+      "@templates/*": [
+        "./src/templates/*"
+      ],
+      "@tests/*": [
+        "./src/tests/*"
+      ],
+      "@types/*": [
+        "./src/types/*"
+      ]
+    },
+    "jsx": "preserve"
+  },
+  "ts-node": {
+    "require": [
+      "tsconfig-paths/register"
+    ]
+  }
+}

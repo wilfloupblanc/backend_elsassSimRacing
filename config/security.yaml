@@ -1,0 +1,21 @@
+security:
+  jwt:
+    secret_key: "%env(JWT_SECRET)%"
+    token_expiration: 14400
+    secret_key_refresh: "%env(JWT_SECRET_REFRESH)%"
+    refresh_token_expiration: 86400
+    algorithm: "%env(JWT_ALGORITHM)%"
+  auth_routes:
+    sign_out: "/api/sign-out"
+  limits:
+    request_max_size: "%env(REQUEST_MAX_SIZE)%"
+  rate_limiter:
+    time: 10000
+    max_attempts: 50
+    message: 'Too many login attempts, please try again later'
+  access_control:
+#    - { path: /api/auth/user, roles: [ROLE_USER] }
+    - { path: /api/admin, roles: [ROLE_ADMIN] }
+  role_hierarchy:
+    ROLE_ADMIN: ROLE_USER
+    ROLE_SUPER_ADMIN: ROLE_ADMIN

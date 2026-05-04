@@ -1,0 +1,2 @@
+router:
+  base_path: /api
