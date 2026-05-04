@@ -26916,3 +26916,6 @@
 [2026-05-04T13:41:48.558Z] [SUCCESS] [2026-05-04T13:41:48.556Z] POST /api/order/webhook ➞ OK 200 (2ms)
 [2026-05-04T13:44:39.825Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
 [2026-05-04T13:44:39.827Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-05-04T14:32:25.522Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-05-04T14:32:25.526Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-05-04T14:34:36.399Z] [INFO] [SCHEDULER] GenerateAvailabilitiesJob.generateAvailabilities completed successfully (70870ms)

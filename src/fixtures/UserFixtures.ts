@@ -8,7 +8,8 @@ export class UserFixtures extends Fixture {
       firstname: "Tristan",
       lastname: "GrandJean",
       email: "tristangrandjean3@gmail.com",
-      password: "Titouandu88*"
+      password: "Titouandu88*",
+      role: "ROLE_ADMIN"
     },
   ]
 
@@ -26,6 +27,7 @@ export class UserFixtures extends Fixture {
       user.password = hashedPassword
       user.created_at = new Date()
       user.updated_at = new Date()
+      user.role = u.role
       await this.userRepository.save(user)
     }
   }

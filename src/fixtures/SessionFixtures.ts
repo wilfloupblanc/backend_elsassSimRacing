@@ -1,8 +1,8 @@
 import { Fixture } from "@lyra-js/core"
-import { Plan } from "@entity/Plan"
+
 import { Session } from "@entity/Session"
 
-export class SessionFixture extends Fixture {
+export class SessionFixtures extends Fixture {
   load = async () => {
     await this.loadSessions()
   }
@@ -113,7 +113,7 @@ export class SessionFixture extends Fixture {
       session.min_height = s.min_height
       session.min_pilots = s.min_pilots
       session.max_pilots = s.max_pilots
-      await this.planRepository.save(session)
+      await this.sessionRepository.save(session)
     }
   }
 }
