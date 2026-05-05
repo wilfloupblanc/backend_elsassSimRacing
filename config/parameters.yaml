@@ -6,7 +6,7 @@ parameters:
   api_env: "%env(NODE_ENV)%"
   api_timezone: "%env(TZ)%"
   stripe:
-    sk: "%env(NODE_ENV)%"
-    pk: "%env(NODE_ENV)%"
+    sk: "%env(STRIPE_SK)%"
+    pk: "%env(STRIPE_PK)%"
     sk_test: "%env(STRIPE_SK_TEST)%"
     pk_test: "%env(STRIPE_PK_TEST)%"

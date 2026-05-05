@@ -1,11 +1,6 @@
-import { Controller, Delete, Get, isAuthenticated, Patch, Post, Put, Route } from "@lyra-js/core"
+import { Controller, Delete, Get, isAuthenticated, Patch, Post, Route } from "@lyra-js/core"
 
 import { Subscription } from "@entity/Subscription"
-import * as stripe from "stripe"
-import { User } from "@entity/User"
-import { Plan } from "@app/entity/Plan"
-
-type SubscriptionPlan = "STARTER" | "PLUS" | "ULTRA"
 
 @Route({ path: "/subscription" })
 export class SubscriptionController extends Controller {
@@ -22,7 +17,6 @@ export class SubscriptionController extends Controller {
   @Get({ path: "/me", middlewares: [isAuthenticated] })
   async me() {
     try {
-      // On inclut aussi pending_cancellation pour que le frontend puisse afficher le bon état
       let subscription = await this.subscriptionRepository.findOneBy({ user_id: this.req.user.id, status: "active" })
       if (!subscription) {
         subscription = await this.subscriptionRepository.findOneBy({ user_id: this.req.user.id, status: "pending_cancellation" })
@@ -198,9 +192,6 @@ export class SubscriptionController extends Controller {
           proration_behavior: "create_prorations",
         }
       )
-
-      subscription.plan = plan
-      await this.subscriptionRepository.save(subscription)
 
       this.res.status(200).json({ message: "Plan mis à jour avec succès" })
     } catch (error) {

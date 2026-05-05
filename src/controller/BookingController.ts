@@ -1,6 +1,7 @@
-import { Controller, Delete, Get, Post, Put, Route } from "@lyra-js/core"
-import { Booking } from "@entity/Booking"
+import { Controller, Delete, Get, isAuthenticated, Post, Put, Route } from "@lyra-js/core"
 import nodemailer from "nodemailer"
+
+import { Booking } from "@entity/Booking"
 
 @Route({ path: "/booking" })
 export class BookingController extends Controller {
@@ -9,6 +10,18 @@ export class BookingController extends Controller {
     try {
       const bookings = await this.bookingRepository.findAll()
       this.res.status(200).json({ message: "Booking list fetched successfully", bookings })
+    } catch (error) {
+      this.next(error)
+    }
+  }
+
+  @Get({ path: "/me", middlewares: [isAuthenticated] })
+  async me() {
+    try {
+      console.log("USER ID:", this.req.user.id)
+      const bookings = await this.bookingRepository.findByUserId(this.req.user.id)
+      console.log("BOOKINGS:", bookings)
+      this.res.status(200).json({ message: "Bookings fetched successfully", bookings })
     } catch (error) {
       this.next(error)
     }
@@ -24,15 +37,61 @@ export class BookingController extends Controller {
     }
   }
 
+  @Post({ path: "/cancel/:bookingId", middlewares: [isAuthenticated] })
+  async cancelBooking() {
+    try {
+      const bookingId = Number(this.req.params.bookingId)
+      const userId = this.req.user.id
+
+      const booking = await this.bookingRepository.find(bookingId)
+      if (!booking) return this.res.status(404).json({ message: "Booking not found" })
+      if (booking.user_id !== Number(userId)) return this.res.status(403).json({ message: "Forbidden" })
+      if (booking.status === "cancelled") return this.res.status(400).json({ message: "Booking already cancelled" })
+
+      const bookingDateTime = new Date(`${booking.date}T${booking.start_time}`)
+      const now = new Date()
+      const diffHours = (bookingDateTime.getTime() - now.getTime()) / (1000 * 60 * 60)
+      if (diffHours < 1) {
+        return this.res.status(400).json({ message: "Cancellation not allowed less than 1 hour before the session" })
+      }
+
+      const orderDetail = await this.orderDetailsRepository.findOneBy({ booking_id: bookingId })
+      if (!orderDetail) return this.res.status(404).json({ message: "Order detail not found" })
+
+      const payment = await this.paymentsRepository.findOneBy({ order_id: orderDetail.order_id })
+      if (!payment) return this.res.status(404).json({ message: "Payment not found" })
+
+      await this.stripeService.instance.refunds.create({
+        payment_intent: payment.stripe_charge_id
+      })
+
+      const availability = await this.availabilityRepository.find(booking.availability_id)
+      if (availability) {
+        availability.slots_remaining = availability.slots_remaining + orderDetail.quantity
+        await this.availabilityRepository.save(availability)
+      }
+
+      booking.status = "cancelled"
+      await this.bookingRepository.save(booking)
+
+      payment.status = "refunded"
+      await this.paymentsRepository.save(payment)
+
+      this.res.status(200).json({ message: "Booking cancelled and refunded successfully" })
+    } catch (error) {
+      this.next(error)
+    }
+  }
+
   @Post({ path: "/" })
   async create() {
     try {
       const { availability_id, session_id, gift_voucher_id, pilots, pay_on_site, use_free_session } = this.req.body as {
-        availability_id: number,
-        session_id: number,
-        gift_voucher_id: number | null,
-        pilots: number,
-        pay_on_site: boolean,
+        availability_id: number
+        session_id: number
+        gift_voucher_id: number | null
+        pilots: number
+        pay_on_site: boolean
         use_free_session: boolean
       }
 
@@ -47,7 +106,8 @@ export class BookingController extends Controller {
           status: "active"
         })
         if (!subscription) return this.res.status(400).json({ message: "No active subscription" })
-        if (subscription.free_sessions_remaining <= 0) return this.res.status(400).json({ message: "No free sessions remaining" })
+        if (subscription.free_sessions_remaining <= 0)
+          return this.res.status(400).json({ message: "No free sessions remaining" })
       }
 
       const finalSessionId = use_free_session ? 1 : session_id
@@ -61,7 +121,11 @@ export class BookingController extends Controller {
       const start = new Date(`1970-01-01T${availability.start_time}`)
       start.setMinutes(start.getMinutes() + session.duration_minutes)
       const end_time = start.toTimeString().split(" ")[0]
-      const availableSimulator = await this.bookingRepository.findAvailableSimulator(availability.date, availability.start_time, end_time)
+      const availableSimulator = await this.bookingRepository.findAvailableSimulator(
+        availability.date,
+        availability.start_time,
+        end_time
+      )
       if (!availableSimulator) {
         return this.badRequest("No availability found for this booking")
       }

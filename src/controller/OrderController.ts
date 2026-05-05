@@ -126,60 +126,6 @@ export class OrderController extends Controller {
     }
   }
 
-  // ─── Annulation d'une réservation avec remboursement Stripe ───────────────
-  @Post({ path: "/cancel/:bookingId", middlewares: [isAuthenticated] })
-  async cancelBooking() {
-    try {
-      const bookingId = Number(this.req.params.bookingId)
-      const userId = this.req.user.id
-
-      const booking = await this.bookingRepository.find(bookingId)
-      if (!booking) return this.res.status(404).json({ message: "Booking not found" })
-      if (booking.user_id !== Number(userId)) return this.res.status(403).json({ message: "Forbidden" })
-      if (booking.status === "cancelled") return this.res.status(400).json({ message: "Booking already cancelled" })
-
-      // Vérifier la règle 1h avant
-      const bookingDateTime = new Date(`${booking.date}T${booking.start_time}`)
-      const now = new Date()
-      const diffMs = bookingDateTime.getTime() - now.getTime()
-      const diffHours = diffMs / (1000 * 60 * 60)
-      if (diffHours < 1) {
-        return this.res.status(400).json({ message: "Cancellation not allowed less than 1 hour before the session" })
-      }
-
-      // Récupérer le payment_intent via orderDetails -> order -> payment
-      const orderDetail = await this.orderDetailsRepository.findOneBy({ booking_id: bookingId })
-      if (!orderDetail) return this.res.status(404).json({ message: "Order detail not found" })
-
-      const payment = await this.paymentsRepository.findOneBy({ order_id: orderDetail.order_id })
-      if (!payment) return this.res.status(404).json({ message: "Payment not found" })
-
-      // Remboursement Stripe
-      await this.stripeService.instance.refunds.create({
-        payment_intent: payment.stripe_charge_id
-      })
-
-      // Remettre les slots
-      const availability = await this.availabilityRepository.find(booking.availability_id)
-      if (availability) {
-        const pilots = orderDetail.quantity
-        availability.slots_remaining = availability.slots_remaining + pilots
-        await this.availabilityRepository.save(availability)
-      }
-
-      // Mettre à jour le statut booking et payment
-      booking.status = "cancelled"
-      await this.bookingRepository.save(booking)
-
-      payment.status = "refunded"
-      await this.paymentsRepository.save(payment)
-
-      this.res.status(200).json({ message: "Booking cancelled and refunded successfully" })
-    } catch (error) {
-      this.next(error)
-    }
-  }
-
   @Post({ path: "/webhook", parserType: "raw" })
   async webhook() {
     try {
@@ -189,6 +135,8 @@ export class OrderController extends Controller {
         signature,
         process.env.STRIPE_WEBHOOK_SECRET
       )
+
+      console.log("WEBHOOK EVENT TYPE:", event.type)
 
       type SubscriptionPlan = "STARTER" | "PLUS" | "ULTRA"
 
@@ -213,6 +161,16 @@ export class OrderController extends Controller {
         return qrBuffers
       }
 
+      const createTransporter = () => nodemailer.createTransport({
+        host: process.env.MAILER_HOST,
+        port: Number(process.env.MAILER_PORT),
+        secure: false,
+        auth: {
+          user: process.env.MAILER_USER,
+          pass: process.env.MAILER_PASS
+        }
+      })
+
       if (event.type === "checkout.session.completed") {
         const stripeSession = event.data.object
         const userId = stripeSession.metadata.user_id
@@ -224,425 +182,536 @@ export class OrderController extends Controller {
         const orderNumber = Date.now()
         const createdAt = new Date()
 
-        // 1. Créer l'order
-        await this.orderRepository.save({
-          related_user_id: userId,
-          amount,
-          created_at: createdAt,
-          number: orderNumber
-        })
-        const savedOrder = await this.orderRepository.findOneBy({ number: orderNumber })
-
-        // 2. Créer le payment
-        await this.paymentsRepository.save({
-          amount,
-          number: Date.now(),
-          related_user_id: userId,
-          order_id: savedOrder.id,
-          stripe_charge_id: stripeCharge,
-          status: "completed",
-          created_at: createdAt
-        })
-
-        // 3. Créer le booking + orderdetail réservation
-        let session = null
-        let availability = null
-
-        if (availability_id && session_id) {
-          availability = await this.availabilityRepository.find(availability_id)
-          session = await this.sessionRepository.find(session_id)
-          const start = new Date(`1970-01-01T${availability.start_time}`)
-          start.setMinutes(start.getMinutes() + session.duration_minutes)
-          const end_time = start.toTimeString().split(" ")[0]
-          const availableSimulator = await this.bookingRepository.findAvailableSimulator(
-            availability.date,
-            availability.start_time,
-            end_time
-          )
-
-          const booking = new Booking()
-          booking.availability_id = availability_id
-          booking.session_id = session_id
-          booking.gift_voucher_id = null
-          booking.start_time = availability.start_time as string
-          booking.end_time = end_time as string
-          booking.date = availability.date
-          booking.simulator_id = availableSimulator
-          booking.user_id = Number(userId)
-          booking.price_paid = session.price_normal
-          booking.is_free_session = false
-
-          await this.bookingRepository.save(booking)
-          const savedBooking = await this.bookingRepository.findOneBy({
-            availability_id: availability_id,
-            user_id: Number(userId)
-          })
-
-          savedBooking.status = "confirmed"
-          await this.bookingRepository.save(savedBooking)
-
-          // FIX : décrémenter par le nombre de pilotes, pas de 1
-          availability.slots_remaining = availability.slots_remaining - pilots
-          await this.availabilityRepository.save(availability)
-
-          await this.orderDetailsRepository.save({
-            price_each: session.price_normal,
-            session_id: session_id,
-            booking_id: savedBooking.id,
-            quantity: pilots,
-            order_id: savedOrder.id,
-            gift_voucher_id: null
-          })
-        }
-
-        // 4. Gérer l'inscription événement
-        const event_id = stripeSession.metadata.event_id
-        const pilots_count = Number(stripeSession.metadata.pilots_count)
-
-        if (event_id) {
-          const eventBooking = new Booking()
-          eventBooking.date = new Date()
-          eventBooking.start_time = "00:00:00"
-          eventBooking.end_time = "00:00:00"
-          eventBooking.pilots = pilots_count
-          eventBooking.price_paid = amount
-          eventBooking.is_free_session = false
-          eventBooking.status = "confirmed"
-          eventBooking.user_id = Number(userId)
-          eventBooking.availability_id = null
-          eventBooking.simulator_id = null
-          eventBooking.session_id = null
-          eventBooking.gift_voucher_id = null
-          eventBooking.event_id = Number(event_id)
-
-          await this.bookingRepository.save(eventBooking)
-
-          const savedEventBooking = await this.bookingRepository.findOneBy({
-            event_id: Number(event_id),
-            user_id: Number(userId)
-          })
-
-          await this.orderDetailsRepository.save({
-            price_each: amount,
-            session_id: null,
-            booking_id: savedEventBooking.id,
-            quantity: pilots_count,
-            order_id: savedOrder.id,
-            gift_voucher_id: null
-          })
-        }
-
-        // 5. Traiter le panier + orderdetails + gift_vouchers
-        const cart = await this.cartRepository.findOneBy({ user_id: userId })
-        if (cart) {
-          const items = await this.cartRepository.findUserCartItems(cart.id)
-          for (const item of items) {
-            const query = new QueryBuilder().selectFrom("cartitemrecipient", ["*"]).where("cart_item_id", "=", item.id)
-            const [recipients] = await query.execute()
-
-            let firstGiftVoucherId = null
-            for (const recipient of recipients as unknown[]) {
-              const r = recipient as { firstname: string; lastname: string; email: string }
-              const qrCode = `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`
-              await this.giftVoucherRepository.save({
-                recipient_name: `${r.firstname} ${r.lastname}`,
-                recipient_email: r.email,
-                qr_code: qrCode,
-                status: "valid",
-                amount_paid: item.price_normal,
-                purchaser_user_id: Number(userId),
-                session_id: item.session_id,
-                stripe_payment_intent_id: stripeCharge
-              })
-              const savedGv = await this.giftVoucherRepository.findOneBy({ qr_code: qrCode })
-              if (!firstGiftVoucherId) firstGiftVoucherId = savedGv.id
-            }
-
-            await this.orderDetailsRepository.save({
-              price_each: item.price_normal,
-              session_id: item.session_id,
-              quantity: item.quantity,
-              order_id: savedOrder.id,
-              gift_voucher_id: firstGiftVoucherId
-            })
-          }
-
-          for (const item of items) {
-            const recipientQuery = new QueryBuilder()
-              .selectFrom("cartitemrecipient", ["id"])
-              .where("cart_item_id", "=", item.id)
-            const [recipientRows] = await recipientQuery.execute()
-            for (const row of recipientRows as unknown[]) {
-              const r = row as { id: number }
-              await this.cartItemRecipientRepository.delete(r.id)
-            }
-            await this.cartItemsRepository.delete(item.id)
-          }
-          await this.cartRepository.delete(cart.id)
-        }
-
-        // 6. Envoyer les mails
-        const user = await this.userRepository.find(Number(userId))
-
-        const transporter = nodemailer.createTransport({
-          host: process.env.MAILER_HOST,
-          port: Number(process.env.MAILER_PORT),
-          secure: false,
-          auth: {
-            user: process.env.MAILER_USER,
-            pass: process.env.MAILER_PASS
-          }
-        })
-
-        if (availability_id && session_id) {
-          const dateFormatted = new Date(availability.date).toLocaleDateString("fr-FR", {
-            weekday: "long",
-            year: "numeric",
-            month: "long",
-            day: "numeric"
-          })
-
-          await transporter.sendMail({
-            from: process.env.MAILER_SENDER,
-            to: process.env.MAILER_SENDER,
-            subject: `Nouvelle commande N°${orderNumber} - Elsass SimRacing`,
-            html: `
-              <html><body>
-                <p>Commande N°: ${orderNumber}</p>
-                <p>Passée le: ${createdAt}</p>
-                <p>Client: ${user.firstname} ${user.lastname} (${user.email})</p>
-                <p>Réservation: ${session?.duration_minutes} minutes - ${pilots} pilote(s)</p>
-                <p>Date: ${dateFormatted}</p>
-                <p>Heure de début: ${availability?.start_time}</p>
-                <p>Montant: ${amount} €</p>
-              </body></html>
-            `
-          })
-
-          await transporter.sendMail({
-            from: process.env.MAILER_SENDER,
-            to: user.email,
-            subject: `Confirmation de réservation N°${orderNumber} – Elsass SimRacing`,
-            html: `
-              <html>
-                <body style="margin: 0; padding: 0; background-color: #0a0a14; font-family: Arial, sans-serif; color: #ffffff;">
-                  <div style="max-width: 600px; margin: 0 auto; padding: 40px 20px;">
-                    <div style="text-align: center; margin-bottom: 32px;">
-                      <h1 style="color: #245E97; font-size: 28px; margin: 0;">ELSASS SIMRACING</h1>
-                      <p style="color: #aaaaaa; margin: 8px 0 0;">Confirmation de réservation</p>
-                    </div>
-                    <div style="background-color: #1a1a2a; border-radius: 12px; padding: 32px; margin-bottom: 24px;">
-                      <h2 style="color: #ffffff; font-size: 18px; margin: 0 0 24px;">Bonjour ${user.firstname} ${user.lastname},</h2>
-                      <p style="color: #cccccc; line-height: 1.6; margin: 0 0 24px;">Votre réservation a bien été confirmée. Voici le récapitulatif de votre session :</p>
-                      <table style="width: 100%; border-collapse: collapse;">
-                        <tr style="border-bottom: 1px solid #2a2a3a;">
-                          <td style="padding: 12px 0; color: #aaaaaa;">Numéro de commande</td>
-                          <td style="padding: 12px 0; color: #ffffff; text-align: right; font-weight: bold;">N°${orderNumber}</td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid #2a2a3a;">
-                          <td style="padding: 12px 0; color: #aaaaaa;">Date</td>
-                          <td style="padding: 12px 0; color: #ffffff; text-align: right;">${dateFormatted}</td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid #2a2a3a;">
-                          <td style="padding: 12px 0; color: #aaaaaa;">Heure de début</td>
-                          <td style="padding: 12px 0; color: #ffffff; text-align: right;">${availability.start_time}</td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid #2a2a3a;">
-                          <td style="padding: 12px 0; color: #aaaaaa;">Durée</td>
-                          <td style="padding: 12px 0; color: #ffffff; text-align: right;">${session?.duration_minutes} minutes</td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid #2a2a3a;">
-                          <td style="padding: 12px 0; color: #aaaaaa;">Nombre de pilotes</td>
-                          <td style="padding: 12px 0; color: #ffffff; text-align: right;">${pilots}</td>
-                        </tr>
-                        <tr>
-                          <td style="padding: 12px 0; color: #aaaaaa;">Montant payé</td>
-                          <td style="padding: 12px 0; color: #245E97; text-align: right; font-weight: bold; font-size: 18px;">${amount.toFixed(2)} €</td>
-                        </tr>
-                      </table>
-                    </div>
-                    <div style="background-color: #1a1a2a; border-radius: 12px; padding: 24px; margin-bottom: 24px; border-left: 4px solid #245E97;">
-                      <h3 style="color: #ffffff; font-size: 15px; margin: 0 0 12px;">Conditions d'annulation</h3>
-                      <p style="color: #cccccc; font-size: 14px; line-height: 1.6; margin: 0;">
-                        Toute annulation ou modification doit être effectuée au moins <strong style="color: #ffffff;">1h avant</strong>
-                        le début de la session. Passé ce délai, aucun remboursement ne sera accordé.
-                      </p>
-                    </div>
-                    <div style="background-color: #1a1a2a; border-radius: 12px; padding: 24px; margin-bottom: 32px;">
-                      <h3 style="color: #ffffff; font-size: 15px; margin: 0 0 12px;">Nous contacter</h3>
-                      <p style="color: #cccccc; font-size: 14px; margin: 0;">
-                        📍 11 rue des dominicains, 67500 Haguenau<br>
-                        📞 <a href="tel:+33640583619" style="color: #245E97;">0640583619</a><br>
-                        ✉️ elsass.simracing@gmail.com
-                      </p>
-                    </div>
-                    <div style="text-align: center;">
-                      <p style="color: #555555; font-size: 12px; margin: 0;">
-                        En effectuant cette réservation, vous avez accepté nos
-                        <a href="${process.env.CLIENT_APP_URL}/cgv" style="color: #245E97;">CGV</a>
-                        et notre <a href="${process.env.CLIENT_APP_URL}/politique-confidentialite" style="color: #245E97;">politique de confidentialité</a>.
-                      </p>
-                    </div>
-                  </div>
-                </body>
-              </html>
-            `
-          })
-        }
-
         this.res.status(200).json({ received: true })
 
+        ;(async () => {
+          try {
+            // 1. Créer l'order
+            await this.orderRepository.save({
+              related_user_id: userId,
+              amount,
+              created_at: createdAt,
+              number: orderNumber
+            })
+            const savedOrder = await this.orderRepository.findOneBy({ number: orderNumber })
+
+            // 2. Créer le payment
+            await this.paymentsRepository.save({
+              amount,
+              number: Date.now(),
+              related_user_id: userId,
+              order_id: savedOrder.id,
+              stripe_charge_id: stripeCharge,
+              status: "completed",
+              created_at: createdAt
+            })
+
+            // 3. Créer le booking + orderdetail réservation
+            let session = null
+            let availability = null
+
+            if (availability_id && session_id) {
+              availability = await this.availabilityRepository.find(availability_id)
+              session = await this.sessionRepository.find(session_id)
+              const start = new Date(`1970-01-01T${availability.start_time}`)
+              start.setMinutes(start.getMinutes() + session.duration_minutes)
+              const end_time = start.toTimeString().split(" ")[0]
+              const availableSimulator = await this.bookingRepository.findAvailableSimulator(
+                availability.date,
+                availability.start_time,
+                end_time
+              )
+
+              const booking = new Booking()
+              booking.availability_id = availability_id
+              booking.session_id = session_id
+              booking.gift_voucher_id = null
+              booking.start_time = availability.start_time as string
+              booking.end_time = end_time as string
+              booking.date = availability.date
+              booking.simulator_id = availableSimulator
+              booking.user_id = Number(userId)
+              booking.price_paid = session.price_normal
+              booking.is_free_session = false
+
+              await this.bookingRepository.save(booking)
+              const savedBooking = await this.bookingRepository.findOneBy({
+                availability_id: availability_id,
+                user_id: Number(userId)
+              })
+
+              savedBooking.status = "confirmed"
+              await this.bookingRepository.save(savedBooking)
+
+              availability.slots_remaining = availability.slots_remaining - pilots
+              await this.availabilityRepository.save(availability)
+
+              await this.orderDetailsRepository.save({
+                price_each: session.price_normal,
+                session_id: session_id,
+                booking_id: savedBooking.id,
+                quantity: pilots,
+                order_id: savedOrder.id,
+                gift_voucher_id: null
+              })
+            }
+
+            // 4. Gérer l'inscription événement
+            const event_id = stripeSession.metadata.event_id
+            const pilots_count = Number(stripeSession.metadata.pilots_count)
+
+            if (event_id) {
+              const eventBooking = new Booking()
+              eventBooking.date = new Date()
+              eventBooking.start_time = "00:00:00"
+              eventBooking.end_time = "00:00:00"
+              eventBooking.pilots = pilots_count
+              eventBooking.price_paid = amount
+              eventBooking.is_free_session = false
+              eventBooking.status = "confirmed"
+              eventBooking.user_id = Number(userId)
+              eventBooking.availability_id = null
+              eventBooking.simulator_id = null
+              eventBooking.session_id = null
+              eventBooking.gift_voucher_id = null
+              eventBooking.event_id = Number(event_id)
+
+              await this.bookingRepository.save(eventBooking)
+
+              const savedEventBooking = await this.bookingRepository.findOneBy({
+                event_id: Number(event_id),
+                user_id: Number(userId)
+              })
+
+              await this.orderDetailsRepository.save({
+                price_each: amount,
+                session_id: null,
+                booking_id: savedEventBooking.id,
+                quantity: pilots_count,
+                order_id: savedOrder.id,
+                gift_voucher_id: null
+              })
+            }
+
+            // 5. Traiter le panier + orderdetails + gift_vouchers
+            const cart = await this.cartRepository.findOneBy({ user_id: userId })
+            if (cart) {
+              const items = await this.cartRepository.findUserCartItems(cart.id)
+              for (const item of items) {
+                const query = new QueryBuilder()
+                  .selectFrom("cartitemrecipient", ["*"])
+                  .where("cart_item_id", "=", item.id)
+                const [recipients] = await query.execute()
+
+                let firstGiftVoucherId = null
+                for (const recipient of recipients as unknown[]) {
+                  const r = recipient as { firstname: string; lastname: string; email: string }
+                  const qrCode = `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`
+                  await this.giftVoucherRepository.save({
+                    recipient_name: `${r.firstname} ${r.lastname}`,
+                    recipient_email: r.email,
+                    qr_code: qrCode,
+                    status: "valid",
+                    amount_paid: item.price_normal,
+                    purchaser_user_id: Number(userId),
+                    session_id: item.session_id,
+                    stripe_payment_intent_id: stripeCharge
+                  })
+                  const savedGv = await this.giftVoucherRepository.findOneBy({ qr_code: qrCode })
+                  if (!firstGiftVoucherId) firstGiftVoucherId = savedGv.id
+                }
+
+                await this.orderDetailsRepository.save({
+                  price_each: item.price_normal,
+                  session_id: item.session_id,
+                  quantity: item.quantity,
+                  order_id: savedOrder.id,
+                  gift_voucher_id: firstGiftVoucherId
+                })
+              }
+
+              for (const item of items) {
+                const recipientQuery = new QueryBuilder()
+                  .selectFrom("cartitemrecipient", ["id"])
+                  .where("cart_item_id", "=", item.id)
+                const [recipientRows] = await recipientQuery.execute()
+                for (const row of recipientRows as unknown[]) {
+                  const r = row as { id: number }
+                  await this.cartItemRecipientRepository.delete(r.id)
+                }
+                await this.cartItemsRepository.delete(item.id)
+              }
+              await this.cartRepository.delete(cart.id)
+            }
+
+            // 6. Envoyer les mails
+            const user = await this.userRepository.find(Number(userId))
+            const transporter = createTransporter()
+
+            if (availability_id && session_id) {
+              const dateFormatted = new Date(availability.date).toLocaleDateString("fr-FR", {
+                weekday: "long",
+                year: "numeric",
+                month: "long",
+                day: "numeric"
+              })
+
+              await transporter.sendMail({
+                from: process.env.MAILER_SENDER,
+                to: process.env.MAILER_SENDER,
+                subject: `Nouvelle commande N°${orderNumber} - Elsass SimRacing`,
+                html: `
+                  <html><body>
+                    <p>Commande N°: ${orderNumber}</p>
+                    <p>Passée le: ${createdAt}</p>
+                    <p>Client: ${user.firstname} ${user.lastname} (${user.email})</p>
+                    <p>Réservation: ${session?.duration_minutes} minutes - ${pilots} pilote(s)</p>
+                    <p>Date: ${dateFormatted}</p>
+                    <p>Heure de début: ${availability?.start_time}</p>
+                    <p>Montant: ${amount} €</p>
+                  </body></html>
+                `
+              })
+
+              await transporter.sendMail({
+                from: process.env.MAILER_SENDER,
+                to: user.email,
+                subject: `Confirmation de réservation N°${orderNumber} – Elsass SimRacing`,
+                html: `
+                  <html>
+                    <body style="margin: 0; padding: 0; background-color: #0a0a14; font-family: Arial, sans-serif; color: #ffffff;">
+                      <div style="max-width: 600px; margin: 0 auto; padding: 40px 20px;">
+                        <div style="text-align: center; margin-bottom: 32px;">
+                          <h1 style="color: #245E97; font-size: 28px; margin: 0;">ELSASS SIMRACING</h1>
+                          <p style="color: #aaaaaa; margin: 8px 0 0;">Confirmation de réservation</p>
+                        </div>
+                        <div style="background-color: #1a1a2a; border-radius: 12px; padding: 32px; margin-bottom: 24px;">
+                          <h2 style="color: #ffffff; font-size: 18px; margin: 0 0 24px;">Bonjour ${user.firstname} ${user.lastname},</h2>
+                          <p style="color: #cccccc; line-height: 1.6; margin: 0 0 24px;">Votre réservation a bien été confirmée. Voici le récapitulatif de votre session :</p>
+                          <table style="width: 100%; border-collapse: collapse;">
+                            <tr style="border-bottom: 1px solid #2a2a3a;">
+                              <td style="padding: 12px 0; color: #aaaaaa;">Numéro de commande</td>
+                              <td style="padding: 12px 0; color: #ffffff; text-align: right; font-weight: bold;">N°${orderNumber}</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #2a2a3a;">
+                              <td style="padding: 12px 0; color: #aaaaaa;">Date</td>
+                              <td style="padding: 12px 0; color: #ffffff; text-align: right;">${dateFormatted}</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #2a2a3a;">
+                              <td style="padding: 12px 0; color: #aaaaaa;">Heure de début</td>
+                              <td style="padding: 12px 0; color: #ffffff; text-align: right;">${availability.start_time}</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #2a2a3a;">
+                              <td style="padding: 12px 0; color: #aaaaaa;">Durée</td>
+                              <td style="padding: 12px 0; color: #ffffff; text-align: right;">${session?.duration_minutes} minutes</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #2a2a3a;">
+                              <td style="padding: 12px 0; color: #aaaaaa;">Nombre de pilotes</td>
+                              <td style="padding: 12px 0; color: #ffffff; text-align: right;">${pilots}</td>
+                            </tr>
+                            <tr>
+                              <td style="padding: 12px 0; color: #aaaaaa;">Montant payé</td>
+                              <td style="padding: 12px 0; color: #245E97; text-align: right; font-weight: bold; font-size: 18px;">${amount.toFixed(2)} €</td>
+                            </tr>
+                          </table>
+                        </div>
+                        <div style="background-color: #1a1a2a; border-radius: 12px; padding: 24px; margin-bottom: 24px; border-left: 4px solid #245E97;">
+                          <h3 style="color: #ffffff; font-size: 15px; margin: 0 0 12px;">Conditions d'annulation</h3>
+                          <p style="color: #cccccc; font-size: 14px; line-height: 1.6; margin: 0;">
+                            Toute annulation ou modification doit être effectuée au moins <strong style="color: #ffffff;">1h avant</strong>
+                            le début de la session. Passé ce délai, aucun remboursement ne sera accordé.
+                          </p>
+                        </div>
+                        <div style="background-color: #1a1a2a; border-radius: 12px; padding: 24px; margin-bottom: 32px;">
+                          <h3 style="color: #ffffff; font-size: 15px; margin: 0 0 12px;">Nous contacter</h3>
+                          <p style="color: #cccccc; font-size: 14px; margin: 0;">
+                            📍 11 rue des dominicains, 67500 Haguenau<br>
+                            📞 <a href="tel:+33640583619" style="color: #245E97;">0640583619</a><br>
+                            ✉️ elsass.simracing@gmail.com
+                          </p>
+                        </div>
+                        <div style="text-align: center;">
+                          <p style="color: #555555; font-size: 12px; margin: 0;">
+                            En effectuant cette réservation, vous avez accepté nos
+                            <a href="${process.env.CLIENT_APP_URL}/cgv" style="color: #245E97;">CGV</a>
+                            et notre <a href="${process.env.CLIENT_APP_URL}/politique-confidentialite" style="color: #245E97;">politique de confidentialité</a>.
+                          </p>
+                        </div>
+                      </div>
+                    </body>
+                  </html>
+                `
+              })
+            }
+          } catch (error) {
+            console.log("WEBHOOK CHECKOUT ERROR:", error)
+          }
+        })()
+
       } else if (event.type === "customer.subscription.updated") {
-        // ─── Gestion annulation / réactivation dans la même période ───────────
         const stripeSubscription = event.data.object
 
         const foundSubscription = await this.subscriptionRepository.findOneBy({
           stripe_subscription_id: stripeSubscription.id
         })
-        if (!foundSubscription) return this.res.status(404).json({ message: "Subscription not found" })
+        if (!foundSubscription) {
+          this.res.status(200).json({ received: true })
+          return
+        }
 
         if (stripeSubscription.cancel_at_period_end === true) {
-          // L'utilisateur a demandé l'annulation — on garde is_member intact jusqu'à la fin de période
+          // Annulation demandée — on garde is_member intact jusqu'à la fin de période
           foundSubscription.status = "pending_cancellation"
           await this.subscriptionRepository.save(foundSubscription)
+          this.res.status(200).json({ received: true })
 
         } else if (
           stripeSubscription.cancel_at_period_end === false &&
           foundSubscription.status === "pending_cancellation"
         ) {
-          // L'utilisateur a réactivé dans la même période — pas de nouveau paiement, pas de nouveaux QR codes
+          // Réactivation dans la même période
           foundSubscription.status = "active"
           await this.subscriptionRepository.save(foundSubscription)
-          // is_member est déjà true, on ne régénère pas les QR codes
-        }
+          this.res.status(200).json({ received: true })
 
-        this.res.status(200).json({ received: true })
+        } else if (stripeSubscription.cancel_at_period_end === false) {
+          // Changement de plan — on récupère le nouveau plan via stripe_price_id en base
+          const newPriceId = stripeSubscription.items.data[0]?.price?.id
+          console.log("NEW PRICE ID:", newPriceId)
+          const newPlanData = newPriceId
+            ? await this.planRepository.findOneBy({ stripe_price_id: newPriceId })
+            : null
+          console.log("NEW PLAN DATA:", newPlanData)
+          const newPlan = newPlanData?.plan as SubscriptionPlan
+          const oldPlan = foundSubscription.plan as SubscriptionPlan
+          console.log("OLD PLAN:", oldPlan, "NEW PLAN:", newPlan)
+
+          if (newPlan && newPlan !== oldPlan) {
+            const isUpgrade = PLAN_FREE_SESSIONS[newPlan] > PLAN_FREE_SESSIONS[oldPlan]
+            const diff = isUpgrade ? PLAN_FREE_SESSIONS[newPlan] - PLAN_FREE_SESSIONS[oldPlan] : 0
+
+            // Mettre à jour le plan en base dans tous les cas
+            foundSubscription.plan = newPlan
+            if (isUpgrade) {
+              foundSubscription.free_sessions_remaining = (foundSubscription.free_sessions_remaining ?? 0) + diff
+            }
+            await this.subscriptionRepository.save(foundSubscription)
+
+            this.res.status(200).json({ received: true })
+
+            if (isUpgrade) {
+              // Envoyer les QR codes supplémentaires en arrière-plan
+              ;(async () => {
+                try {
+                  const user = await this.userRepository.find(foundSubscription.user_id)
+
+                  const qrBuffers: { buffer: Buffer; index: number }[] = []
+                  for (let i = 0; i < diff; i++) {
+                    const qrToken = randomBytes(32).toString("hex")
+                    await this.freeSessionTokenRepository.save({
+                      sub_id: foundSubscription.id,
+                      qr_token: qrToken,
+                      is_used: false
+                    })
+                    const buffer = await QRCode.toBuffer(qrToken, { width: 300, margin: 2 })
+                    qrBuffers.push({ buffer, index: i + 1 })
+                  }
+
+                  const transporter = createTransporter()
+                  await transporter.sendMail({
+                    from: process.env.MAILER_SENDER,
+                    to: user.email,
+                    subject: `Votre upgrade vers ${newPlan} – ${diff} sessions gratuites supplémentaires`,
+                    attachments: qrBuffers.map((qr) => ({
+                      filename: `session-gratuite-${qr.index}.png`,
+                      content: qr.buffer,
+                      contentType: "image/png"
+                    })),
+                    html: `
+                      <html>
+                        <body style="margin: 0; padding: 0; background-color: #0a0a14; font-family: Arial, sans-serif; color: #ffffff;">
+                          <div style="max-width: 600px; margin: 0 auto; padding: 40px 20px;">
+                            <div style="text-align: center; margin-bottom: 32px;">
+                              <h1 style="color: #245E97; font-size: 28px; margin: 0;">ELSASS SIMRACING</h1>
+                              <p style="color: #aaaaaa; margin: 8px 0 0;">Upgrade vers ${newPlan}</p>
+                            </div>
+                            <div style="background-color: #1a1a2a; border-radius: 12px; padding: 32px; margin-bottom: 24px;">
+                              <h2 style="color: #ffffff; font-size: 18px; margin: 0 0 16px;">Bonjour ${user.firstname} ${user.lastname},</h2>
+                              <p style="color: #cccccc; line-height: 1.6; margin: 0 0 24px;">
+                                Vous êtes passé du plan ${oldPlan} au plan ${newPlan}. Vous trouverez en pièces jointes vos ${diff} QR codes de sessions gratuites supplémentaires pour ce cycle.
+                              </p>
+                            </div>
+                            <div style="background-color: #1a1a2a; border-radius: 12px; padding: 24px; margin-bottom: 24px; border-left: 4px solid #00c764;">
+                              <table style="width: 100%; border-collapse: collapse;">
+                                <tr style="border-bottom: 1px solid #2a2a3a;">
+                                  <td style="padding: 10px 0; color: #aaaaaa;">Ancien plan</td>
+                                  <td style="padding: 10px 0; color: #ffffff; text-align: right; font-weight: bold;">${oldPlan}</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #2a2a3a;">
+                                  <td style="padding: 10px 0; color: #aaaaaa;">Nouveau plan</td>
+                                  <td style="padding: 10px 0; color: #00c764; text-align: right; font-weight: bold;">${newPlan}</td>
+                                </tr>
+                                <tr>
+                                  <td style="padding: 10px 0; color: #aaaaaa;">Sessions gratuites ajoutées</td>
+                                  <td style="padding: 10px 0; color: #00c764; text-align: right; font-weight: bold;">+${diff}</td>
+                                </tr>
+                              </table>
+                            </div>
+                            <div style="background-color: #1a1a2a; border-radius: 12px; padding: 24px;">
+                              <h3 style="color: #ffffff; font-size: 15px; margin: 0 0 12px;">Nous contacter</h3>
+                              <p style="color: #cccccc; font-size: 14px; margin: 0;">
+                                📍 11 rue des dominicains, 67500 Haguenau<br>
+                                📞 <a href="tel:+33640583619" style="color: #245E97;">0640583619</a><br>
+                                ✉️ elsass.simracing@gmail.com
+                              </p>
+                            </div>
+                          </div>
+                        </body>
+                      </html>
+                    `
+                  })
+                } catch (error) {
+                  console.log("WEBHOOK UPGRADE ERROR:", error)
+                }
+              })()
+            }
+          } else {
+            this.res.status(200).json({ received: true })
+          }
+        } else {
+          this.res.status(200).json({ received: true })
+        }
 
       } else if (event.type === "customer.subscription.created") {
         const stripeSubscription = event.data.object
         const customerId = stripeSubscription.customer
 
-        const checkoutSessions = await this.stripeService.instance.checkout.sessions.list({
-          subscription: stripeSubscription.id,
-          limit: 1
-        })
-        const checkoutSession = checkoutSessions.data[0]
-        const plan = (checkoutSession?.metadata?.plan ?? "STARTER") as SubscriptionPlan
-
-        const planData = await this.planRepository.findOneBy({ plan })
-        if (!planData) return this.res.status(404).json({ message: "Plan not found" })
-
-        const user = await this.userRepository.findOneBy({ stripe_customer_id: customerId })
-        if (!user) return this.res.status(404).json({ message: "User not found" })
-
-        // Vérifier si l'utilisateur avait un abonnement annulé dans les 30 derniers jours
-        const thirtyDaysAgo = new Date()
-        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
-
-        const recentCancelledSubscription = await this.subscriptionRepository.findOneBy({
-          user_id: user.id,
-          status: "cancelled"
-        })
-
-        const skipFreeSessionGeneration =
-          recentCancelledSubscription &&
-          new Date(recentCancelledSubscription.current_period_end) > thirtyDaysAgo
-
-        user.is_member = true
-        await this.userRepository.save(user)
-
-        await this.subscriptionRepository.save({
-          stripe_subscription_id: stripeSubscription.id,
-          plan,
-          price: planData.price,
-          status: "active",
-          free_sessions_remaining: skipFreeSessionGeneration ? 0 : PLAN_FREE_SESSIONS[plan],
-          current_period_start: new Date(stripeSubscription.items.data[0].current_period_start * 1000),
-          current_period_end: new Date(stripeSubscription.items.data[0].current_period_end * 1000),
-          user_id: user.id
-        })
-
-        const savedSubscription = await this.subscriptionRepository.findOneBy({
-          stripe_subscription_id: stripeSubscription.id
-        })
-
-        const qrBuffers = skipFreeSessionGeneration
-          ? []
-          : await generateFreeSessionQRs(savedSubscription.id, plan)
-
-        const transporter = nodemailer.createTransport({
-          host: process.env.MAILER_HOST,
-          port: Number(process.env.MAILER_PORT),
-          secure: false,
-          auth: {
-            user: process.env.MAILER_USER,
-            pass: process.env.MAILER_PASS
-          }
-        })
-
-        await transporter.sendMail({
-          from: process.env.MAILER_SENDER,
-          to: user.email,
-          subject: `Votre abonnement Elsass SimRacing – Vos sessions gratuites`,
-          attachments: qrBuffers.map((qr) => ({
-            filename: `session-gratuite-${qr.index}.png`,
-            content: qr.buffer,
-            contentType: "image/png"
-          })),
-          html: `
-            <html>
-              <body style="margin: 0; padding: 0; background-color: #0a0a14; font-family: Arial, sans-serif; color: #ffffff;">
-                <div style="max-width: 600px; margin: 0 auto; padding: 40px 20px;">
-                  <div style="text-align: center; margin-bottom: 32px;">
-                    <h1 style="color: #245E97; font-size: 28px; margin: 0;">ELSASS SIMRACING</h1>
-                    <p style="color: #aaaaaa; margin: 8px 0 0;">Votre abonnement ${plan}</p>
-                  </div>
-                  <div style="background-color: #1a1a2a; border-radius: 12px; padding: 32px; margin-bottom: 24px;">
-                    <h2 style="color: #ffffff; font-size: 18px; margin: 0 0 16px;">Bonjour ${user.firstname} ${user.lastname},</h2>
-                    <p style="color: #cccccc; line-height: 1.6; margin: 0 0 24px;">
-                      ${skipFreeSessionGeneration
-            ? `Bienvenue ! Votre abonnement a bien été activé. Vos sessions gratuites seront disponibles à partir du prochain cycle de facturation.`
-            : `Bienvenue ! Vous trouverez en pièces jointes vos ${PLAN_FREE_SESSIONS[plan]} QR codes de sessions gratuites. Chaque QR code est nominatif et à usage unique – présentez-en un à l'accueil pour chaque session gratuite.`
-          }
-                    </p>
-                  </div>
-                  <div style="background-color: #1a1a2a; border-radius: 12px; padding: 24px; margin-bottom: 24px; border-left: 4px solid #245E97;">
-                    <table style="width: 100%; border-collapse: collapse;">
-                      <tr style="border-bottom: 1px solid #2a2a3a;">
-                        <td style="padding: 10px 0; color: #aaaaaa;">Plan</td>
-                        <td style="padding: 10px 0; color: #ffffff; text-align: right; font-weight: bold;">${plan}</td>
-                      </tr>
-                      <tr>
-                        <td style="padding: 10px 0; color: #aaaaaa;">Sessions gratuites</td>
-                        <td style="padding: 10px 0; color: #00c764; text-align: right; font-weight: bold;">
-                          ${skipFreeSessionGeneration ? "0 (réabonnement récent)" : PLAN_FREE_SESSIONS[plan]}
-                        </td>
-                      </tr>
-                    </table>
-                  </div>
-                  <div style="background-color: #1a1a2a; border-radius: 12px; padding: 24px;">
-                    <h3 style="color: #ffffff; font-size: 15px; margin: 0 0 12px;">Nous contacter</h3>
-                    <p style="color: #cccccc; font-size: 14px; margin: 0;">
-                      📍 11 rue des dominicains, 67500 Haguenau<br>
-                      📞 <a href="tel:+33640583619" style="color: #245E97;">0640583619</a><br>
-                      ✉️ elsass.simracing@gmail.com
-                    </p>
-                  </div>
-                </div>
-              </body>
-            </html>
-          `
-        })
-
         this.res.status(200).json({ received: true })
 
+        ;(async () => {
+          try {
+            const checkoutSessions = await this.stripeService.instance.checkout.sessions.list({
+              subscription: stripeSubscription.id,
+              limit: 1
+            })
+            const checkoutSession = checkoutSessions.data[0]
+            const plan = (checkoutSession?.metadata?.plan ?? "STARTER") as SubscriptionPlan
+
+            const planData = await this.planRepository.findOneBy({ plan })
+            if (!planData) {
+              console.log("WEBHOOK SUBSCRIPTION CREATED ERROR: Plan not found")
+              return
+            }
+
+            const user = await this.userRepository.findOneBy({ stripe_customer_id: customerId })
+            if (!user) {
+              console.log("WEBHOOK SUBSCRIPTION CREATED ERROR: User not found")
+              return
+            }
+
+            const thirtyDaysAgo = new Date()
+            thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
+
+            const recentCancelledSubscription = await this.subscriptionRepository.findOneBy({
+              user_id: user.id,
+              status: "cancelled"
+            })
+
+            const skipFreeSessionGeneration =
+              recentCancelledSubscription && new Date(recentCancelledSubscription.current_period_end) > thirtyDaysAgo
+
+            user.is_member = true
+            await this.userRepository.save(user)
+
+            await this.subscriptionRepository.save({
+              stripe_subscription_id: stripeSubscription.id,
+              plan,
+              price: planData.price,
+              status: "active",
+              free_sessions_remaining: skipFreeSessionGeneration ? 0 : PLAN_FREE_SESSIONS[plan],
+              current_period_start: new Date(stripeSubscription.items.data[0].current_period_start * 1000),
+              current_period_end: new Date(stripeSubscription.items.data[0].current_period_end * 1000),
+              user_id: user.id
+            })
+
+            const savedSubscription = await this.subscriptionRepository.findOneBy({
+              stripe_subscription_id: stripeSubscription.id
+            })
+
+            const qrBuffers = skipFreeSessionGeneration
+              ? []
+              : await generateFreeSessionQRs(savedSubscription.id, plan)
+
+            const transporter = createTransporter()
+
+            await transporter.sendMail({
+              from: process.env.MAILER_SENDER,
+              to: user.email,
+              subject: `Votre abonnement Elsass SimRacing – Vos sessions gratuites`,
+              attachments: qrBuffers.map((qr) => ({
+                filename: `session-gratuite-${qr.index}.png`,
+                content: qr.buffer,
+                contentType: "image/png"
+              })),
+              html: `
+                <html>
+                  <body style="margin: 0; padding: 0; background-color: #0a0a14; font-family: Arial, sans-serif; color: #ffffff;">
+                    <div style="max-width: 600px; margin: 0 auto; padding: 40px 20px;">
+                      <div style="text-align: center; margin-bottom: 32px;">
+                        <h1 style="color: #245E97; font-size: 28px; margin: 0;">ELSASS SIMRACING</h1>
+                        <p style="color: #aaaaaa; margin: 8px 0 0;">Votre abonnement ${plan}</p>
+                      </div>
+                      <div style="background-color: #1a1a2a; border-radius: 12px; padding: 32px; margin-bottom: 24px;">
+                        <h2 style="color: #ffffff; font-size: 18px; margin: 0 0 16px;">Bonjour ${user.firstname} ${user.lastname},</h2>
+                        <p style="color: #cccccc; line-height: 1.6; margin: 0 0 24px;">
+                          ${
+                skipFreeSessionGeneration
+                  ? `Bienvenue ! Votre abonnement a bien été activé. Vos sessions gratuites seront disponibles à partir du prochain cycle de facturation.`
+                  : `Bienvenue ! Vous trouverez en pièces jointes vos ${PLAN_FREE_SESSIONS[plan]} QR codes de sessions gratuites. Chaque QR code est nominatif et à usage unique – présentez-en un à l'accueil pour chaque session gratuite.`
+              }
+                        </p>
+                      </div>
+                      <div style="background-color: #1a1a2a; border-radius: 12px; padding: 24px; margin-bottom: 24px; border-left: 4px solid #245E97;">
+                        <table style="width: 100%; border-collapse: collapse;">
+                          <tr style="border-bottom: 1px solid #2a2a3a;">
+                            <td style="padding: 10px 0; color: #aaaaaa;">Plan</td>
+                            <td style="padding: 10px 0; color: #ffffff; text-align: right; font-weight: bold;">${plan}</td>
+                          </tr>
+                          <tr>
+                            <td style="padding: 10px 0; color: #aaaaaa;">Sessions gratuites</td>
+                            <td style="padding: 10px 0; color: #00c764; text-align: right; font-weight: bold;">
+                              ${skipFreeSessionGeneration ? "0 (réabonnement récent)" : PLAN_FREE_SESSIONS[plan]}
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
+                      <div style="background-color: #1a1a2a; border-radius: 12px; padding: 24px;">
+                        <h3 style="color: #ffffff; font-size: 15px; margin: 0 0 12px;">Nous contacter</h3>
+                        <p style="color: #cccccc; font-size: 14px; margin: 0;">
+                          📍 11 rue des dominicains, 67500 Haguenau<br>
+                          📞 <a href="tel:+33640583619" style="color: #245E97;">0640583619</a><br>
+                          ✉️ elsass.simracing@gmail.com
+                        </p>
+                      </div>
+                    </div>
+                  </body>
+                </html>
+              `
+            })
+          } catch (error) {
+            console.log("WEBHOOK SUBSCRIPTION CREATED ERROR:", error)
+          }
+        })()
+
       } else if (event.type === "customer.subscription.deleted") {
-        // ─── Fin de période effective — on retire les avantages ───────────────
         const stripeSubscription = event.data.object
         const foundSubscription = await this.subscriptionRepository.findOneBy({
           stripe_subscription_id: stripeSubscription.id
         })
-        if (!foundSubscription) return this.res.status(404).json({ message: "Subscription not found" })
+        if (!foundSubscription) {
+          this.res.status(200).json({ received: true })
+          return
+        }
 
         const user = await this.userRepository.find(foundSubscription.user_id)
         user.is_member = false
@@ -656,98 +725,88 @@ export class OrderController extends Controller {
       } else if (event.type === "invoice.paid") {
         const invoice = event.data.object
 
-        if (invoice.billing_reason !== "subscription_create") {
-          const periodStart = invoice.lines.data[0]?.period?.start
-          const periodEnd = invoice.lines.data[0]?.period?.end
-          const customerId = invoice.customer
-
-          const user = await this.userRepository.findOneBy({ stripe_customer_id: customerId })
-          if (!user) {
-            this.res.status(200).json({ received: true })
-            return
-          }
-
-          const stripeSubscriptionId = invoice.subscription
-          const foundSubscription = await this.subscriptionRepository.findOneBy({
-            stripe_subscription_id: stripeSubscriptionId
-          })
-          if (!foundSubscription) {
-            this.res.status(200).json({ received: true })
-            return
-          }
-
-          const plan = foundSubscription.plan as SubscriptionPlan
-
-          foundSubscription.free_sessions_remaining = PLAN_FREE_SESSIONS[plan]
-          foundSubscription.current_period_start = new Date(periodStart * 1000)
-          foundSubscription.current_period_end = new Date(periodEnd * 1000)
-          await this.subscriptionRepository.save(foundSubscription)
-
-          const qrBuffers = await generateFreeSessionQRs(foundSubscription.id, plan)
-
-          const transporter = nodemailer.createTransport({
-            host: process.env.MAILER_HOST,
-            port: Number(process.env.MAILER_PORT),
-            secure: false,
-            auth: {
-              user: process.env.MAILER_USER,
-              pass: process.env.MAILER_PASS
-            }
-          })
-
-          await transporter.sendMail({
-            from: process.env.MAILER_SENDER,
-            to: user.email,
-            subject: `Renouvellement abonnement – Vos nouvelles sessions gratuites`,
-            attachments: qrBuffers.map((qr) => ({
-              filename: `session-gratuite-${qr.index}.png`,
-              content: qr.buffer,
-              contentType: "image/png"
-            })),
-            html: `
-              <html>
-                <body style="margin: 0; padding: 0; background-color: #0a0a14; font-family: Arial, sans-serif; color: #ffffff;">
-                  <div style="max-width: 600px; margin: 0 auto; padding: 40px 20px;">
-                    <div style="text-align: center; margin-bottom: 32px;">
-                      <h1 style="color: #245E97; font-size: 28px; margin: 0;">ELSASS SIMRACING</h1>
-                      <p style="color: #aaaaaa; margin: 8px 0 0;">Renouvellement de votre abonnement</p>
-                    </div>
-                    <div style="background-color: #1a1a2a; border-radius: 12px; padding: 32px; margin-bottom: 24px;">
-                      <h2 style="color: #ffffff; font-size: 18px; margin: 0 0 16px;">Bonjour ${user.firstname} ${user.lastname},</h2>
-                      <p style="color: #cccccc; line-height: 1.6; margin: 0 0 24px;">
-                        Votre abonnement a été renouvelé. Vous trouverez en pièces jointes vos ${PLAN_FREE_SESSIONS[plan]} nouveaux QR codes de sessions gratuites.
-                        Les anciens QR codes ne sont plus valides.
-                      </p>
-                    </div>
-                    <div style="background-color: #1a1a2a; border-radius: 12px; padding: 24px; margin-bottom: 24px; border-left: 4px solid #00c764;">
-                      <table style="width: 100%; border-collapse: collapse;">
-                        <tr style="border-bottom: 1px solid #2a2a3a;">
-                          <td style="padding: 10px 0; color: #aaaaaa;">Plan</td>
-                          <td style="padding: 10px 0; color: #ffffff; text-align: right; font-weight: bold;">${plan}</td>
-                        </tr>
-                        <tr>
-                          <td style="padding: 10px 0; color: #aaaaaa;">Sessions gratuites rechargées</td>
-                          <td style="padding: 10px 0; color: #00c764; text-align: right; font-weight: bold;">${PLAN_FREE_SESSIONS[plan]}</td>
-                        </tr>
-                      </table>
-                    </div>
-                    <div style="background-color: #1a1a2a; border-radius: 12px; padding: 24px;">
-                      <h3 style="color: #ffffff; font-size: 15px; margin: 0 0 12px;">Nous contacter</h3>
-                      <p style="color: #cccccc; font-size: 14px; margin: 0;">
-                        📍 11 rue des dominicains, 67500 Haguenau<br>
-                        📞 <a href="tel:+33640583619" style="color: #245E97;">0640583619</a><br>
-                        ✉️ elsass.simracing@gmail.com
-                      </p>
-                    </div>
-                  </div>
-                </body>
-              </html>
-            `
-          })
-        }
-
-        // Réponse en dehors du if pour couvrir billing_reason === "subscription_create"
         this.res.status(200).json({ received: true })
+
+        if (invoice.billing_reason !== "subscription_create") {
+          ;(async () => {
+            try {
+              const periodStart = invoice.lines.data[0]?.period?.start
+              const periodEnd = invoice.lines.data[0]?.period?.end
+              const customerId = invoice.customer
+
+              const user = await this.userRepository.findOneBy({ stripe_customer_id: customerId })
+              if (!user) return
+
+              const stripeSubscriptionId = invoice.subscription
+              const foundSubscription = await this.subscriptionRepository.findOneBy({
+                stripe_subscription_id: stripeSubscriptionId
+              })
+              if (!foundSubscription) return
+
+              const plan = foundSubscription.plan as SubscriptionPlan
+
+              foundSubscription.free_sessions_remaining = PLAN_FREE_SESSIONS[plan]
+              foundSubscription.current_period_start = new Date(periodStart * 1000)
+              foundSubscription.current_period_end = new Date(periodEnd * 1000)
+              await this.subscriptionRepository.save(foundSubscription)
+
+              const qrBuffers = await generateFreeSessionQRs(foundSubscription.id, plan)
+              const transporter = createTransporter()
+
+              await transporter.sendMail({
+                from: process.env.MAILER_SENDER,
+                to: user.email,
+                subject: `Renouvellement abonnement – Vos nouvelles sessions gratuites`,
+                attachments: qrBuffers.map((qr) => ({
+                  filename: `session-gratuite-${qr.index}.png`,
+                  content: qr.buffer,
+                  contentType: "image/png"
+                })),
+                html: `
+                  <html>
+                    <body style="margin: 0; padding: 0; background-color: #0a0a14; font-family: Arial, sans-serif; color: #ffffff;">
+                      <div style="max-width: 600px; margin: 0 auto; padding: 40px 20px;">
+                        <div style="text-align: center; margin-bottom: 32px;">
+                          <h1 style="color: #245E97; font-size: 28px; margin: 0;">ELSASS SIMRACING</h1>
+                          <p style="color: #aaaaaa; margin: 8px 0 0;">Renouvellement de votre abonnement</p>
+                        </div>
+                        <div style="background-color: #1a1a2a; border-radius: 12px; padding: 32px; margin-bottom: 24px;">
+                          <h2 style="color: #ffffff; font-size: 18px; margin: 0 0 16px;">Bonjour ${user.firstname} ${user.lastname},</h2>
+                          <p style="color: #cccccc; line-height: 1.6; margin: 0 0 24px;">
+                            Votre abonnement a été renouvelé. Vous trouverez en pièces jointes vos ${PLAN_FREE_SESSIONS[plan]} nouveaux QR codes de sessions gratuites.
+                            Les anciens QR codes ne sont plus valides.
+                          </p>
+                        </div>
+                        <div style="background-color: #1a1a2a; border-radius: 12px; padding: 24px; margin-bottom: 24px; border-left: 4px solid #00c764;">
+                          <table style="width: 100%; border-collapse: collapse;">
+                            <tr style="border-bottom: 1px solid #2a2a3a;">
+                              <td style="padding: 10px 0; color: #aaaaaa;">Plan</td>
+                              <td style="padding: 10px 0; color: #ffffff; text-align: right; font-weight: bold;">${plan}</td>
+                            </tr>
+                            <tr>
+                              <td style="padding: 10px 0; color: #aaaaaa;">Sessions gratuites rechargées</td>
+                              <td style="padding: 10px 0; color: #00c764; text-align: right; font-weight: bold;">${PLAN_FREE_SESSIONS[plan]}</td>
+                            </tr>
+                          </table>
+                        </div>
+                        <div style="background-color: #1a1a2a; border-radius: 12px; padding: 24px;">
+                          <h3 style="color: #ffffff; font-size: 15px; margin: 0 0 12px;">Nous contacter</h3>
+                          <p style="color: #cccccc; font-size: 14px; margin: 0;">
+                            📍 11 rue des dominicains, 67500 Haguenau<br>
+                            📞 <a href="tel:+33640583619" style="color: #245E97;">0640583619</a><br>
+                            ✉️ elsass.simracing@gmail.com
+                          </p>
+                        </div>
+                      </div>
+                    </body>
+                  </html>
+                `
+              })
+            } catch (error) {
+              console.log("WEBHOOK INVOICE PAID ERROR:", error)
+            }
+          })()
+        }
 
       } else {
         this.res.status(200).json({ received: true })

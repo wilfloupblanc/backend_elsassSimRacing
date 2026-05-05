@@ -38,6 +38,30 @@ export class BookingRepository extends Repository<Booking> {
     const [rows] = await query.execute() as [Array<{id: number}>]
     return rows.length > 0 ? rows[0].id : null
   }
+
+  async findByUserId(userId: number): Promise<Booking[]> {
+    const query = new QueryBuilder()
+      .raw(`
+      SELECT 
+        b.id,
+        b.date,
+        b.start_time,
+        b.end_time,
+        b.status,
+        b.price_paid,
+        b.pilots,
+        s.duration_minutes,
+        s.name as session_name
+      FROM booking b
+      LEFT JOIN session s ON s.id = b.session_id
+      WHERE b.user_id = ?
+        AND b.availability_id IS NOT NULL
+        AND b.status = 'confirmed'
+      ORDER BY b.date DESC, b.start_time DESC
+    `, [userId])
+    const [rows] = await query.execute()
+    return rows as Booking[]
+  }
 }
 
 export const bookingRepository = new BookingRepository()
