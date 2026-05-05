@@ -1,11 +1,10 @@
 import "reflect-metadata"
 
-import { Config, cors, createServer, LyraConsole, SecurityConfig } from "@lyra-js/core"
+import { Config, createServer, LyraConsole, SecurityConfig } from "@lyra-js/core"
 import bcrypt from "bcrypt"
 import * as dotenv from "dotenv"
 import jwt from "jsonwebtoken"
 import * as process from "node:process"
-import { WebSocketServer } from "ws"
 
 
 dotenv.config()
@@ -30,14 +29,31 @@ app.register(bcrypt, "bcrypt")
 app.register(jwt, "jwt")
 
 // CORS middleware
-app.use(
-  cors({
-    origin: `${process.env.CLIENT_APP_URL}`,
-    headers: "Content-Type, Access-Control-Allow-Origin, Access-Control-Allow-Headers",
-    methods: "GET, POST, PATCH, PUT, DELETE, OPTIONS",
-    credentials: true
-  })
-)
+app.use((req, res, next) => {
+  const allowedOrigins = [
+    process.env.CLIENT_APP_URL,
+    'http://localhost:5173',
+    'http://localhost:5174',
+    'app://.',
+  ]
+  const origin = req.headers.origin
+
+  if (!origin || allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin || '*')
+  }
+
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, PUT, DELETE, OPTIONS')
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Access-Control-Allow-Origin, Access-Control-Allow-Headers')
+  res.setHeader('Access-Control-Allow-Credentials', 'true')
+
+  if (req.method === 'OPTIONS') {
+    res.statusCode = 204
+    res.end()
+    return
+  }
+
+  next()
+})
 
 // Enable scheduler (optional) - uncomment to activate scheduled jobs
 // Jobs are auto-discovered from src/jobs directory
