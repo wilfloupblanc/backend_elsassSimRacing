@@ -27409,3 +27409,768 @@
 [2026-05-05T16:22:52.843Z] [SUCCESS] ✓ Scheduler started successfully
 [2026-05-05T16:23:53.603Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
 [2026-05-05T16:23:53.606Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-05-05T16:33:38.926Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-05-05T16:33:38.927Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-05-05T16:33:45.660Z] [SUCCESS] [2026-05-05T16:33:45.650Z] OPTIONS /api/auth/user ➞ NO_CONTENT 204 (10ms)
+[2026-05-05T16:33:45.663Z] [ERROR] [2026-05-05T16:33:45.663Z] OPTIONS /api/auth/user - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:150.0) Gecko/20100101 Firefox/150.0 | IP: ::ffff:127.0.0.1
+[2026-05-05T16:33:45.681Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T16:33:45.724Z] [SUCCESS] [2026-05-05T16:33:45.683Z] GET /api/auth/user ➞ OK 200 (40ms)
+[2026-05-05T16:33:45.759Z] [SUCCESS] [2026-05-05T16:33:45.751Z] OPTIONS /api/cart/ ➞ NO_CONTENT 204 (8ms)
+[2026-05-05T16:33:45.759Z] [ERROR] [2026-05-05T16:33:45.759Z] OPTIONS /api/cart/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:150.0) Gecko/20100101 Firefox/150.0 | IP: ::ffff:127.0.0.1
+[2026-05-05T16:33:45.764Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T16:33:45.775Z] [WARN] [2026-05-05T16:33:45.765Z] GET /api/cart/ ➞ NOT_FOUND 404 (10ms)
+[2026-05-05T16:37:12.951Z] [SUCCESS] [2026-05-05T16:37:12.947Z] OPTIONS /api/session/ ➞ NO_CONTENT 204 (4ms)
+[2026-05-05T16:37:12.953Z] [ERROR] [2026-05-05T16:37:12.952Z] OPTIONS /api/session/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:150.0) Gecko/20100101 Firefox/150.0 | IP: ::ffff:127.0.0.1
+[2026-05-05T16:37:12.955Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T16:37:12.967Z] [SUCCESS] [2026-05-05T16:37:12.962Z] OPTIONS /api/availability/month?month=2026-05 ➞ NO_CONTENT 204 (4ms)
+[2026-05-05T16:37:12.967Z] [ERROR] [2026-05-05T16:37:12.967Z] OPTIONS /api/availability/month?month=2026-05 - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:150.0) Gecko/20100101 Firefox/150.0 | IP: ::ffff:127.0.0.1
+[2026-05-05T16:37:12.968Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T16:37:12.982Z] [SUCCESS] [2026-05-05T16:37:12.959Z] GET /api/session/ ➞ OK 200 (23ms)
+[2026-05-05T16:37:13.006Z] [SUCCESS] [2026-05-05T16:37:12.973Z] GET /api/availability/month?month=2026-05 ➞ OK 200 (33ms)
+[2026-05-05T16:47:16.365Z] [SUCCESS] [2026-05-05T16:47:16.363Z] OPTIONS /api/auth/sign-out ➞ NO_CONTENT 204 (2ms)
+[2026-05-05T16:47:16.366Z] [ERROR] [2026-05-05T16:47:16.366Z] OPTIONS /api/auth/sign-out - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T16:47:16.368Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T16:47:16.375Z] [SUCCESS] [2026-05-05T16:47:16.368Z] GET /api/auth/sign-out ➞ OK 200 (7ms)
+[2026-05-05T16:47:16.413Z] [SUCCESS] [2026-05-05T16:47:16.412Z] OPTIONS /api/auth/user ➞ NO_CONTENT 204 (1ms)
+[2026-05-05T16:47:16.413Z] [ERROR] [2026-05-05T16:47:16.413Z] OPTIONS /api/auth/user - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T16:47:16.414Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T16:47:16.417Z] [ERROR] [2026-05-05T16:47:16.417Z] GET /api/auth/user - 401 - Unauthorized | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T16:47:16.419Z] [ERROR] Stack: Error: Unauthorized
+    at AuthController.getAuthenticatedUser (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/src/controller/AuthController.ts:154:24)
+    at wrappedHandler (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:993:46)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+[2026-05-05T16:47:16.419Z] [WARN] [2026-05-05T16:47:16.416Z] GET /api/auth/user ➞ UNAUTHORIZED 401 (3ms)
+[2026-05-05T16:47:19.118Z] [ERROR] [2026-05-05T16:47:19.118Z] GET /api/auth/user - 401 - Unauthorized | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T16:47:19.119Z] [ERROR] Stack: Error: Unauthorized
+    at AuthController.getAuthenticatedUser (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/src/controller/AuthController.ts:154:24)
+    at wrappedHandler (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:993:46)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+[2026-05-05T16:47:19.120Z] [WARN] [2026-05-05T16:47:19.116Z] GET /api/auth/user ➞ UNAUTHORIZED 401 (4ms)
+[2026-05-05T16:47:19.134Z] [SUCCESS] [2026-05-05T16:47:19.133Z] OPTIONS /api/plan/ ➞ NO_CONTENT 204 (1ms)
+[2026-05-05T16:47:19.134Z] [ERROR] [2026-05-05T16:47:19.134Z] OPTIONS /api/plan/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T16:47:19.136Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T16:47:19.144Z] [SUCCESS] [2026-05-05T16:47:19.137Z] GET /api/plan/ ➞ OK 200 (7ms)
+[2026-05-05T16:47:38.665Z] [SUCCESS] [2026-05-05T16:47:38.662Z] OPTIONS /api/auth/sign-in ➞ NO_CONTENT 204 (3ms)
+[2026-05-05T16:47:38.665Z] [ERROR] [2026-05-05T16:47:38.665Z] OPTIONS /api/auth/sign-in - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T16:47:38.667Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T16:47:38.743Z] [SUCCESS] [2026-05-05T16:47:38.667Z] POST /api/auth/sign-in ➞ OK 200 (76ms)
+[2026-05-05T16:47:38.768Z] [SUCCESS] [2026-05-05T16:47:38.767Z] OPTIONS /api/auth/user ➞ NO_CONTENT 204 (1ms)
+[2026-05-05T16:47:38.768Z] [ERROR] [2026-05-05T16:47:38.768Z] OPTIONS /api/auth/user - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T16:47:38.769Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T16:47:38.775Z] [SUCCESS] [2026-05-05T16:47:38.770Z] GET /api/auth/user ➞ OK 200 (5ms)
+[2026-05-05T16:47:38.800Z] [SUCCESS] [2026-05-05T16:47:38.799Z] OPTIONS /api/cart/ ➞ NO_CONTENT 204 (1ms)
+[2026-05-05T16:47:38.800Z] [ERROR] [2026-05-05T16:47:38.800Z] OPTIONS /api/cart/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T16:47:38.801Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T16:47:38.805Z] [WARN] [2026-05-05T16:47:38.801Z] GET /api/cart/ ➞ NOT_FOUND 404 (4ms)
+[2026-05-05T16:47:44.238Z] [SUCCESS] [2026-05-05T16:47:44.235Z] OPTIONS /api/subscription/subscribe ➞ NO_CONTENT 204 (3ms)
+[2026-05-05T16:47:44.238Z] [ERROR] [2026-05-05T16:47:44.238Z] OPTIONS /api/subscription/subscribe - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T16:47:44.240Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T16:47:45.003Z] [SUCCESS] [2026-05-05T16:47:44.996Z] POST /api/order/webhook ➞ OK 200 (7ms)
+[2026-05-05T16:47:45.388Z] [SUCCESS] [2026-05-05T16:47:44.241Z] POST /api/subscription/subscribe ➞ OK 200 (1147ms)
+[2026-05-05T16:47:50.601Z] [SUCCESS] [2026-05-05T16:47:50.599Z] OPTIONS /api/auth/user ➞ NO_CONTENT 204 (2ms)
+[2026-05-05T16:47:50.601Z] [ERROR] [2026-05-05T16:47:50.601Z] OPTIONS /api/auth/user - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T16:47:50.602Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T16:47:50.608Z] [SUCCESS] [2026-05-05T16:47:50.603Z] GET /api/auth/user ➞ OK 200 (5ms)
+[2026-05-05T16:47:50.637Z] [SUCCESS] [2026-05-05T16:47:50.635Z] OPTIONS /api/cart/ ➞ NO_CONTENT 204 (2ms)
+[2026-05-05T16:47:50.638Z] [ERROR] [2026-05-05T16:47:50.638Z] OPTIONS /api/cart/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T16:47:50.639Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T16:47:50.649Z] [WARN] [2026-05-05T16:47:50.641Z] GET /api/cart/ ➞ NOT_FOUND 404 (8ms)
+[2026-05-05T16:49:26.761Z] [SUCCESS] [2026-05-05T16:49:26.760Z] OPTIONS /api/session/ ➞ NO_CONTENT 204 (1ms)
+[2026-05-05T16:49:26.762Z] [ERROR] [2026-05-05T16:49:26.762Z] OPTIONS /api/session/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T16:49:26.762Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T16:49:26.772Z] [SUCCESS] [2026-05-05T16:49:26.766Z] GET /api/session/ ➞ OK 200 (6ms)
+[2026-05-05T16:49:30.320Z] [SUCCESS] [2026-05-05T16:49:30.318Z] OPTIONS /api/cartItems/ ➞ NO_CONTENT 204 (2ms)
+[2026-05-05T16:49:30.320Z] [ERROR] [2026-05-05T16:49:30.320Z] OPTIONS /api/cartItems/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T16:49:30.322Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T16:49:30.360Z] [SUCCESS] [2026-05-05T16:49:30.322Z] POST /api/cartItems/ ➞ CREATED 201 (37ms)
+[2026-05-05T16:49:30.372Z] [SUCCESS] [2026-05-05T16:49:30.370Z] OPTIONS /api/cart/ ➞ NO_CONTENT 204 (2ms)
+[2026-05-05T16:49:30.372Z] [ERROR] [2026-05-05T16:49:30.372Z] OPTIONS /api/cart/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T16:49:30.372Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T16:49:30.384Z] [SUCCESS] [2026-05-05T16:49:30.374Z] GET /api/cart/ ➞ OK 200 (10ms)
+[2026-05-05T16:52:02.643Z] [SUCCESS] [2026-05-05T16:52:02.641Z] OPTIONS /api/plan/ ➞ NO_CONTENT 204 (2ms)
+[2026-05-05T16:52:02.643Z] [ERROR] [2026-05-05T16:52:02.643Z] OPTIONS /api/plan/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T16:52:02.644Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T16:52:02.654Z] [SUCCESS] [2026-05-05T16:52:02.645Z] GET /api/plan/ ➞ OK 200 (9ms)
+[2026-05-05T16:58:17.386Z] [SUCCESS] [2026-05-05T16:58:17.384Z] OPTIONS /api/cartItems/1 ➞ NO_CONTENT 204 (2ms)
+[2026-05-05T16:58:17.387Z] [ERROR] [2026-05-05T16:58:17.387Z] OPTIONS /api/cartItems/1 - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:150.0) Gecko/20100101 Firefox/150.0 | IP: ::ffff:127.0.0.1
+[2026-05-05T16:58:17.388Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T16:58:17.421Z] [SUCCESS] [2026-05-05T16:58:17.389Z] DELETE /api/cartItems/1 ➞ OK 200 (32ms)
+[2026-05-05T16:58:17.431Z] [SUCCESS] [2026-05-05T16:58:17.429Z] OPTIONS /api/cart/ ➞ NO_CONTENT 204 (2ms)
+[2026-05-05T16:58:17.432Z] [ERROR] [2026-05-05T16:58:17.432Z] OPTIONS /api/cart/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:150.0) Gecko/20100101 Firefox/150.0 | IP: ::ffff:127.0.0.1
+[2026-05-05T16:58:17.433Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T16:58:17.446Z] [SUCCESS] [2026-05-05T16:58:17.433Z] GET /api/cart/ ➞ OK 200 (13ms)
+[2026-05-05T16:58:22.877Z] [SUCCESS] [2026-05-05T16:58:22.874Z] OPTIONS /api/cartItems/ ➞ NO_CONTENT 204 (3ms)
+[2026-05-05T16:58:22.877Z] [ERROR] [2026-05-05T16:58:22.877Z] OPTIONS /api/cartItems/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:150.0) Gecko/20100101 Firefox/150.0 | IP: ::ffff:127.0.0.1
+[2026-05-05T16:58:22.879Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T16:58:22.910Z] [SUCCESS] [2026-05-05T16:58:22.879Z] POST /api/cartItems/ ➞ CREATED 201 (31ms)
+[2026-05-05T16:58:22.927Z] [SUCCESS] [2026-05-05T16:58:22.925Z] OPTIONS /api/cart/ ➞ NO_CONTENT 204 (2ms)
+[2026-05-05T16:58:22.928Z] [ERROR] [2026-05-05T16:58:22.927Z] OPTIONS /api/cart/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:150.0) Gecko/20100101 Firefox/150.0 | IP: ::ffff:127.0.0.1
+[2026-05-05T16:58:22.929Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T16:58:22.941Z] [SUCCESS] [2026-05-05T16:58:22.929Z] GET /api/cart/ ➞ OK 200 (12ms)
+[2026-05-05T17:02:08.256Z] [SUCCESS] [2026-05-05T17:02:08.254Z] OPTIONS /api/session/ ➞ NO_CONTENT 204 (2ms)
+[2026-05-05T17:02:08.256Z] [ERROR] [2026-05-05T17:02:08.256Z] OPTIONS /api/session/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:02:08.257Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:02:08.264Z] [SUCCESS] [2026-05-05T17:02:08.258Z] GET /api/session/ ➞ OK 200 (6ms)
+[2026-05-05T17:02:12.147Z] [SUCCESS] [2026-05-05T17:02:12.145Z] OPTIONS /api/cartItems/2 ➞ NO_CONTENT 204 (2ms)
+[2026-05-05T17:02:12.147Z] [ERROR] [2026-05-05T17:02:12.147Z] OPTIONS /api/cartItems/2 - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:02:12.147Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:02:12.174Z] [SUCCESS] [2026-05-05T17:02:12.148Z] DELETE /api/cartItems/2 ➞ OK 200 (26ms)
+[2026-05-05T17:02:12.183Z] [SUCCESS] [2026-05-05T17:02:12.181Z] OPTIONS /api/cart/ ➞ NO_CONTENT 204 (2ms)
+[2026-05-05T17:02:12.184Z] [ERROR] [2026-05-05T17:02:12.184Z] OPTIONS /api/cart/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:02:12.187Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:02:12.205Z] [SUCCESS] [2026-05-05T17:02:12.188Z] GET /api/cart/ ➞ OK 200 (17ms)
+[2026-05-05T17:02:21.141Z] [SUCCESS] [2026-05-05T17:02:21.138Z] OPTIONS /api/cartItems/ ➞ NO_CONTENT 204 (3ms)
+[2026-05-05T17:02:21.142Z] [ERROR] [2026-05-05T17:02:21.142Z] OPTIONS /api/cartItems/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:02:21.144Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:02:21.187Z] [SUCCESS] [2026-05-05T17:02:21.144Z] POST /api/cartItems/ ➞ CREATED 201 (43ms)
+[2026-05-05T17:02:21.207Z] [SUCCESS] [2026-05-05T17:02:21.202Z] OPTIONS /api/cart/ ➞ NO_CONTENT 204 (4ms)
+[2026-05-05T17:02:21.208Z] [ERROR] [2026-05-05T17:02:21.207Z] OPTIONS /api/cart/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:02:21.210Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:02:21.226Z] [SUCCESS] [2026-05-05T17:02:21.210Z] GET /api/cart/ ➞ OK 200 (16ms)
+[2026-05-05T17:02:26.234Z] [SUCCESS] [2026-05-05T17:02:26.231Z] OPTIONS /api/cartItems/3 ➞ NO_CONTENT 204 (3ms)
+[2026-05-05T17:02:26.236Z] [ERROR] [2026-05-05T17:02:26.236Z] OPTIONS /api/cartItems/3 - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:02:26.238Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:02:26.266Z] [SUCCESS] [2026-05-05T17:02:26.239Z] PATCH /api/cartItems/3 ➞ OK 200 (27ms)
+[2026-05-05T17:02:26.274Z] [SUCCESS] [2026-05-05T17:02:26.272Z] OPTIONS /api/cart/ ➞ NO_CONTENT 204 (1ms)
+[2026-05-05T17:02:26.274Z] [ERROR] [2026-05-05T17:02:26.274Z] OPTIONS /api/cart/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:02:26.275Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:02:26.288Z] [SUCCESS] [2026-05-05T17:02:26.275Z] GET /api/cart/ ➞ OK 200 (13ms)
+[2026-05-05T17:02:27.207Z] [SUCCESS] [2026-05-05T17:02:27.192Z] DELETE /api/cartItems/3 ➞ OK 200 (15ms)
+[2026-05-05T17:02:27.226Z] [SUCCESS] [2026-05-05T17:02:27.218Z] GET /api/cart/ ➞ OK 200 (8ms)
+[2026-05-05T17:04:54.312Z] [SUCCESS] [2026-05-05T17:04:54.309Z] OPTIONS /api/cartItems/ ➞ NO_CONTENT 204 (2ms)
+[2026-05-05T17:04:54.313Z] [ERROR] [2026-05-05T17:04:54.313Z] OPTIONS /api/cartItems/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:04:54.317Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:04:54.350Z] [SUCCESS] [2026-05-05T17:04:54.318Z] POST /api/cartItems/ ➞ CREATED 201 (32ms)
+[2026-05-05T17:04:54.361Z] [SUCCESS] [2026-05-05T17:04:54.359Z] OPTIONS /api/cart/ ➞ NO_CONTENT 204 (2ms)
+[2026-05-05T17:04:54.361Z] [ERROR] [2026-05-05T17:04:54.361Z] OPTIONS /api/cart/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:04:54.363Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:04:54.374Z] [SUCCESS] [2026-05-05T17:04:54.363Z] GET /api/cart/ ➞ OK 200 (11ms)
+[2026-05-05T17:04:58.810Z] [SUCCESS] [2026-05-05T17:04:58.809Z] OPTIONS /api/cartItems/4 ➞ NO_CONTENT 204 (1ms)
+[2026-05-05T17:04:58.810Z] [ERROR] [2026-05-05T17:04:58.810Z] OPTIONS /api/cartItems/4 - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:04:58.811Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:04:58.828Z] [SUCCESS] [2026-05-05T17:04:58.812Z] DELETE /api/cartItems/4 ➞ OK 200 (16ms)
+[2026-05-05T17:04:58.856Z] [SUCCESS] [2026-05-05T17:04:58.840Z] GET /api/cart/ ➞ OK 200 (16ms)
+[2026-05-05T17:05:04.250Z] [SUCCESS] [2026-05-05T17:05:04.249Z] OPTIONS /api/availability/month?month=2026-05 ➞ NO_CONTENT 204 (1ms)
+[2026-05-05T17:05:04.251Z] [ERROR] [2026-05-05T17:05:04.251Z] OPTIONS /api/availability/month?month=2026-05 - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:05:04.251Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:05:04.265Z] [SUCCESS] [2026-05-05T17:05:04.252Z] GET /api/availability/month?month=2026-05 ➞ OK 200 (12ms)
+[2026-05-05T17:05:31.381Z] [SUCCESS] [2026-05-05T17:05:31.378Z] OPTIONS /api/cartItems/ ➞ NO_CONTENT 204 (3ms)
+[2026-05-05T17:05:31.382Z] [ERROR] [2026-05-05T17:05:31.382Z] OPTIONS /api/cartItems/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:05:31.382Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:05:31.416Z] [SUCCESS] [2026-05-05T17:05:31.384Z] POST /api/cartItems/ ➞ CREATED 201 (32ms)
+[2026-05-05T17:05:31.433Z] [SUCCESS] [2026-05-05T17:05:31.430Z] OPTIONS /api/cart/ ➞ NO_CONTENT 204 (3ms)
+[2026-05-05T17:05:31.433Z] [ERROR] [2026-05-05T17:05:31.433Z] OPTIONS /api/cart/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:05:31.434Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:05:31.450Z] [SUCCESS] [2026-05-05T17:05:31.435Z] GET /api/cart/ ➞ OK 200 (15ms)
+[2026-05-05T17:05:55.513Z] [SUCCESS] [2026-05-05T17:05:55.510Z] OPTIONS /api/auth/sign-out ➞ NO_CONTENT 204 (3ms)
+[2026-05-05T17:05:55.514Z] [ERROR] [2026-05-05T17:05:55.514Z] OPTIONS /api/auth/sign-out - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:05:55.516Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:05:55.526Z] [SUCCESS] [2026-05-05T17:05:55.516Z] GET /api/auth/sign-out ➞ OK 200 (10ms)
+[2026-05-05T17:05:55.543Z] [SUCCESS] [2026-05-05T17:05:55.540Z] OPTIONS /api/auth/user ➞ NO_CONTENT 204 (3ms)
+[2026-05-05T17:05:55.543Z] [ERROR] [2026-05-05T17:05:55.543Z] OPTIONS /api/auth/user - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:05:55.544Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:05:55.572Z] [SUCCESS] [2026-05-05T17:05:55.570Z] OPTIONS /api/auth/user ➞ NO_CONTENT 204 (2ms)
+[2026-05-05T17:05:55.572Z] [ERROR] [2026-05-05T17:05:55.572Z] OPTIONS /api/auth/user - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:05:55.573Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:05:55.576Z] [ERROR] [2026-05-05T17:05:55.576Z] GET /api/auth/user - 401 - Unauthorized | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:05:55.576Z] [ERROR] Stack: Error: Unauthorized
+    at AuthController.getAuthenticatedUser (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/src/controller/AuthController.ts:154:24)
+    at wrappedHandler (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:993:46)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+[2026-05-05T17:05:55.577Z] [WARN] [2026-05-05T17:05:55.574Z] GET /api/auth/user ➞ UNAUTHORIZED 401 (3ms)
+[2026-05-05T17:05:55.603Z] [SUCCESS] [2026-05-05T17:05:55.602Z] OPTIONS /api/auth/refresh-token ➞ NO_CONTENT 204 (1ms)
+[2026-05-05T17:05:55.604Z] [ERROR] [2026-05-05T17:05:55.604Z] OPTIONS /api/auth/refresh-token - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:05:55.604Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:05:55.611Z] [SUCCESS] [2026-05-05T17:05:55.605Z] GET /api/auth/refresh-token ➞ OK 200 (6ms)
+[2026-05-05T17:05:55.645Z] [SUCCESS] [2026-05-05T17:05:55.639Z] GET /api/auth/user ➞ OK 200 (6ms)
+[2026-05-05T17:05:56.501Z] [SUCCESS] [2026-05-05T17:05:56.494Z] GET /api/auth/sign-out ➞ OK 200 (7ms)
+[2026-05-05T17:05:56.514Z] [ERROR] [2026-05-05T17:05:56.514Z] GET /api/auth/user - 401 - Unauthorized | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:05:56.515Z] [ERROR] Stack: Error: Unauthorized
+    at AuthController.getAuthenticatedUser (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/src/controller/AuthController.ts:154:24)
+    at wrappedHandler (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:993:46)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+[2026-05-05T17:05:56.516Z] [WARN] [2026-05-05T17:05:56.511Z] GET /api/auth/user ➞ UNAUTHORIZED 401 (5ms)
+[2026-05-05T17:05:56.538Z] [ERROR] [2026-05-05T17:05:56.538Z] GET /api/auth/user - 401 - Unauthorized | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:05:56.539Z] [ERROR] Stack: Error: Unauthorized
+    at AuthController.getAuthenticatedUser (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/src/controller/AuthController.ts:154:24)
+    at wrappedHandler (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:993:46)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+[2026-05-05T17:05:56.540Z] [WARN] [2026-05-05T17:05:56.535Z] GET /api/auth/user ➞ UNAUTHORIZED 401 (5ms)
+[2026-05-05T17:05:56.557Z] [SUCCESS] [2026-05-05T17:05:56.551Z] GET /api/auth/refresh-token ➞ OK 200 (6ms)
+[2026-05-05T17:05:56.567Z] [SUCCESS] [2026-05-05T17:05:56.565Z] OPTIONS /api/auth/user ➞ NO_CONTENT 204 (2ms)
+[2026-05-05T17:05:56.568Z] [ERROR] [2026-05-05T17:05:56.568Z] OPTIONS /api/auth/user - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:05:56.568Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:05:56.573Z] [SUCCESS] [2026-05-05T17:05:56.569Z] GET /api/auth/user ➞ OK 200 (4ms)
+[2026-05-05T17:05:57.173Z] [SUCCESS] [2026-05-05T17:05:57.166Z] GET /api/auth/sign-out ➞ OK 200 (7ms)
+[2026-05-05T17:05:57.209Z] [ERROR] [2026-05-05T17:05:57.209Z] GET /api/auth/user - 401 - Unauthorized | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:05:57.210Z] [ERROR] Stack: Error: Unauthorized
+    at AuthController.getAuthenticatedUser (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/src/controller/AuthController.ts:154:24)
+    at wrappedHandler (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:993:46)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+[2026-05-05T17:05:57.210Z] [WARN] [2026-05-05T17:05:57.209Z] GET /api/auth/user ➞ UNAUTHORIZED 401 (1ms)
+[2026-05-05T17:05:57.238Z] [SUCCESS] [2026-05-05T17:05:57.232Z] GET /api/auth/refresh-token ➞ OK 200 (6ms)
+[2026-05-05T17:05:57.249Z] [SUCCESS] [2026-05-05T17:05:57.247Z] OPTIONS /api/auth/user ➞ NO_CONTENT 204 (2ms)
+[2026-05-05T17:05:57.249Z] [ERROR] [2026-05-05T17:05:57.249Z] OPTIONS /api/auth/user - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:05:57.250Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:05:57.256Z] [SUCCESS] [2026-05-05T17:05:57.250Z] GET /api/auth/user ➞ OK 200 (6ms)
+[2026-05-05T17:05:57.701Z] [SUCCESS] [2026-05-05T17:05:57.694Z] GET /api/auth/sign-out ➞ OK 200 (7ms)
+[2026-05-05T17:05:57.733Z] [ERROR] [2026-05-05T17:05:57.733Z] GET /api/auth/user - 401 - Unauthorized | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:05:57.733Z] [ERROR] Stack: Error: Unauthorized
+    at AuthController.getAuthenticatedUser (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/src/controller/AuthController.ts:154:24)
+    at wrappedHandler (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:993:46)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+[2026-05-05T17:05:57.734Z] [WARN] [2026-05-05T17:05:57.732Z] GET /api/auth/user ➞ UNAUTHORIZED 401 (2ms)
+[2026-05-05T17:05:57.756Z] [SUCCESS] [2026-05-05T17:05:57.747Z] GET /api/auth/refresh-token ➞ OK 200 (9ms)
+[2026-05-05T17:05:57.770Z] [SUCCESS] [2026-05-05T17:05:57.768Z] OPTIONS /api/auth/user ➞ NO_CONTENT 204 (2ms)
+[2026-05-05T17:05:57.771Z] [ERROR] [2026-05-05T17:05:57.771Z] OPTIONS /api/auth/user - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:05:57.773Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:05:57.781Z] [SUCCESS] [2026-05-05T17:05:57.774Z] GET /api/auth/user ➞ OK 200 (7ms)
+[2026-05-05T17:06:04.254Z] [SUCCESS] [2026-05-05T17:06:04.253Z] OPTIONS /api/auth/user ➞ NO_CONTENT 204 (1ms)
+[2026-05-05T17:06:04.254Z] [ERROR] [2026-05-05T17:06:04.254Z] OPTIONS /api/auth/user - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:06:04.255Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:06:04.261Z] [SUCCESS] [2026-05-05T17:06:04.258Z] OPTIONS /api/cart/ ➞ NO_CONTENT 204 (3ms)
+[2026-05-05T17:06:04.261Z] [ERROR] [2026-05-05T17:06:04.261Z] OPTIONS /api/cart/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:06:04.262Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:06:04.268Z] [SUCCESS] [2026-05-05T17:06:04.265Z] GET /api/auth/user ➞ OK 200 (3ms)
+[2026-05-05T17:06:04.280Z] [SUCCESS] [2026-05-05T17:06:04.279Z] OPTIONS /api/session/ ➞ NO_CONTENT 204 (1ms)
+[2026-05-05T17:06:04.280Z] [ERROR] [2026-05-05T17:06:04.280Z] OPTIONS /api/session/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:06:04.280Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:06:04.284Z] [SUCCESS] [2026-05-05T17:06:04.276Z] GET /api/cart/ ➞ OK 200 (8ms)
+[2026-05-05T17:06:04.292Z] [SUCCESS] [2026-05-05T17:06:04.285Z] GET /api/session/ ➞ OK 200 (7ms)
+[2026-05-05T17:06:17.937Z] [SUCCESS] [2026-05-05T17:06:17.935Z] OPTIONS /api/auth/sign-out ➞ NO_CONTENT 204 (2ms)
+[2026-05-05T17:06:17.938Z] [ERROR] [2026-05-05T17:06:17.938Z] OPTIONS /api/auth/sign-out - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:06:17.939Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:06:17.946Z] [SUCCESS] [2026-05-05T17:06:17.940Z] GET /api/auth/sign-out ➞ OK 200 (6ms)
+[2026-05-05T17:06:17.991Z] [SUCCESS] [2026-05-05T17:06:17.990Z] OPTIONS /api/auth/user ➞ NO_CONTENT 204 (1ms)
+[2026-05-05T17:06:17.991Z] [ERROR] [2026-05-05T17:06:17.991Z] OPTIONS /api/auth/user - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:06:17.992Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:06:17.994Z] [ERROR] [2026-05-05T17:06:17.994Z] GET /api/auth/user - 401 - Unauthorized | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:06:17.995Z] [ERROR] Stack: Error: Unauthorized
+    at AuthController.getAuthenticatedUser (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/src/controller/AuthController.ts:154:24)
+    at wrappedHandler (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:993:46)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+[2026-05-05T17:06:17.995Z] [WARN] [2026-05-05T17:06:17.993Z] GET /api/auth/user ➞ UNAUTHORIZED 401 (2ms)
+[2026-05-05T17:06:25.485Z] [SUCCESS] [2026-05-05T17:06:25.484Z] OPTIONS /api/auth/user ➞ NO_CONTENT 204 (1ms)
+[2026-05-05T17:06:25.485Z] [ERROR] [2026-05-05T17:06:25.485Z] OPTIONS /api/auth/user - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:06:25.486Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:06:25.489Z] [ERROR] [2026-05-05T17:06:25.488Z] GET /api/auth/user - 401 - Unauthorized | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:06:25.490Z] [ERROR] Stack: Error: Unauthorized
+    at AuthController.getAuthenticatedUser (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/src/controller/AuthController.ts:154:24)
+    at wrappedHandler (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:993:46)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+[2026-05-05T17:06:25.490Z] [WARN] [2026-05-05T17:06:25.487Z] GET /api/auth/user ➞ UNAUTHORIZED 401 (3ms)
+[2026-05-05T17:06:25.493Z] [SUCCESS] [2026-05-05T17:06:25.491Z] OPTIONS /api/plan/ ➞ NO_CONTENT 204 (2ms)
+[2026-05-05T17:06:25.493Z] [ERROR] [2026-05-05T17:06:25.493Z] OPTIONS /api/plan/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:06:25.494Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:06:25.500Z] [SUCCESS] [2026-05-05T17:06:25.494Z] GET /api/plan/ ➞ OK 200 (5ms)
+[2026-05-05T17:15:41.122Z] [SUCCESS] [2026-05-05T17:15:41.120Z] OPTIONS /api/session/ ➞ NO_CONTENT 204 (2ms)
+[2026-05-05T17:15:41.123Z] [ERROR] [2026-05-05T17:15:41.123Z] OPTIONS /api/session/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:15:41.124Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:15:41.127Z] [SUCCESS] [2026-05-05T17:15:41.125Z] OPTIONS /api/auth/user ➞ NO_CONTENT 204 (2ms)
+[2026-05-05T17:15:41.128Z] [ERROR] [2026-05-05T17:15:41.128Z] OPTIONS /api/auth/user - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:15:41.132Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:15:41.138Z] [SUCCESS] [2026-05-05T17:15:41.132Z] GET /api/session/ ➞ OK 200 (6ms)
+[2026-05-05T17:15:41.141Z] [ERROR] [2026-05-05T17:15:41.141Z] GET /api/auth/user - 401 - Unauthorized | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:15:41.142Z] [ERROR] Stack: Error: Unauthorized
+    at AuthController.getAuthenticatedUser (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/src/controller/AuthController.ts:154:24)
+    at wrappedHandler (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:993:46)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+[2026-05-05T17:15:41.143Z] [WARN] [2026-05-05T17:15:41.139Z] GET /api/auth/user ➞ UNAUTHORIZED 401 (4ms)
+[2026-05-05T17:15:54.928Z] [SUCCESS] [2026-05-05T17:15:54.927Z] OPTIONS /api/auth/sign-in ➞ NO_CONTENT 204 (1ms)
+[2026-05-05T17:15:54.928Z] [ERROR] [2026-05-05T17:15:54.928Z] OPTIONS /api/auth/sign-in - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:15:54.929Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:15:54.993Z] [SUCCESS] [2026-05-05T17:15:54.930Z] POST /api/auth/sign-in ➞ OK 200 (63ms)
+[2026-05-05T17:15:55.018Z] [SUCCESS] [2026-05-05T17:15:55.017Z] OPTIONS /api/auth/user ➞ NO_CONTENT 204 (1ms)
+[2026-05-05T17:15:55.018Z] [ERROR] [2026-05-05T17:15:55.018Z] OPTIONS /api/auth/user - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:15:55.019Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:15:55.020Z] [SUCCESS] [2026-05-05T17:15:55.019Z] OPTIONS /api/cartItems/ ➞ NO_CONTENT 204 (1ms)
+[2026-05-05T17:15:55.020Z] [ERROR] [2026-05-05T17:15:55.020Z] OPTIONS /api/cartItems/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:15:55.021Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:15:55.025Z] [SUCCESS] [2026-05-05T17:15:55.021Z] GET /api/auth/user ➞ OK 200 (4ms)
+[2026-05-05T17:15:55.045Z] [SUCCESS] [2026-05-05T17:15:55.042Z] OPTIONS /api/cart/ ➞ NO_CONTENT 204 (3ms)
+[2026-05-05T17:15:55.047Z] [ERROR] [2026-05-05T17:15:55.047Z] OPTIONS /api/cart/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:15:55.048Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:15:55.077Z] [SUCCESS] [2026-05-05T17:15:55.053Z] GET /api/cart/ ➞ OK 200 (24ms)
+[2026-05-05T17:15:55.081Z] [SUCCESS] [2026-05-05T17:15:55.023Z] POST /api/cartItems/ ➞ OK 200 (58ms)
+[2026-05-05T17:15:55.109Z] [SUCCESS] [2026-05-05T17:15:55.097Z] GET /api/cart/ ➞ OK 200 (12ms)
+[2026-05-05T17:16:00.131Z] [SUCCESS] [2026-05-05T17:16:00.128Z] OPTIONS /api/cartItems/5 ➞ NO_CONTENT 204 (3ms)
+[2026-05-05T17:16:00.132Z] [ERROR] [2026-05-05T17:16:00.132Z] OPTIONS /api/cartItems/5 - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:16:00.134Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:16:00.168Z] [SUCCESS] [2026-05-05T17:16:00.136Z] PATCH /api/cartItems/5 ➞ OK 200 (32ms)
+[2026-05-05T17:16:00.181Z] [SUCCESS] [2026-05-05T17:16:00.179Z] OPTIONS /api/cart/ ➞ NO_CONTENT 204 (2ms)
+[2026-05-05T17:16:00.182Z] [ERROR] [2026-05-05T17:16:00.182Z] OPTIONS /api/cart/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:16:00.182Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:16:00.191Z] [SUCCESS] [2026-05-05T17:16:00.183Z] GET /api/cart/ ➞ OK 200 (8ms)
+[2026-05-05T17:16:09.688Z] [SUCCESS] [2026-05-05T17:16:09.686Z] OPTIONS /api/cartItems/5 ➞ NO_CONTENT 204 (2ms)
+[2026-05-05T17:16:09.689Z] [ERROR] [2026-05-05T17:16:09.689Z] OPTIONS /api/cartItems/5 - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:16:09.690Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:16:09.715Z] [SUCCESS] [2026-05-05T17:16:09.691Z] DELETE /api/cartItems/5 ➞ OK 200 (24ms)
+[2026-05-05T17:16:09.726Z] [SUCCESS] [2026-05-05T17:16:09.724Z] OPTIONS /api/cart/ ➞ NO_CONTENT 204 (2ms)
+[2026-05-05T17:16:09.727Z] [ERROR] [2026-05-05T17:16:09.727Z] OPTIONS /api/cart/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:16:09.727Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:16:09.737Z] [SUCCESS] [2026-05-05T17:16:09.728Z] GET /api/cart/ ➞ OK 200 (9ms)
+[2026-05-05T17:16:10.681Z] [SUCCESS] [2026-05-05T17:16:10.679Z] OPTIONS /api/availability/month?month=2026-05 ➞ NO_CONTENT 204 (2ms)
+[2026-05-05T17:16:10.681Z] [ERROR] [2026-05-05T17:16:10.681Z] OPTIONS /api/availability/month?month=2026-05 - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:16:10.682Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:16:10.694Z] [SUCCESS] [2026-05-05T17:16:10.682Z] GET /api/availability/month?month=2026-05 ➞ OK 200 (12ms)
+[2026-05-05T17:16:16.300Z] [SUCCESS] [2026-05-05T17:16:16.298Z] OPTIONS /api/booking/ ➞ NO_CONTENT 204 (2ms)
+[2026-05-05T17:16:16.301Z] [ERROR] [2026-05-05T17:16:16.301Z] OPTIONS /api/booking/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:16:16.302Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:16:18.009Z] [SUCCESS] [2026-05-05T17:16:16.302Z] POST /api/booking/ ➞ CREATED 201 (1707ms)
+[2026-05-05T17:16:18.141Z] [SUCCESS] [2026-05-05T17:16:18.126Z] OPTIONS /api/order/last ➞ NO_CONTENT 204 (15ms)
+[2026-05-05T17:16:18.142Z] [ERROR] [2026-05-05T17:16:18.142Z] OPTIONS /api/order/last - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:16:18.148Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:16:18.178Z] [WARN] [2026-05-05T17:16:18.148Z] GET /api/order/last ➞ NOT_FOUND 404 (30ms)
+[2026-05-05T17:25:28.674Z] [SUCCESS] [2026-05-05T17:25:28.672Z] OPTIONS /api/availability/month?month=2026-05 ➞ NO_CONTENT 204 (2ms)
+[2026-05-05T17:25:28.674Z] [ERROR] [2026-05-05T17:25:28.674Z] OPTIONS /api/availability/month?month=2026-05 - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:25:28.675Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:25:28.678Z] [SUCCESS] [2026-05-05T17:25:28.677Z] OPTIONS /api/session/ ➞ NO_CONTENT 204 (1ms)
+[2026-05-05T17:25:28.679Z] [ERROR] [2026-05-05T17:25:28.679Z] OPTIONS /api/session/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:25:28.679Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:25:28.686Z] [SUCCESS] [2026-05-05T17:25:28.675Z] GET /api/availability/month?month=2026-05 ➞ OK 200 (11ms)
+[2026-05-05T17:25:28.691Z] [SUCCESS] [2026-05-05T17:25:28.681Z] GET /api/session/ ➞ OK 200 (10ms)
+[2026-05-05T17:25:38.688Z] [SUCCESS] [2026-05-05T17:25:38.687Z] OPTIONS /api/plan/ ➞ NO_CONTENT 204 (1ms)
+[2026-05-05T17:25:38.688Z] [ERROR] [2026-05-05T17:25:38.688Z] OPTIONS /api/plan/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:25:38.689Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:25:38.695Z] [SUCCESS] [2026-05-05T17:25:38.690Z] GET /api/plan/ ➞ OK 200 (5ms)
+[2026-05-05T17:25:40.934Z] [SUCCESS] [2026-05-05T17:25:40.931Z] OPTIONS /api/subscription/subscribe ➞ NO_CONTENT 204 (3ms)
+[2026-05-05T17:25:40.935Z] [ERROR] [2026-05-05T17:25:40.935Z] OPTIONS /api/subscription/subscribe - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:25:40.936Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:25:41.586Z] [SUCCESS] [2026-05-05T17:25:40.936Z] POST /api/subscription/subscribe ➞ OK 200 (650ms)
+[2026-05-05T17:26:00.151Z] [SUCCESS] [2026-05-05T17:26:00.146Z] POST /api/order/webhook ➞ OK 200 (4ms)
+[2026-05-05T17:26:00.394Z] [SUCCESS] [2026-05-05T17:26:00.389Z] POST /api/order/webhook ➞ OK 200 (5ms)
+[2026-05-05T17:26:01.000Z] [SUCCESS] [2026-05-05T17:26:00.951Z] POST /api/order/webhook ➞ OK 200 (49ms)
+[2026-05-05T17:26:01.842Z] [SUCCESS] [2026-05-05T17:26:01.837Z] POST /api/order/webhook ➞ OK 200 (5ms)
+[2026-05-05T17:26:03.258Z] [SUCCESS] [2026-05-05T17:26:03.257Z] POST /api/order/webhook ➞ OK 200 (1ms)
+[2026-05-05T17:26:04.484Z] [SUCCESS] [2026-05-05T17:26:04.483Z] OPTIONS /api/auth/user ➞ NO_CONTENT 204 (1ms)
+[2026-05-05T17:26:04.485Z] [ERROR] [2026-05-05T17:26:04.485Z] OPTIONS /api/auth/user - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:26:04.486Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:26:04.489Z] [SUCCESS] [2026-05-05T17:26:04.488Z] OPTIONS /api/subscription/me ➞ NO_CONTENT 204 (1ms)
+[2026-05-05T17:26:04.490Z] [ERROR] [2026-05-05T17:26:04.490Z] OPTIONS /api/subscription/me - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:26:04.490Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:26:04.493Z] [SUCCESS] [2026-05-05T17:26:04.486Z] GET /api/auth/user ➞ OK 200 (7ms)
+[2026-05-05T17:26:04.504Z] [WARN] [2026-05-05T17:26:04.493Z] GET /api/subscription/me ➞ NOT_FOUND 404 (11ms)
+[2026-05-05T17:26:04.534Z] [SUCCESS] [2026-05-05T17:26:04.533Z] OPTIONS /api/cart/ ➞ NO_CONTENT 204 (1ms)
+[2026-05-05T17:26:04.535Z] [ERROR] [2026-05-05T17:26:04.535Z] OPTIONS /api/cart/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:26:04.535Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:26:04.541Z] [WARN] [2026-05-05T17:26:04.536Z] GET /api/cart/ ➞ NOT_FOUND 404 (5ms)
+[2026-05-05T17:26:04.603Z] [SUCCESS] [2026-05-05T17:26:04.601Z] POST /api/order/webhook ➞ OK 200 (2ms)
+[2026-05-05T17:26:08.167Z] [SUCCESS] [2026-05-05T17:26:08.164Z] POST /api/order/webhook ➞ OK 200 (3ms)
+[2026-05-05T17:26:08.262Z] [SUCCESS] [2026-05-05T17:26:08.260Z] POST /api/order/webhook ➞ OK 200 (2ms)
+[2026-05-05T17:26:08.417Z] [SUCCESS] [2026-05-05T17:26:08.415Z] POST /api/order/webhook ➞ OK 200 (2ms)
+[2026-05-05T17:26:08.544Z] [SUCCESS] [2026-05-05T17:26:08.542Z] POST /api/order/webhook ➞ OK 200 (2ms)
+[2026-05-05T17:26:09.610Z] [ERROR] [2026-05-05T17:26:09.610Z] POST /api/order/webhook - undefined - Handler completed without calling next() or sending a response | User-Agent: Stripe/1.0 (+https://stripe.com/docs/webhooks) | IP: ::ffff:127.0.0.1
+[2026-05-05T17:26:09.612Z] [ERROR] Stack: Error: Handler completed without calling next() or sending a response
+    at <anonymous> (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1227:40)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+[2026-05-05T17:26:09.613Z] [ERROR] [2026-05-05T17:26:08.113Z] POST /api/order/webhook ➞ INTERNAL_SERVER_ERROR 500 (1500ms)
+[2026-05-05T17:27:00.779Z] [SUCCESS] [2026-05-05T17:27:00.776Z] POST /api/order/webhook ➞ OK 200 (3ms)
+[2026-05-05T17:29:34.583Z] [SUCCESS] [2026-05-05T17:29:34.582Z] OPTIONS /api/availability/month?month=2026-05 ➞ NO_CONTENT 204 (1ms)
+[2026-05-05T17:29:34.584Z] [ERROR] [2026-05-05T17:29:34.584Z] OPTIONS /api/availability/month?month=2026-05 - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:29:34.585Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:29:34.587Z] [SUCCESS] [2026-05-05T17:29:34.585Z] OPTIONS /api/session/ ➞ NO_CONTENT 204 (2ms)
+[2026-05-05T17:29:34.587Z] [ERROR] [2026-05-05T17:29:34.587Z] OPTIONS /api/session/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:29:34.588Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:29:34.604Z] [SUCCESS] [2026-05-05T17:29:34.588Z] GET /api/availability/month?month=2026-05 ➞ OK 200 (16ms)
+[2026-05-05T17:29:34.605Z] [SUCCESS] [2026-05-05T17:29:34.597Z] GET /api/session/ ➞ OK 200 (8ms)
+[2026-05-05T17:29:39.479Z] [SUCCESS] [2026-05-05T17:29:39.478Z] OPTIONS /api/cart/ ➞ NO_CONTENT 204 (1ms)
+[2026-05-05T17:29:39.479Z] [ERROR] [2026-05-05T17:29:39.479Z] OPTIONS /api/cart/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:29:39.480Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:29:39.490Z] [WARN] [2026-05-05T17:29:39.480Z] GET /api/cart/ ➞ NOT_FOUND 404 (9ms)
+[2026-05-05T17:30:10.477Z] [SUCCESS] [2026-05-05T17:30:10.475Z] OPTIONS /api/auth/user ➞ NO_CONTENT 204 (2ms)
+[2026-05-05T17:30:10.477Z] [ERROR] [2026-05-05T17:30:10.477Z] OPTIONS /api/auth/user - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:30:10.478Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:30:10.479Z] [SUCCESS] [2026-05-05T17:30:10.478Z] OPTIONS /api/cart/ ➞ NO_CONTENT 204 (1ms)
+[2026-05-05T17:30:10.480Z] [ERROR] [2026-05-05T17:30:10.480Z] OPTIONS /api/cart/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:30:10.481Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:30:10.484Z] [SUCCESS] [2026-05-05T17:30:10.482Z] OPTIONS /api/session/ ➞ NO_CONTENT 204 (2ms)
+[2026-05-05T17:30:10.484Z] [ERROR] [2026-05-05T17:30:10.484Z] OPTIONS /api/session/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:30:10.485Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:30:10.487Z] [SUCCESS] [2026-05-05T17:30:10.481Z] GET /api/auth/user ➞ OK 200 (6ms)
+[2026-05-05T17:30:10.495Z] [WARN] [2026-05-05T17:30:10.487Z] GET /api/cart/ ➞ NOT_FOUND 404 (8ms)
+[2026-05-05T17:30:10.496Z] [SUCCESS] [2026-05-05T17:30:10.489Z] GET /api/session/ ➞ OK 200 (7ms)
+[2026-05-05T17:30:10.518Z] [WARN] [2026-05-05T17:30:10.514Z] GET /api/cart/ ➞ NOT_FOUND 404 (4ms)
+[2026-05-05T17:30:10.523Z] [SUCCESS] [2026-05-05T17:30:10.521Z] OPTIONS /api/giftVoucher/free-session-member ➞ NO_CONTENT 204 (2ms)
+[2026-05-05T17:30:10.524Z] [ERROR] [2026-05-05T17:30:10.524Z] OPTIONS /api/giftVoucher/free-session-member - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:30:10.525Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:30:10.531Z] [SUCCESS] [2026-05-05T17:30:10.525Z] GET /api/giftVoucher/free-session-member ➞ OK 200 (6ms)
+[2026-05-05T17:30:15.172Z] [SUCCESS] [2026-05-05T17:30:15.171Z] OPTIONS /api/booking/ ➞ NO_CONTENT 204 (1ms)
+[2026-05-05T17:30:15.173Z] [ERROR] [2026-05-05T17:30:15.173Z] OPTIONS /api/booking/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:30:15.173Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:30:16.023Z] [SUCCESS] [2026-05-05T17:30:15.175Z] POST /api/booking/ ➞ CREATED 201 (848ms)
+[2026-05-05T17:30:16.094Z] [SUCCESS] [2026-05-05T17:30:16.093Z] OPTIONS /api/order/last ➞ NO_CONTENT 204 (1ms)
+[2026-05-05T17:30:16.095Z] [ERROR] [2026-05-05T17:30:16.095Z] OPTIONS /api/order/last - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:30:16.097Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:30:16.106Z] [SUCCESS] [2026-05-05T17:30:16.097Z] GET /api/order/last ➞ OK 200 (9ms)
+[2026-05-05T17:31:08.311Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-05-05T17:31:08.313Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-05-05T17:31:26.977Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-05-05T17:31:26.978Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-05-05T17:31:31.057Z] [SUCCESS] [2026-05-05T17:31:31.050Z] OPTIONS /api/subscription/me ➞ NO_CONTENT 204 (7ms)
+[2026-05-05T17:31:31.058Z] [ERROR] [2026-05-05T17:31:31.058Z] OPTIONS /api/subscription/me - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:31:31.068Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:31:31.082Z] [SUCCESS] [2026-05-05T17:31:31.079Z] OPTIONS /api/order/all ➞ NO_CONTENT 204 (3ms)
+[2026-05-05T17:31:31.082Z] [ERROR] [2026-05-05T17:31:31.082Z] OPTIONS /api/order/all - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:31:31.083Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:31:31.102Z] [SUCCESS] [2026-05-05T17:31:31.100Z] OPTIONS /api/giftVoucher/free-session-member ➞ NO_CONTENT 204 (2ms)
+[2026-05-05T17:31:31.102Z] [ERROR] [2026-05-05T17:31:31.102Z] OPTIONS /api/giftVoucher/free-session-member - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:31:31.103Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:31:31.108Z] [SUCCESS] [2026-05-05T17:31:31.106Z] OPTIONS /api/plan/ ➞ NO_CONTENT 204 (2ms)
+[2026-05-05T17:31:31.109Z] [ERROR] [2026-05-05T17:31:31.109Z] OPTIONS /api/plan/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:31:31.110Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:31:31.122Z] [SUCCESS] [2026-05-05T17:31:31.069Z] GET /api/subscription/me ➞ OK 200 (53ms)
+[2026-05-05T17:31:31.135Z] [SUCCESS] [2026-05-05T17:31:31.122Z] GET /api/giftVoucher/free-session-member ➞ OK 200 (13ms)
+[2026-05-05T17:31:31.136Z] [SUCCESS] [2026-05-05T17:31:31.117Z] GET /api/order/all ➞ OK 200 (19ms)
+[2026-05-05T17:31:31.143Z] [SUCCESS] [2026-05-05T17:31:31.125Z] GET /api/plan/ ➞ OK 200 (18ms)
+[2026-05-05T17:31:35.225Z] [SUCCESS] [2026-05-05T17:31:35.221Z] OPTIONS /api/subscription/cancel ➞ NO_CONTENT 204 (3ms)
+[2026-05-05T17:31:35.226Z] [ERROR] [2026-05-05T17:31:35.226Z] OPTIONS /api/subscription/cancel - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:31:35.229Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:31:36.063Z] [SUCCESS] [2026-05-05T17:31:35.230Z] POST /api/subscription/cancel ➞ OK 200 (833ms)
+[2026-05-05T17:31:36.083Z] [SUCCESS] [2026-05-05T17:31:36.080Z] OPTIONS /api/subscription/me ➞ NO_CONTENT 204 (3ms)
+[2026-05-05T17:31:36.084Z] [ERROR] [2026-05-05T17:31:36.084Z] OPTIONS /api/subscription/me - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:31:36.085Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:31:36.543Z] [SUCCESS] [2026-05-05T17:31:36.519Z] POST /api/order/webhook ➞ OK 200 (24ms)
+[2026-05-05T17:31:37.650Z] [SUCCESS] [2026-05-05T17:31:37.649Z] OPTIONS /api/auth/user ➞ NO_CONTENT 204 (1ms)
+[2026-05-05T17:31:37.650Z] [ERROR] [2026-05-05T17:31:37.650Z] OPTIONS /api/auth/user - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:31:37.651Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:31:37.654Z] [SUCCESS] [2026-05-05T17:31:37.652Z] OPTIONS /api/order/all ➞ NO_CONTENT 204 (2ms)
+[2026-05-05T17:31:37.654Z] [ERROR] [2026-05-05T17:31:37.654Z] OPTIONS /api/order/all - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:31:37.655Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:31:37.665Z] [SUCCESS] [2026-05-05T17:31:37.663Z] OPTIONS /api/plan/ ➞ NO_CONTENT 204 (2ms)
+[2026-05-05T17:31:37.666Z] [ERROR] [2026-05-05T17:31:37.665Z] OPTIONS /api/plan/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:31:37.666Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:31:37.672Z] [SUCCESS] [2026-05-05T17:31:37.667Z] GET /api/auth/user ➞ OK 200 (5ms)
+[2026-05-05T17:31:37.677Z] [SUCCESS] [2026-05-05T17:31:37.669Z] GET /api/order/all ➞ OK 200 (8ms)
+[2026-05-05T17:31:37.682Z] [SUCCESS] [2026-05-05T17:31:37.675Z] GET /api/plan/ ➞ OK 200 (7ms)
+[2026-05-05T17:31:37.707Z] [SUCCESS] [2026-05-05T17:31:37.705Z] OPTIONS /api/cart/ ➞ NO_CONTENT 204 (2ms)
+[2026-05-05T17:31:37.708Z] [ERROR] [2026-05-05T17:31:37.708Z] OPTIONS /api/cart/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:31:37.709Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:31:37.717Z] [WARN] [2026-05-05T17:31:37.712Z] GET /api/cart/ ➞ NOT_FOUND 404 (5ms)
+[2026-05-05T17:31:42.337Z] [SUCCESS] [2026-05-05T17:31:42.336Z] OPTIONS /api/session/ ➞ NO_CONTENT 204 (1ms)
+[2026-05-05T17:31:42.338Z] [ERROR] [2026-05-05T17:31:42.338Z] OPTIONS /api/session/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:31:42.338Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:31:42.343Z] [SUCCESS] [2026-05-05T17:31:42.338Z] GET /api/session/ ➞ OK 200 (5ms)
+[2026-05-05T17:31:43.780Z] [SUCCESS] [2026-05-05T17:31:43.778Z] OPTIONS /api/subscription/subscribe ➞ NO_CONTENT 204 (2ms)
+[2026-05-05T17:31:43.780Z] [ERROR] [2026-05-05T17:31:43.780Z] OPTIONS /api/subscription/subscribe - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:31:43.781Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:31:44.395Z] [SUCCESS] [2026-05-05T17:31:43.782Z] POST /api/subscription/subscribe ➞ OK 200 (613ms)
+[2026-05-05T17:32:01.964Z] [SUCCESS] [2026-05-05T17:32:01.958Z] POST /api/order/webhook ➞ OK 200 (6ms)
+[2026-05-05T17:32:02.131Z] [SUCCESS] [2026-05-05T17:32:02.126Z] POST /api/order/webhook ➞ OK 200 (5ms)
+[2026-05-05T17:32:02.183Z] [SUCCESS] [2026-05-05T17:32:02.180Z] POST /api/order/webhook ➞ OK 200 (3ms)
+[2026-05-05T17:32:02.186Z] [ERROR] [2026-05-05T17:32:02.186Z] POST /api/order/webhook - undefined - Handler completed without calling next() or sending a response | User-Agent: Stripe/1.0 (+https://stripe.com/docs/webhooks) | IP: ::ffff:127.0.0.1
+[2026-05-05T17:32:02.188Z] [ERROR] Stack: Error: Handler completed without calling next() or sending a response
+    at <anonymous> (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1227:40)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+[2026-05-05T17:32:02.189Z] [ERROR] [2026-05-05T17:32:02.140Z] POST /api/order/webhook ➞ INTERNAL_SERVER_ERROR 500 (49ms)
+[2026-05-05T17:32:02.277Z] [SUCCESS] [2026-05-05T17:32:02.276Z] POST /api/order/webhook ➞ OK 200 (1ms)
+[2026-05-05T17:32:02.512Z] [SUCCESS] [2026-05-05T17:32:02.509Z] POST /api/order/webhook ➞ OK 200 (3ms)
+[2026-05-05T17:32:02.624Z] [SUCCESS] [2026-05-05T17:32:02.619Z] POST /api/order/webhook ➞ OK 200 (5ms)
+[2026-05-05T17:32:02.742Z] [SUCCESS] [2026-05-05T17:32:02.740Z] POST /api/order/webhook ➞ OK 200 (2ms)
+[2026-05-05T17:32:02.874Z] [SUCCESS] [2026-05-05T17:32:02.868Z] POST /api/order/webhook ➞ OK 200 (6ms)
+[2026-05-05T17:32:03.916Z] [ERROR] [2026-05-05T17:32:03.916Z] POST /api/order/webhook - undefined - Handler completed without calling next() or sending a response | User-Agent: Stripe/1.0 (+https://stripe.com/docs/webhooks) | IP: ::ffff:127.0.0.1
+[2026-05-05T17:32:03.918Z] [ERROR] Stack: Error: Handler completed without calling next() or sending a response
+    at <anonymous> (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1227:40)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+[2026-05-05T17:32:03.919Z] [ERROR] [2026-05-05T17:32:02.425Z] POST /api/order/webhook ➞ INTERNAL_SERVER_ERROR 500 (1494ms)
+[2026-05-05T17:32:05.447Z] [SUCCESS] [2026-05-05T17:32:05.445Z] OPTIONS /api/auth/user ➞ NO_CONTENT 204 (2ms)
+[2026-05-05T17:32:05.448Z] [ERROR] [2026-05-05T17:32:05.448Z] OPTIONS /api/auth/user - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:32:05.449Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:32:05.452Z] [SUCCESS] [2026-05-05T17:32:05.451Z] OPTIONS /api/subscription/me ➞ NO_CONTENT 204 (1ms)
+[2026-05-05T17:32:05.452Z] [ERROR] [2026-05-05T17:32:05.452Z] OPTIONS /api/subscription/me - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:32:05.453Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:32:05.456Z] [SUCCESS] [2026-05-05T17:32:05.453Z] GET /api/auth/user ➞ OK 200 (3ms)
+[2026-05-05T17:32:05.468Z] [SUCCESS] [2026-05-05T17:32:05.463Z] GET /api/subscription/me ➞ OK 200 (5ms)
+[2026-05-05T17:32:05.517Z] [SUCCESS] [2026-05-05T17:32:05.516Z] OPTIONS /api/cart/ ➞ NO_CONTENT 204 (1ms)
+[2026-05-05T17:32:05.518Z] [ERROR] [2026-05-05T17:32:05.518Z] OPTIONS /api/cart/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:32:05.518Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:32:05.527Z] [WARN] [2026-05-05T17:32:05.519Z] GET /api/cart/ ➞ NOT_FOUND 404 (8ms)
+[2026-05-05T17:33:05.178Z] [SUCCESS] [2026-05-05T17:33:05.173Z] POST /api/order/webhook ➞ OK 200 (4ms)
+[2026-05-05T17:36:52.137Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-05-05T17:36:52.138Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-05-05T17:36:53.373Z] [SUCCESS] [2026-05-05T17:36:53.370Z] OPTIONS /api/order/all ➞ NO_CONTENT 204 (3ms)
+[2026-05-05T17:36:53.374Z] [ERROR] [2026-05-05T17:36:53.374Z] OPTIONS /api/order/all - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:36:53.381Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:36:53.389Z] [SUCCESS] [2026-05-05T17:36:53.387Z] OPTIONS /api/giftVoucher/free-session-member ➞ NO_CONTENT 204 (2ms)
+[2026-05-05T17:36:53.389Z] [ERROR] [2026-05-05T17:36:53.389Z] OPTIONS /api/giftVoucher/free-session-member - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:36:53.390Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:36:53.413Z] [SUCCESS] [2026-05-05T17:36:53.410Z] OPTIONS /api/plan/ ➞ NO_CONTENT 204 (3ms)
+[2026-05-05T17:36:53.414Z] [ERROR] [2026-05-05T17:36:53.413Z] OPTIONS /api/plan/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:36:53.415Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:36:53.430Z] [SUCCESS] [2026-05-05T17:36:53.382Z] GET /api/order/all ➞ OK 200 (48ms)
+[2026-05-05T17:36:53.441Z] [SUCCESS] [2026-05-05T17:36:53.417Z] GET /api/giftVoucher/free-session-member ➞ OK 200 (24ms)
+[2026-05-05T17:36:53.442Z] [SUCCESS] [2026-05-05T17:36:53.426Z] GET /api/plan/ ➞ OK 200 (16ms)
+[2026-05-05T17:36:57.613Z] [SUCCESS] [2026-05-05T17:36:57.612Z] OPTIONS /api/subscription/cancel ➞ NO_CONTENT 204 (1ms)
+[2026-05-05T17:36:57.614Z] [ERROR] [2026-05-05T17:36:57.613Z] OPTIONS /api/subscription/cancel - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:36:57.614Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:36:58.401Z] [SUCCESS] [2026-05-05T17:36:57.615Z] POST /api/subscription/cancel ➞ OK 200 (786ms)
+[2026-05-05T17:36:58.420Z] [SUCCESS] [2026-05-05T17:36:58.417Z] OPTIONS /api/subscription/me ➞ NO_CONTENT 204 (3ms)
+[2026-05-05T17:36:58.421Z] [ERROR] [2026-05-05T17:36:58.421Z] OPTIONS /api/subscription/me - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:36:58.422Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:36:58.603Z] [SUCCESS] [2026-05-05T17:36:58.583Z] POST /api/order/webhook ➞ OK 200 (20ms)
+[2026-05-05T17:37:00.098Z] [SUCCESS] [2026-05-05T17:37:00.097Z] OPTIONS /api/order/all ➞ NO_CONTENT 204 (1ms)
+[2026-05-05T17:37:00.098Z] [ERROR] [2026-05-05T17:37:00.098Z] OPTIONS /api/order/all - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:37:00.099Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:37:00.100Z] [SUCCESS] [2026-05-05T17:37:00.099Z] OPTIONS /api/auth/user ➞ NO_CONTENT 204 (1ms)
+[2026-05-05T17:37:00.100Z] [ERROR] [2026-05-05T17:37:00.100Z] OPTIONS /api/auth/user - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:37:00.100Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:37:00.103Z] [SUCCESS] [2026-05-05T17:37:00.101Z] OPTIONS /api/plan/ ➞ NO_CONTENT 204 (2ms)
+[2026-05-05T17:37:00.103Z] [ERROR] [2026-05-05T17:37:00.103Z] OPTIONS /api/plan/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:37:00.104Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:37:00.115Z] [SUCCESS] [2026-05-05T17:37:00.111Z] GET /api/auth/user ➞ OK 200 (4ms)
+[2026-05-05T17:37:00.116Z] [SUCCESS] [2026-05-05T17:37:00.105Z] GET /api/order/all ➞ OK 200 (11ms)
+[2026-05-05T17:37:00.126Z] [SUCCESS] [2026-05-05T17:37:00.119Z] GET /api/plan/ ➞ OK 200 (7ms)
+[2026-05-05T17:37:00.160Z] [SUCCESS] [2026-05-05T17:37:00.159Z] OPTIONS /api/cart/ ➞ NO_CONTENT 204 (1ms)
+[2026-05-05T17:37:00.161Z] [ERROR] [2026-05-05T17:37:00.160Z] OPTIONS /api/cart/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:37:00.161Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:37:00.173Z] [WARN] [2026-05-05T17:37:00.165Z] GET /api/cart/ ➞ NOT_FOUND 404 (8ms)
+[2026-05-05T17:37:01.902Z] [SUCCESS] [2026-05-05T17:37:01.901Z] OPTIONS /api/session/ ➞ NO_CONTENT 204 (1ms)
+[2026-05-05T17:37:01.903Z] [ERROR] [2026-05-05T17:37:01.903Z] OPTIONS /api/session/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:37:01.904Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:37:01.911Z] [SUCCESS] [2026-05-05T17:37:01.904Z] GET /api/session/ ➞ OK 200 (7ms)
+[2026-05-05T17:37:03.408Z] [SUCCESS] [2026-05-05T17:37:03.405Z] OPTIONS /api/subscription/subscribe ➞ NO_CONTENT 204 (3ms)
+[2026-05-05T17:37:03.409Z] [ERROR] [2026-05-05T17:37:03.409Z] OPTIONS /api/subscription/subscribe - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:37:03.410Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:37:04.024Z] [SUCCESS] [2026-05-05T17:37:03.411Z] POST /api/subscription/subscribe ➞ OK 200 (613ms)
+[2026-05-05T17:37:23.734Z] [SUCCESS] [2026-05-05T17:37:23.731Z] POST /api/order/webhook ➞ OK 200 (3ms)
+[2026-05-05T17:37:23.932Z] [SUCCESS] [2026-05-05T17:37:23.926Z] POST /api/order/webhook ➞ OK 200 (6ms)
+[2026-05-05T17:37:24.124Z] [SUCCESS] [2026-05-05T17:37:24.122Z] POST /api/order/webhook ➞ OK 200 (2ms)
+[2026-05-05T17:37:24.130Z] [SUCCESS] [2026-05-05T17:37:24.127Z] POST /api/order/webhook ➞ OK 200 (3ms)
+[2026-05-05T17:37:24.327Z] [SUCCESS] [2026-05-05T17:37:24.324Z] POST /api/order/webhook ➞ OK 200 (3ms)
+[2026-05-05T17:37:24.344Z] [ERROR] [2026-05-05T17:37:24.344Z] POST /api/order/webhook - undefined - Handler completed without calling next() or sending a response | User-Agent: Stripe/1.0 (+https://stripe.com/docs/webhooks) | IP: ::ffff:127.0.0.1
+[2026-05-05T17:37:24.347Z] [ERROR] Stack: Error: Handler completed without calling next() or sending a response
+    at <anonymous> (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1227:40)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+[2026-05-05T17:37:24.349Z] [ERROR] [2026-05-05T17:37:24.298Z] POST /api/order/webhook ➞ INTERNAL_SERVER_ERROR 500 (51ms)
+[2026-05-05T17:37:24.428Z] [SUCCESS] [2026-05-05T17:37:24.425Z] POST /api/order/webhook ➞ OK 200 (3ms)
+[2026-05-05T17:37:24.560Z] [SUCCESS] [2026-05-05T17:37:24.556Z] POST /api/order/webhook ➞ OK 200 (4ms)
+[2026-05-05T17:37:24.825Z] [SUCCESS] [2026-05-05T17:37:24.820Z] POST /api/order/webhook ➞ OK 200 (5ms)
+[2026-05-05T17:37:25.388Z] [ERROR] [2026-05-05T17:37:25.388Z] POST /api/order/webhook - undefined - Handler completed without calling next() or sending a response | User-Agent: Stripe/1.0 (+https://stripe.com/docs/webhooks) | IP: ::ffff:127.0.0.1
+[2026-05-05T17:37:25.389Z] [ERROR] Stack: Error: Handler completed without calling next() or sending a response
+    at <anonymous> (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1227:40)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+[2026-05-05T17:37:25.391Z] [ERROR] [2026-05-05T17:37:24.281Z] POST /api/order/webhook ➞ INTERNAL_SERVER_ERROR 500 (1110ms)
+[2026-05-05T17:37:27.326Z] [SUCCESS] [2026-05-05T17:37:27.324Z] OPTIONS /api/auth/user ➞ NO_CONTENT 204 (2ms)
+[2026-05-05T17:37:27.327Z] [ERROR] [2026-05-05T17:37:27.327Z] OPTIONS /api/auth/user - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:37:27.328Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:37:27.331Z] [SUCCESS] [2026-05-05T17:37:27.330Z] OPTIONS /api/subscription/me ➞ NO_CONTENT 204 (1ms)
+[2026-05-05T17:37:27.332Z] [ERROR] [2026-05-05T17:37:27.332Z] OPTIONS /api/subscription/me - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:37:27.333Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:37:27.335Z] [SUCCESS] [2026-05-05T17:37:27.328Z] GET /api/auth/user ➞ OK 200 (7ms)
+[2026-05-05T17:37:27.341Z] [SUCCESS] [2026-05-05T17:37:27.336Z] GET /api/subscription/me ➞ OK 200 (5ms)
+[2026-05-05T17:37:27.387Z] [SUCCESS] [2026-05-05T17:37:27.386Z] OPTIONS /api/cart/ ➞ NO_CONTENT 204 (1ms)
+[2026-05-05T17:37:27.387Z] [ERROR] [2026-05-05T17:37:27.387Z] OPTIONS /api/cart/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1 | IP: ::ffff:127.0.0.1
+[2026-05-05T17:37:27.388Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T17:37:27.394Z] [WARN] [2026-05-05T17:37:27.390Z] GET /api/cart/ ➞ NOT_FOUND 404 (4ms)
+[2026-05-05T17:38:21.317Z] [SUCCESS] [2026-05-05T17:38:21.314Z] POST /api/order/webhook ➞ OK 200 (3ms)

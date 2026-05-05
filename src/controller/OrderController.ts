@@ -1,7 +1,7 @@
 import { Controller, Delete, Get, isAuthenticated, Post, Put, QueryBuilder, Route } from "@lyra-js/core"
+import { randomBytes } from "crypto"
 import nodemailer from "nodemailer"
-import { randomBytes } from 'crypto'
-import QRCode from 'qrcode'
+import QRCode from "qrcode"
 
 import { Booking } from "@entity/Booking"
 import { UserOrder } from "@entity/UserOrder"
@@ -78,25 +78,29 @@ export class OrderController extends Controller {
         : []
 
       const reservationLineItem = sessions
-        ? [{
-          price_data: {
-            currency: "eur",
-            product_data: { name: `Réservation simulateur - ${sessions.duration_minutes} minutes` },
-            unit_amount: sessionPrice * 100
-          },
-          quantity: pilots
-        }]
+        ? [
+          {
+            price_data: {
+              currency: "eur",
+              product_data: { name: `Réservation simulateur - ${sessions.duration_minutes} minutes` },
+              unit_amount: sessionPrice * 100
+            },
+            quantity: pilots
+          }
+        ]
         : []
 
       const eventLineItem = event_id
-        ? [{
-          price_data: {
-            currency: "eur",
-            product_data: { name: `Inscription événement - ${event_title}` },
-            unit_amount: Math.round(event_price * 100)
-          },
-          quantity: 1
-        }]
+        ? [
+          {
+            price_data: {
+              currency: "eur",
+              product_data: { name: `Inscription événement - ${event_title}` },
+              unit_amount: Math.round(event_price * 100)
+            },
+            quantity: 1
+          }
+        ]
         : []
 
       const lineItems = [...cartLineItems, ...reservationLineItem, ...eventLineItem]
@@ -112,7 +116,7 @@ export class OrderController extends Controller {
           pilots: pilots ?? null,
           availability_id: availability_id ?? null,
           event_id: event_id ?? null,
-          pilots_count: pilots_count ?? null,
+          pilots_count: pilots_count ?? null
         }
       })
 
@@ -136,18 +140,18 @@ export class OrderController extends Controller {
 
       const PLAN_FREE_SESSIONS: Record<SubscriptionPlan, number> = {
         STARTER: 2,
-        PLUS:    4,
-        ULTRA:   8,
+        PLUS: 4,
+        ULTRA: 8
       }
 
       const generateFreeSessionQRs = async (subId: number, plan: SubscriptionPlan) => {
-        const qrBuffers: { buffer: Buffer, index: number }[] = []
+        const qrBuffers: { buffer: Buffer; index: number }[] = []
         for (let i = 0; i < PLAN_FREE_SESSIONS[plan]; i++) {
-          const qrToken = randomBytes(32).toString('hex')
+          const qrToken = randomBytes(32).toString("hex")
           await this.freeSessionTokenRepository.save({
             sub_id: subId,
             qr_token: qrToken,
-            is_used: false,
+            is_used: false
           })
           const buffer = await QRCode.toBuffer(qrToken, { width: 300, margin: 2 })
           qrBuffers.push({ buffer, index: i + 1 })
@@ -337,7 +341,10 @@ export class OrderController extends Controller {
 
         if (availability_id && session_id) {
           const dateFormatted = new Date(availability.date).toLocaleDateString("fr-FR", {
-            weekday: "long", year: "numeric", month: "long", day: "numeric"
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric"
           })
 
           await transporter.sendMail({
@@ -360,7 +367,7 @@ export class OrderController extends Controller {
           await transporter.sendMail({
             from: process.env.MAILER_SENDER,
             to: user.email,
-            subject: `Confirmation de réservation N°${orderNumber} — Elsass SimRacing`,
+            subject: `Confirmation de réservation N°${orderNumber} – Elsass SimRacing`,
             html: `
               <html>
                 <body style="margin: 0; padding: 0; background-color: #0a0a14; font-family: Arial, sans-serif; color: #ffffff;">
@@ -429,7 +436,6 @@ export class OrderController extends Controller {
         }
 
         this.res.status(200).json({ received: true })
-
       } else if (event.type === "customer.subscription.created") {
         const stripeSubscription = event.data.object
         const customerId = stripeSubscription.customer
@@ -447,6 +453,19 @@ export class OrderController extends Controller {
         const user = await this.userRepository.findOneBy({ stripe_customer_id: customerId })
         if (!user) return this.res.status(404).json({ message: "User not found" })
 
+        // Vérifier si l'utilisateur avait un abonnement annulé dans les 30 derniers jours
+        const thirtyDaysAgo = new Date()
+        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
+
+        const recentCancelledSubscription = await this.subscriptionRepository.findOneBy({
+          user_id: user.id,
+          status: "cancelled"
+        })
+
+        const skipFreeSessionGeneration =
+          recentCancelledSubscription &&
+          new Date(recentCancelledSubscription.current_period_end) > thirtyDaysAgo
+
         user.is_member = true
         await this.userRepository.save(user)
 
@@ -455,7 +474,7 @@ export class OrderController extends Controller {
           plan,
           price: planData.price,
           status: "active",
-          free_sessions_remaining: PLAN_FREE_SESSIONS[plan],
+          free_sessions_remaining: skipFreeSessionGeneration ? 0 : PLAN_FREE_SESSIONS[plan],
           current_period_start: new Date(stripeSubscription.items.data[0].current_period_start * 1000),
           current_period_end: new Date(stripeSubscription.items.data[0].current_period_end * 1000),
           user_id: user.id
@@ -465,8 +484,9 @@ export class OrderController extends Controller {
           stripe_subscription_id: stripeSubscription.id
         })
 
-        // Génération des QR codes sessions gratuites
-        const qrBuffers = await generateFreeSessionQRs(savedSubscription.id, plan)
+        const qrBuffers = skipFreeSessionGeneration
+          ? []
+          : await generateFreeSessionQRs(savedSubscription.id, plan)
 
         const transporter = nodemailer.createTransport({
           host: process.env.MAILER_HOST,
@@ -481,11 +501,11 @@ export class OrderController extends Controller {
         await transporter.sendMail({
           from: process.env.MAILER_SENDER,
           to: user.email,
-          subject: `Votre abonnement Elsass SimRacing — Vos sessions gratuites`,
-          attachments: qrBuffers.map(qr => ({
+          subject: `Votre abonnement Elsass SimRacing – Vos sessions gratuites`,
+          attachments: qrBuffers.map((qr) => ({
             filename: `session-gratuite-${qr.index}.png`,
             content: qr.buffer,
-            contentType: 'image/png',
+            contentType: "image/png"
           })),
           html: `
             <html>
@@ -498,8 +518,10 @@ export class OrderController extends Controller {
                   <div style="background-color: #1a1a2a; border-radius: 12px; padding: 32px; margin-bottom: 24px;">
                     <h2 style="color: #ffffff; font-size: 18px; margin: 0 0 16px;">Bonjour ${user.firstname} ${user.lastname},</h2>
                     <p style="color: #cccccc; line-height: 1.6; margin: 0 0 24px;">
-                      Bienvenue ! Vous trouverez en pièces jointes vos ${PLAN_FREE_SESSIONS[plan]} QR codes de sessions gratuites.
-                      Chaque QR code est nominatif et à usage unique — présentez-en un à l'accueil pour chaque session gratuite.
+                      ${skipFreeSessionGeneration
+            ? `Bienvenue ! Votre abonnement a bien été activé. Vos sessions gratuites seront disponibles à partir du prochain cycle de facturation.`
+            : `Bienvenue ! Vous trouverez en pièces jointes vos ${PLAN_FREE_SESSIONS[plan]} QR codes de sessions gratuites. Chaque QR code est nominatif et à usage unique – présentez-en un à l'accueil pour chaque session gratuite.`
+          }
                     </p>
                   </div>
                   <div style="background-color: #1a1a2a; border-radius: 12px; padding: 24px; margin-bottom: 24px; border-left: 4px solid #245E97;">
@@ -510,7 +532,9 @@ export class OrderController extends Controller {
                       </tr>
                       <tr>
                         <td style="padding: 10px 0; color: #aaaaaa;">Sessions gratuites</td>
-                        <td style="padding: 10px 0; color: #00c764; text-align: right; font-weight: bold;">${PLAN_FREE_SESSIONS[plan]}</td>
+                        <td style="padding: 10px 0; color: #00c764; text-align: right; font-weight: bold;">
+                          ${skipFreeSessionGeneration ? "0 (réabonnement récent)" : PLAN_FREE_SESSIONS[plan]}
+                        </td>
                       </tr>
                     </table>
                   </div>
@@ -529,7 +553,6 @@ export class OrderController extends Controller {
         })
 
         this.res.status(200).json({ received: true })
-
       } else if (event.type === "customer.subscription.deleted") {
         const stripeSubscription = event.data.object
         const foundSubscription = await this.subscriptionRepository.findOneBy({
@@ -545,7 +568,6 @@ export class OrderController extends Controller {
         await this.subscriptionRepository.save(foundSubscription)
 
         this.res.status(200).json({ received: true })
-
       } else if (event.type === "invoice.paid") {
         const invoice = event.data.object
 
@@ -576,7 +598,6 @@ export class OrderController extends Controller {
           foundSubscription.current_period_end = new Date(periodEnd * 1000)
           await this.subscriptionRepository.save(foundSubscription)
 
-          // Génération des QR codes sessions gratuites renouvellement
           const qrBuffers = await generateFreeSessionQRs(foundSubscription.id, plan)
 
           const transporter = nodemailer.createTransport({
@@ -592,11 +613,11 @@ export class OrderController extends Controller {
           await transporter.sendMail({
             from: process.env.MAILER_SENDER,
             to: user.email,
-            subject: `Renouvellement abonnement — Vos nouvelles sessions gratuites`,
-            attachments: qrBuffers.map(qr => ({
+            subject: `Renouvellement abonnement – Vos nouvelles sessions gratuites`,
+            attachments: qrBuffers.map((qr) => ({
               filename: `session-gratuite-${qr.index}.png`,
               content: qr.buffer,
-              contentType: 'image/png',
+              contentType: "image/png"
             })),
             html: `
               <html>
@@ -640,8 +661,8 @@ export class OrderController extends Controller {
           })
         }
 
+        // Réponse en dehors du if pour couvrir billing_reason === "subscription_create"
         this.res.status(200).json({ received: true })
-
       } else {
         this.res.status(200).json({ received: true })
       }
