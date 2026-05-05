@@ -22,7 +22,11 @@ export class SubscriptionController extends Controller {
   @Get({ path: "/me", middlewares: [isAuthenticated] })
   async me() {
     try {
-      const subscription = await this.subscriptionRepository.findOneBy({ user_id: this.req.user.id, status: "active" })
+      // On inclut aussi pending_cancellation pour que le frontend puisse afficher le bon état
+      let subscription = await this.subscriptionRepository.findOneBy({ user_id: this.req.user.id, status: "active" })
+      if (!subscription) {
+        subscription = await this.subscriptionRepository.findOneBy({ user_id: this.req.user.id, status: "pending_cancellation" })
+      }
       if (!subscription) return this.res.status(404).json({ message: "Subscription not found" })
       this.res.status(200).json({ message: "Subscription fetched successfully", subscription })
     } catch (error) {
@@ -118,26 +122,42 @@ export class SubscriptionController extends Controller {
         return this.res.status(404).json({ message: "Subscription not found" })
       }
 
-      try {
-        await this.stripeService.instance.subscriptions.cancel(subscription.stripe_subscription_id)
-      } catch (stripeError: unknown) {
-        if ((stripeError as { code?: string })?.code !== "resource_missing") throw stripeError
-      }
+      // On demande l'annulation en fin de période — l'utilisateur garde ses avantages jusqu'au bout
+      // Le webhook subscription.updated passera le statut à pending_cancellation
+      // Le webhook subscription.deleted retirera is_member quand la période sera vraiment terminée
+      await this.stripeService.instance.subscriptions.update(subscription.stripe_subscription_id, {
+        cancel_at_period_end: true
+      })
 
-      subscription.status = "canceled"
-      await this.subscriptionRepository.save(subscription)
-
-      user.is_member = false
-      await this.userRepository.save(user)
-
-      this.res.status(200).json({ message: "Subscription cancelled successfully" })
+      this.res.status(200).json({ message: "Subscription cancellation scheduled successfully" })
     } catch (error) {
       this.next(error)
     }
   }
 
+  @Post({ path: "/reactivate", middlewares: [isAuthenticated] })
+  async reactivate() {
+    try {
+      const user = await this.userRepository.find(this.req.user.id)
+      if (!user.is_member) {
+        return this.res.status(400).json({ message: "User is not a member" })
+      }
 
+      const subscription = await this.subscriptionRepository.findOneBy({ user_id: user.id, status: "pending_cancellation" })
+      if (!subscription) {
+        return this.res.status(404).json({ message: "No pending cancellation subscription found" })
+      }
 
+      // On annule la demande d'annulation — le webhook subscription.updated repassera le statut à active
+      await this.stripeService.instance.subscriptions.update(subscription.stripe_subscription_id, {
+        cancel_at_period_end: false
+      })
+
+      this.res.status(200).json({ message: "Subscription reactivated successfully" })
+    } catch (error) {
+      this.next(error)
+    }
+  }
 
   @Patch({ path: "/change-plan", middlewares: [isAuthenticated] })
   async changePlan() {

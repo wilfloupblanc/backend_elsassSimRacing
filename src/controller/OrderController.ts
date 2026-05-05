@@ -126,6 +126,60 @@ export class OrderController extends Controller {
     }
   }
 
+  // ─── Annulation d'une réservation avec remboursement Stripe ───────────────
+  @Post({ path: "/cancel/:bookingId", middlewares: [isAuthenticated] })
+  async cancelBooking() {
+    try {
+      const bookingId = Number(this.req.params.bookingId)
+      const userId = this.req.user.id
+
+      const booking = await this.bookingRepository.find(bookingId)
+      if (!booking) return this.res.status(404).json({ message: "Booking not found" })
+      if (booking.user_id !== Number(userId)) return this.res.status(403).json({ message: "Forbidden" })
+      if (booking.status === "cancelled") return this.res.status(400).json({ message: "Booking already cancelled" })
+
+      // Vérifier la règle 1h avant
+      const bookingDateTime = new Date(`${booking.date}T${booking.start_time}`)
+      const now = new Date()
+      const diffMs = bookingDateTime.getTime() - now.getTime()
+      const diffHours = diffMs / (1000 * 60 * 60)
+      if (diffHours < 1) {
+        return this.res.status(400).json({ message: "Cancellation not allowed less than 1 hour before the session" })
+      }
+
+      // Récupérer le payment_intent via orderDetails -> order -> payment
+      const orderDetail = await this.orderDetailsRepository.findOneBy({ booking_id: bookingId })
+      if (!orderDetail) return this.res.status(404).json({ message: "Order detail not found" })
+
+      const payment = await this.paymentsRepository.findOneBy({ order_id: orderDetail.order_id })
+      if (!payment) return this.res.status(404).json({ message: "Payment not found" })
+
+      // Remboursement Stripe
+      await this.stripeService.instance.refunds.create({
+        payment_intent: payment.stripe_charge_id
+      })
+
+      // Remettre les slots
+      const availability = await this.availabilityRepository.find(booking.availability_id)
+      if (availability) {
+        const pilots = orderDetail.quantity
+        availability.slots_remaining = availability.slots_remaining + pilots
+        await this.availabilityRepository.save(availability)
+      }
+
+      // Mettre à jour le statut booking et payment
+      booking.status = "cancelled"
+      await this.bookingRepository.save(booking)
+
+      payment.status = "refunded"
+      await this.paymentsRepository.save(payment)
+
+      this.res.status(200).json({ message: "Booking cancelled and refunded successfully" })
+    } catch (error) {
+      this.next(error)
+    }
+  }
+
   @Post({ path: "/webhook", parserType: "raw" })
   async webhook() {
     try {
@@ -227,7 +281,8 @@ export class OrderController extends Controller {
           savedBooking.status = "confirmed"
           await this.bookingRepository.save(savedBooking)
 
-          availability.slots_remaining = availability.slots_remaining - 1
+          // FIX : décrémenter par le nombre de pilotes, pas de 1
+          availability.slots_remaining = availability.slots_remaining - pilots
           await this.availabilityRepository.save(availability)
 
           await this.orderDetailsRepository.save({
@@ -436,6 +491,33 @@ export class OrderController extends Controller {
         }
 
         this.res.status(200).json({ received: true })
+
+      } else if (event.type === "customer.subscription.updated") {
+        // ─── Gestion annulation / réactivation dans la même période ───────────
+        const stripeSubscription = event.data.object
+
+        const foundSubscription = await this.subscriptionRepository.findOneBy({
+          stripe_subscription_id: stripeSubscription.id
+        })
+        if (!foundSubscription) return this.res.status(404).json({ message: "Subscription not found" })
+
+        if (stripeSubscription.cancel_at_period_end === true) {
+          // L'utilisateur a demandé l'annulation — on garde is_member intact jusqu'à la fin de période
+          foundSubscription.status = "pending_cancellation"
+          await this.subscriptionRepository.save(foundSubscription)
+
+        } else if (
+          stripeSubscription.cancel_at_period_end === false &&
+          foundSubscription.status === "pending_cancellation"
+        ) {
+          // L'utilisateur a réactivé dans la même période — pas de nouveau paiement, pas de nouveaux QR codes
+          foundSubscription.status = "active"
+          await this.subscriptionRepository.save(foundSubscription)
+          // is_member est déjà true, on ne régénère pas les QR codes
+        }
+
+        this.res.status(200).json({ received: true })
+
       } else if (event.type === "customer.subscription.created") {
         const stripeSubscription = event.data.object
         const customerId = stripeSubscription.customer
@@ -553,7 +635,9 @@ export class OrderController extends Controller {
         })
 
         this.res.status(200).json({ received: true })
+
       } else if (event.type === "customer.subscription.deleted") {
+        // ─── Fin de période effective — on retire les avantages ───────────────
         const stripeSubscription = event.data.object
         const foundSubscription = await this.subscriptionRepository.findOneBy({
           stripe_subscription_id: stripeSubscription.id
@@ -568,6 +652,7 @@ export class OrderController extends Controller {
         await this.subscriptionRepository.save(foundSubscription)
 
         this.res.status(200).json({ received: true })
+
       } else if (event.type === "invoice.paid") {
         const invoice = event.data.object
 
@@ -663,6 +748,7 @@ export class OrderController extends Controller {
 
         // Réponse en dehors du if pour couvrir billing_reason === "subscription_create"
         this.res.status(200).json({ received: true })
+
       } else {
         this.res.status(200).json({ received: true })
       }
