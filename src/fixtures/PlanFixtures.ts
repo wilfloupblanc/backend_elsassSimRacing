@@ -30,7 +30,7 @@ export class PlanFixtures extends Fixture {
       const plan = new Plan()
       plan.plan = p.plan
       plan.price = p.price
-      plan.stripe_price_id = p.stripe_price_id
+      plan.stripe_price_id = p.stripe_price_id ?? ''
       await this.planRepository.save(plan)
     }
   }

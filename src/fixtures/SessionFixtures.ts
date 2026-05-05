@@ -101,7 +101,7 @@ export class SessionFixtures extends Fixture {
       session.duration_minutes = s.duration_minutes
       session.price_normal = s.price_normal
       session.price_member = s.price_member
-      session.is_active = s.is_active
+      session.is_active = Boolean(s.is_active)
       session.intro = s.intro
       session.details = s.details
       session.total_duration = s.total_duration

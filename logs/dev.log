@@ -26919,3 +26919,65 @@
 [2026-05-04T14:32:25.522Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
 [2026-05-04T14:32:25.526Z] [SUCCESS] ✓ Scheduler started successfully
 [2026-05-04T14:34:36.399Z] [INFO] [SCHEDULER] GenerateAvailabilitiesJob.generateAvailabilities completed successfully (70870ms)
+[2026-05-05T13:22:59.468Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-05-05T13:22:59.475Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-05-05T13:28:43.806Z] [SUCCESS] [2026-05-05T13:28:43.794Z] OPTIONS /api/auth/user ➞ NO_CONTENT 204 (12ms)
+[2026-05-05T13:28:43.809Z] [ERROR] [2026-05-05T13:28:43.809Z] OPTIONS /api/auth/user - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) elsass-admin/0.0.0 Chrome/146.0.7680.188 Electron/41.3.0 Safari/537.36 | IP: ::1
+[2026-05-05T13:28:43.831Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T13:28:43.841Z] [ERROR] [2026-05-05T13:28:43.841Z] GET /api/auth/user - 401 - Unauthorized | User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) elsass-admin/0.0.0 Chrome/146.0.7680.188 Electron/41.3.0 Safari/537.36 | IP: ::1
+[2026-05-05T13:28:43.844Z] [ERROR] Stack: Error: Unauthorized
+    at AuthController.getAuthenticatedUser (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/src/controller/AuthController.ts:154:24)
+    at wrappedHandler (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:993:46)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+[2026-05-05T13:28:43.847Z] [WARN] [2026-05-05T13:28:43.833Z] GET /api/auth/user ➞ UNAUTHORIZED 401 (14ms)
+[2026-05-05T13:28:43.894Z] [ERROR] [2026-05-05T13:28:43.894Z] GET /api/auth/user - 401 - Unauthorized | User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) elsass-admin/0.0.0 Chrome/146.0.7680.188 Electron/41.3.0 Safari/537.36 | IP: ::1
+[2026-05-05T13:28:43.895Z] [ERROR] Stack: Error: Unauthorized
+    at AuthController.getAuthenticatedUser (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/src/controller/AuthController.ts:154:24)
+    at wrappedHandler (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:993:46)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+[2026-05-05T13:28:43.896Z] [WARN] [2026-05-05T13:28:43.892Z] GET /api/auth/user ➞ UNAUTHORIZED 401 (4ms)
+[2026-05-05T13:29:05.831Z] [SUCCESS] [2026-05-05T13:29:05.827Z] OPTIONS /api/auth/sign-in ➞ NO_CONTENT 204 (4ms)
+[2026-05-05T13:29:05.832Z] [ERROR] [2026-05-05T13:29:05.832Z] OPTIONS /api/auth/sign-in - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) elsass-admin/0.0.0 Chrome/146.0.7680.188 Electron/41.3.0 Safari/537.36 | IP: ::1
+[2026-05-05T13:29:05.834Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T13:29:06.015Z] [SUCCESS] [2026-05-05T13:29:05.836Z] POST /api/auth/sign-in ➞ OK 200 (179ms)
+[2026-05-05T13:29:06.043Z] [SUCCESS] [2026-05-05T13:29:06.038Z] OPTIONS /api/auth/user ➞ NO_CONTENT 204 (5ms)
+[2026-05-05T13:29:06.043Z] [ERROR] [2026-05-05T13:29:06.043Z] OPTIONS /api/auth/user - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) elsass-admin/0.0.0 Chrome/146.0.7680.188 Electron/41.3.0 Safari/537.36 | IP: ::1
+[2026-05-05T13:29:06.045Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T13:29:06.059Z] [SUCCESS] [2026-05-05T13:29:06.046Z] GET /api/auth/user ➞ OK 200 (13ms)
+[2026-05-05T13:29:06.194Z] [SUCCESS] [2026-05-05T13:29:06.191Z] OPTIONS /api/booking/ ➞ NO_CONTENT 204 (3ms)
+[2026-05-05T13:29:06.195Z] [ERROR] [2026-05-05T13:29:06.195Z] OPTIONS /api/booking/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) elsass-admin/0.0.0 Chrome/146.0.7680.188 Electron/41.3.0 Safari/537.36 | IP: ::1
+[2026-05-05T13:29:06.196Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T13:29:06.200Z] [SUCCESS] [2026-05-05T13:29:06.197Z] OPTIONS /api/user/ ➞ NO_CONTENT 204 (3ms)
+[2026-05-05T13:29:06.201Z] [ERROR] [2026-05-05T13:29:06.201Z] OPTIONS /api/user/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) elsass-admin/0.0.0 Chrome/146.0.7680.188 Electron/41.3.0 Safari/537.36 | IP: ::1
+[2026-05-05T13:29:06.203Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T13:29:06.213Z] [SUCCESS] [2026-05-05T13:29:06.210Z] OPTIONS /api/payments/ ➞ NO_CONTENT 204 (3ms)
+[2026-05-05T13:29:06.217Z] [ERROR] [2026-05-05T13:29:06.217Z] OPTIONS /api/payments/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) elsass-admin/0.0.0 Chrome/146.0.7680.188 Electron/41.3.0 Safari/537.36 | IP: ::1
+[2026-05-05T13:29:06.218Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T13:29:06.222Z] [SUCCESS] [2026-05-05T13:29:06.219Z] OPTIONS /api/giftVoucher/ ➞ NO_CONTENT 204 (3ms)
+[2026-05-05T13:29:06.225Z] [ERROR] [2026-05-05T13:29:06.224Z] OPTIONS /api/giftVoucher/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) elsass-admin/0.0.0 Chrome/146.0.7680.188 Electron/41.3.0 Safari/537.36 | IP: ::1
+[2026-05-05T13:29:06.229Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T13:29:06.244Z] [SUCCESS] [2026-05-05T13:29:06.237Z] OPTIONS /api/simulator/ ➞ NO_CONTENT 204 (7ms)
+[2026-05-05T13:29:06.247Z] [ERROR] [2026-05-05T13:29:06.246Z] OPTIONS /api/simulator/ - undefined - Cannot set headers after they are sent to the client | User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) elsass-admin/0.0.0 Chrome/146.0.7680.188 Electron/41.3.0 Safari/537.36 | IP: ::1
+[2026-05-05T13:29:06.250Z] [ERROR] Stack: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:642:11)
+    at LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1279:21)
+[2026-05-05T13:29:06.267Z] [SUCCESS] [2026-05-05T13:29:06.206Z] GET /api/booking/ ➞ OK 200 (61ms)
+[2026-05-05T13:29:06.293Z] [SUCCESS] [2026-05-05T13:29:06.269Z] GET /api/user/ ➞ OK 200 (24ms)
+[2026-05-05T13:29:06.314Z] [SUCCESS] [2026-05-05T13:29:06.275Z] GET /api/payments/ ➞ OK 200 (39ms)
+[2026-05-05T13:29:06.317Z] [SUCCESS] [2026-05-05T13:29:06.288Z] GET /api/simulator/ ➞ OK 200 (29ms)
+[2026-05-05T13:29:06.319Z] [SUCCESS] [2026-05-05T13:29:06.283Z] GET /api/giftVoucher/ ➞ OK 200 (36ms)
+[2026-05-05T13:32:37.895Z] [SUCCESS] [2026-05-05T13:32:37.875Z] POST /api/order/webhook ➞ OK 200 (20ms)
