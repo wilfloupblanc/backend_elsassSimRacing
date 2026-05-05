@@ -40,7 +40,6 @@ export class BookingController extends Controller {
         return this.badRequest("Missing data")
       }
 
-      // Vérifier les sessions gratuites restantes
       let subscription = null
       if (use_free_session) {
         subscription = await this.subscriptionRepository.findOneBy({
@@ -95,7 +94,6 @@ export class BookingController extends Controller {
       availability.slots_remaining = availability.slots_remaining - 1
       await this.availabilityRepository.save(availability)
 
-      // Décrémenter free_sessions_remaining
       if (use_free_session && subscription) {
         subscription.free_sessions_remaining -= 1
         if (subscription.free_sessions_remaining === 0) {
@@ -104,33 +102,34 @@ export class BookingController extends Controller {
         await this.subscriptionRepository.save(subscription)
       }
 
-      // Envoi des mails pour paiement sur place et session gratuite
+      // Envoi mail non-bloquant : un échec ici ne fait pas échouer la réservation
       if (pay_on_site || use_free_session) {
-        const user = await this.userRepository.find(this.req.user.id)
+        try {
+          const user = await this.userRepository.find(this.req.user.id)
 
-        const transporter = nodemailer.createTransport({
-          host: process.env.MAILER_HOST,
-          port: Number(process.env.MAILER_PORT),
-          secure: false,
-          auth: {
-            user: process.env.MAILER_USER,
-            pass: process.env.MAILER_PASS
-          }
-        })
+          const transporter = nodemailer.createTransport({
+            host: process.env.MAILER_HOST,
+            port: Number(process.env.MAILER_PORT),
+            secure: false,
+            auth: {
+              user: process.env.MAILER_USER,
+              pass: process.env.MAILER_PASS
+            }
+          })
 
-        const dateFormatted = new Date(availability.date).toLocaleDateString("fr-FR", {
-          weekday: "long",
-          year: "numeric",
-          month: "long",
-          day: "numeric"
-        })
+          const dateFormatted = new Date(availability.date).toLocaleDateString("fr-FR", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric"
+          })
 
-        if (pay_on_site) {
-          await transporter.sendMail({
-            from: process.env.MAILER_SENDER,
-            to: process.env.MAILER_SENDER,
-            subject: `Nouvelle réservation (paiement sur place) - ${user.firstname} ${user.lastname}`,
-            html: `
+          if (pay_on_site) {
+            await transporter.sendMail({
+              from: process.env.MAILER_SENDER,
+              to: process.env.MAILER_SENDER,
+              subject: `Nouvelle réservation (paiement sur place) - ${user.firstname} ${user.lastname}`,
+              html: `
               <html>
                 <body>
                   <p>Réservation paiement sur place</p>
@@ -143,22 +142,20 @@ export class BookingController extends Controller {
                 </body>
               </html>
             `
-          })
+            })
 
-          await transporter.sendMail({
-            from: process.env.MAILER_SENDER,
-            to: user.email,
-            subject: `Confirmation de réservation — Elsass SimRacing`,
-            html: `
+            await transporter.sendMail({
+              from: process.env.MAILER_SENDER,
+              to: user.email,
+              subject: `Confirmation de réservation – Elsass SimRacing`,
+              html: `
               <html>
                 <body style="margin: 0; padding: 0; background-color: #0a0a14; font-family: Arial, sans-serif; color: #ffffff;">
                   <div style="max-width: 600px; margin: 0 auto; padding: 40px 20px;">
-
                     <div style="text-align: center; margin-bottom: 32px;">
                       <h1 style="color: #245E97; font-size: 28px; margin: 0;">ELSASS SIMRACING</h1>
                       <p style="color: #aaaaaa; margin: 8px 0 0;">Confirmation de réservation</p>
                     </div>
-
                     <div style="background-color: #1a1a2a; border-radius: 12px; padding: 32px; margin-bottom: 24px;">
                       <h2 style="color: #ffffff; font-size: 18px; margin: 0 0 24px;">
                         Bonjour ${user.firstname} ${user.lastname},
@@ -189,22 +186,19 @@ export class BookingController extends Controller {
                         </tr>
                       </table>
                     </div>
-
                     <div style="background-color: #1a1a2a; border-radius: 12px; padding: 24px; margin-bottom: 24px; border-left: 4px solid #f59e0b;">
-                      <h3 style="color: #f59e0b; font-size: 15px; margin: 0 0 12px;">⚠ Paiement sur place</h3>
+                      <h3 style="color: #f59e0b; font-size: 15px; margin: 0 0 12px;">⚠️ Paiement sur place</h3>
                       <p style="color: #cccccc; font-size: 14px; line-height: 1.6; margin: 0;">
                         Le règlement s'effectuera directement à l'accueil le jour de votre session.
                         Pensez à vous munir de votre confirmation (lien ci-dessous).
                       </p>
                     </div>
-
                     <div style="text-align: center; margin-bottom: 24px;">
                       <a href="${process.env.CLIENT_APP_URL}/booking/${savedBooking.id}"
                          style="background-color: #245E97; color: #ffffff; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: bold;">
                         Voir ma confirmation
                       </a>
                     </div>
-
                     <div style="background-color: #1a1a2a; border-radius: 12px; padding: 24px; margin-bottom: 32px;">
                       <h3 style="color: #ffffff; font-size: 15px; margin: 0 0 12px;">Nous contacter</h3>
                       <p style="color: #cccccc; font-size: 14px; margin: 0;">
@@ -213,7 +207,6 @@ export class BookingController extends Controller {
                         ✉️ elsass.simracing@gmail.com
                       </p>
                     </div>
-
                     <div style="text-align: center;">
                       <p style="color: #555555; font-size: 12px; margin: 0;">
                         En effectuant cette réservation, vous avez accepté nos
@@ -226,24 +219,22 @@ export class BookingController extends Controller {
                 </body>
               </html>
             `
-          })
-        }
+            })
+          }
 
-        if (use_free_session) {
-          await transporter.sendMail({
-            from: process.env.MAILER_SENDER,
-            to: user.email,
-            subject: `Session gratuite confirmée — Elsass SimRacing`,
-            html: `
+          if (use_free_session) {
+            await transporter.sendMail({
+              from: process.env.MAILER_SENDER,
+              to: user.email,
+              subject: `Session gratuite confirmée – Elsass SimRacing`,
+              html: `
               <html>
                 <body style="margin: 0; padding: 0; background-color: #0a0a14; font-family: Arial, sans-serif; color: #ffffff;">
                   <div style="max-width: 600px; margin: 0 auto; padding: 40px 20px;">
-
                     <div style="text-align: center; margin-bottom: 32px;">
                       <h1 style="color: #245E97; font-size: 28px; margin: 0;">ELSASS SIMRACING</h1>
                       <p style="color: #aaaaaa; margin: 8px 0 0;">Session membre offerte</p>
                     </div>
-
                     <div style="background-color: #1a1a2a; border-radius: 12px; padding: 32px; margin-bottom: 24px;">
                       <h2 style="color: #ffffff; font-size: 18px; margin: 0 0 24px;">
                         Bonjour ${user.firstname} ${user.lastname},
@@ -266,7 +257,7 @@ export class BookingController extends Controller {
                         </tr>
                         <tr>
                           <td style="padding: 12px 0; color: #aaaaaa;">Sessions gratuites restantes</td>
-                          <td style="padding: 12px 0; color: #22c55e; text-align: right; font-weight: bold;">${subscription ? subscription.free_sessions_remaining - 1 : 0}</td>
+                          <td style="padding: 12px 0; color: #22c55e; text-align: right; font-weight: bold;">${subscription ? subscription.free_sessions_remaining : 0}</td>
                         </tr>
                         <tr>
                           <td style="padding: 12px 0; color: #aaaaaa;">Prix</td>
@@ -274,14 +265,12 @@ export class BookingController extends Controller {
                         </tr>
                       </table>
                     </div>
-
                     <div style="text-align: center; margin-bottom: 24px;">
                       <a href="${process.env.CLIENT_APP_URL}/booking/${savedBooking.id}"
                          style="background-color: #245E97; color: #ffffff; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: bold;">
                         Voir ma confirmation
                       </a>
                     </div>
-
                     <div style="background-color: #1a1a2a; border-radius: 12px; padding: 24px; margin-bottom: 32px;">
                       <h3 style="color: #ffffff; font-size: 15px; margin: 0 0 12px;">Nous contacter</h3>
                       <p style="color: #cccccc; font-size: 14px; margin: 0;">
@@ -294,7 +283,10 @@ export class BookingController extends Controller {
                 </body>
               </html>
             `
-          })
+            })
+          }
+        } catch (mailError) {
+          console.error("Mail error:", mailError)
         }
       }
 
