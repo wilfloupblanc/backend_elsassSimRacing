@@ -4,7 +4,8 @@
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "start": "tsx src/server.ts",
-    "maestro": "maestro"
+    "maestro": "maestro",
+    "build": "tsc"
   },
   "dependencies": {
     "@lyra-js/core": "^2.1.0",
