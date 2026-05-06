@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, isAuthenticated, Post, Put, Route } from "@lyra-js/core"
+import { Controller, Delete, Get, isAuthenticated, Post, Put, QueryBuilder, Route } from "@lyra-js/core"
 import nodemailer from "nodemailer"
 
 import { Booking } from "@entity/Booking"
@@ -10,6 +10,40 @@ export class BookingController extends Controller {
     try {
       const bookings = await this.bookingRepository.findAll()
       this.res.status(200).json({ message: "Booking list fetched successfully", bookings })
+    } catch (error) {
+      this.next(error)
+    }
+  }
+
+  @Get({ path: "/event/:eventId" })
+  async listByEvent() {
+    try {
+      const eventId = Number(this.req.params.eventId)
+      const query = new QueryBuilder()
+        .raw(
+          `SELECT
+               b.id,
+               b.status,
+               b.pilots,
+               b.price_paid,
+               b.vehicle,
+               u.firstname,
+               u.lastname,
+               u.email,
+               e.title as event_title,
+               e.date as event_date,
+               e.start_time,
+               e.end_time,
+               e.price
+           FROM booking b
+                    JOIN user u ON b.user_id = u.id
+                    JOIN event e ON b.event_id = e.id
+           WHERE b.event_id = ?
+           ORDER BY b.id DESC`,
+          [eventId]
+        )
+      const [registrations] = await query.execute()
+      this.res.status(200).json({ message: "Event registrations fetched successfully", registrations })
     } catch (error) {
       this.next(error)
     }
@@ -61,21 +95,37 @@ export class BookingController extends Controller {
       const payment = await this.paymentsRepository.findOneBy({ order_id: orderDetail.order_id })
       if (!payment) return this.res.status(404).json({ message: "Payment not found" })
 
-      await this.stripeService.instance.refunds.create({
-        payment_intent: payment.stripe_charge_id
-      })
+      // Remboursement Stripe uniquement si un paiement en ligne a eu lieu
+      if (payment.stripe_charge_id) {
+        await this.stripeService.instance.refunds.create({
+          payment_intent: payment.stripe_charge_id
+        })
+        payment.status = "refunded"
+        await this.paymentsRepository.save(payment)
+      }
 
+      // Recrémenter les slots de disponibilité
       const availability = await this.availabilityRepository.find(booking.availability_id)
       if (availability) {
         availability.slots_remaining = availability.slots_remaining + orderDetail.quantity
         await this.availabilityRepository.save(availability)
       }
 
+      // Recrémenter les sessions gratuites si c'était une session offerte
+      if (booking.is_free_session) {
+        const subscription = await this.subscriptionRepository.findOneBy({
+          user_id: booking.user_id,
+          status: "active"
+        })
+        if (subscription) {
+          subscription.free_sessions_remaining += 1
+          subscription.monthly_free_session_used = false
+          await this.subscriptionRepository.save(subscription)
+        }
+      }
+
       booking.status = "cancelled"
       await this.bookingRepository.save(booking)
-
-      payment.status = "refunded"
-      await this.paymentsRepository.save(payment)
 
       this.res.status(200).json({ message: "Booking cancelled and refunded successfully" })
     } catch (error) {
@@ -211,7 +261,7 @@ export class BookingController extends Controller {
             await transporter.sendMail({
               from: process.env.MAILER_SENDER,
               to: user.email,
-              subject: `Confirmation de réservation – Elsass SimRacing`,
+              subject: `Confirmation de réservation — Elsass SimRacing`,
               html: `
               <html>
                 <body style="margin: 0; padding: 0; background-color: #0a0a14; font-family: Arial, sans-serif; color: #ffffff;">
@@ -290,7 +340,7 @@ export class BookingController extends Controller {
             await transporter.sendMail({
               from: process.env.MAILER_SENDER,
               to: user.email,
-              subject: `Session gratuite confirmée – Elsass SimRacing`,
+              subject: `Session gratuite confirmée — Elsass SimRacing`,
               html: `
               <html>
                 <body style="margin: 0; padding: 0; background-color: #0a0a14; font-family: Arial, sans-serif; color: #ffffff;">

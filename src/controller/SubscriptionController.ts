@@ -155,33 +155,35 @@ export class SubscriptionController extends Controller {
 
   @Patch({ path: "/change-plan", middlewares: [isAuthenticated] })
   async changePlan() {
+    const PLAN_ORDER: Record<string, number> = {
+      STARTER: 1,
+      PLUS: 2,
+      ULTRA: 3,
+    }
     try {
       const { plan } = this.req.body
-
       if (!plan || !["STARTER", "PLUS", "ULTRA"].includes(plan)) {
         return this.res.status(400).json({ message: "Plan invalide. Doit être STARTER, PLUS ou ULTRA" })
       }
-
       const user = await this.userRepository.find(this.req.user.id)
-
       if (!user.is_member) {
         return this.res.status(400).json({ message: "L'utilisateur n'est pas membre" })
       }
-
       const subscription = await this.subscriptionRepository.findOneBy({ user_id: user.id, status: "active" })
       if (!subscription) {
         return this.res.status(404).json({ message: "Abonnement actif introuvable" })
       }
-
+      if (subscription.plan === plan) {
+        return this.res.status(400).json({ message: "L'utilisateur est déjà sur ce plan" })
+      }
       const planData = await this.planRepository.findOneBy({ plan })
       if (!planData) {
         return this.res.status(404).json({ message: "Plan introuvable" })
       }
-
       const stripeSubscription = await this.stripeService.instance.subscriptions.retrieve(
         subscription.stripe_subscription_id
       )
-
+      const isUpgrade = PLAN_ORDER[plan] > PLAN_ORDER[subscription.plan]
       await this.stripeService.instance.subscriptions.update(
         subscription.stripe_subscription_id,
         {
@@ -189,10 +191,10 @@ export class SubscriptionController extends Controller {
             id: stripeSubscription.items.data[0].id,
             price: planData.stripe_price_id,
           }],
-          proration_behavior: "create_prorations",
+          proration_behavior: "none",
+          ...(isUpgrade ? {} : { billing_cycle_anchor: "unchanged" }),
         }
       )
-
       this.res.status(200).json({ message: "Plan mis à jour avec succès" })
     } catch (error) {
       this.next(error)

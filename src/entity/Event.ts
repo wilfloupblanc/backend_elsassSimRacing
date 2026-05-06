@@ -38,6 +38,9 @@ export class Event extends Entity<Event> {
   @Column({ type: "varchar", size: 50 })
   access: string = "all"
 
+  @Column({ type: "longtext", nullable: true })
+  banner_image: string | null = null
+
   @Column({ type: "timestamp", nullable: true })
   created_at: string | Date | null = new Date()
 

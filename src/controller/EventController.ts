@@ -46,8 +46,6 @@ export class EventController extends Controller {
     try {
       const data = this.req.body
       const event = await this.eventRepository.save(data)
-      const eventDate = new Date(event.date)
-      eventDate.setMinutes(eventDate.getMinutes() + eventDate.getTimezoneOffset() + 60)
       const dateStr = new Date(new Date(event.date).getTime() + 2 * 60 * 60 * 1000)
         .toISOString()
         .split('T')[0]
@@ -135,11 +133,12 @@ export class EventController extends Controller {
       if (!event?.id) {
         return this.res.status(400).json({ message: "Invalid Event id" })
       }
-      const eventDate = new Date(event.date)
-      eventDate.setMinutes(eventDate.getMinutes() + eventDate.getTimezoneOffset() + 60)
-      const dateStr = eventDate.toISOString().split('T')[0]
+      const dateStr = new Date(new Date(event.date).getTime() + 2 * 60 * 60 * 1000)
+        .toISOString()
+        .split('T')[0]
 
-      const query = new QueryBuilder()
+      // Restaurer les slots
+      const slotsQuery = new QueryBuilder()
         .raw(
           `UPDATE availability 
          SET slots_remaining = LEAST(slots_total, slots_remaining + ?)
@@ -148,7 +147,22 @@ export class EventController extends Controller {
          AND start_time < ?`,
           [event.simulators_count, dateStr, event.start_time, event.end_time]
         )
-      await query.execute()
+      await slotsQuery.execute()
+
+      // Supprimer les orderdetails liés aux bookings de l'event
+      await new QueryBuilder()
+        .raw(
+          `DELETE od FROM orderdetails od
+         INNER JOIN booking b ON od.booking_id = b.id
+         WHERE b.event_id = ?`,
+          [event.id]
+        )
+        .execute()
+
+      // Supprimer les bookings liés à l'event
+      await new QueryBuilder()
+        .raw(`DELETE FROM booking WHERE event_id = ?`, [event.id])
+        .execute()
 
       await this.eventRepository.delete(event.id)
       this.res.status(200).json({ message: "Event deleted successfully" })

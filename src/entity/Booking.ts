@@ -34,6 +34,8 @@ export class Booking extends Entity<Booking> {
   gift_voucher_id: number | null = null
   @Column({ type: "bool" })
   checked_in: boolean = false
+  @Column({ type: "varchar", size: 255, nullable: true })
+  vehicle: string | null = null
   @Column({ type: "timestamp", nullable: true })
   checked_in_at: string | Date | null = null
 

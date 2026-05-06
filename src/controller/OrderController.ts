@@ -61,7 +61,7 @@ export class OrderController extends Controller {
   async checkout() {
     try {
       const cart = await this.cartRepository.findOneBy({ user_id: this.req.user.id })
-      const { availability_id, session_id, pilots, event_id, event_price, event_title, pilots_count } = this.req.body
+      const { availability_id, session_id, pilots, event_id, event_price, event_title, pilots_count, selected_vehicle } = this.req.body
       const sessions = session_id ? await this.sessionRepository.find(session_id) : null
       const user = await this.userRepository.find(this.req.user.id)
       const sessionPrice = sessions ? (user.is_member ? sessions.price_member : sessions.price_normal) : 0
@@ -116,7 +116,8 @@ export class OrderController extends Controller {
           pilots: pilots ?? null,
           availability_id: availability_id ?? null,
           event_id: event_id ?? null,
-          pilots_count: pilots_count ?? null
+          pilots_count: pilots_count ?? null,
+          selected_vehicle: selected_vehicle ?? null,
         }
       })
 
@@ -144,6 +145,12 @@ export class OrderController extends Controller {
         STARTER: 2,
         PLUS: 4,
         ULTRA: 8
+      }
+
+      const PLAN_ORDER: Record<string, number> = {
+        STARTER: 1,
+        PLUS: 2,
+        ULTRA: 3
       }
 
       const generateFreeSessionQRs = async (subId: number, plan: SubscriptionPlan) => {
@@ -259,6 +266,7 @@ export class OrderController extends Controller {
             // 4. Gérer l'inscription événement
             const event_id = stripeSession.metadata.event_id
             const pilots_count = Number(stripeSession.metadata.pilots_count)
+            console.log("SELECTED VEHICLE:", stripeSession.metadata.selected_vehicle)
 
             if (event_id) {
               const eventBooking = new Booking()
@@ -275,6 +283,7 @@ export class OrderController extends Controller {
               eventBooking.session_id = null
               eventBooking.gift_voucher_id = null
               eventBooking.event_id = Number(event_id)
+              eventBooking.vehicle = stripeSession.metadata.selected_vehicle || null
 
               await this.bookingRepository.save(eventBooking)
 
@@ -376,7 +385,7 @@ export class OrderController extends Controller {
               await transporter.sendMail({
                 from: process.env.MAILER_SENDER,
                 to: user.email,
-                subject: `Confirmation de réservation N°${orderNumber} – Elsass SimRacing`,
+                subject: `Confirmation de réservation N°${orderNumber} — Elsass SimRacing`,
                 html: `
                   <html>
                     <body style="margin: 0; padding: 0; background-color: #0a0a14; font-family: Arial, sans-serif; color: #ffffff;">
@@ -477,107 +486,21 @@ export class OrderController extends Controller {
         } else if (stripeSubscription.cancel_at_period_end === false) {
           // Changement de plan — on récupère le nouveau plan via stripe_price_id en base
           const newPriceId = stripeSubscription.items.data[0]?.price?.id
-          console.log("NEW PRICE ID:", newPriceId)
           const newPlanData = newPriceId
             ? await this.planRepository.findOneBy({ stripe_price_id: newPriceId })
             : null
-          console.log("NEW PLAN DATA:", newPlanData)
           const newPlan = newPlanData?.plan as SubscriptionPlan
           const oldPlan = foundSubscription.plan as SubscriptionPlan
-          console.log("OLD PLAN:", oldPlan, "NEW PLAN:", newPlan)
 
-          if (newPlan && newPlan !== oldPlan) {
-            const isUpgrade = PLAN_FREE_SESSIONS[newPlan] > PLAN_FREE_SESSIONS[oldPlan]
-            const diff = isUpgrade ? PLAN_FREE_SESSIONS[newPlan] - PLAN_FREE_SESSIONS[oldPlan] : 0
-
-            // Mettre à jour le plan en base dans tous les cas
-            foundSubscription.plan = newPlan
-            if (isUpgrade) {
-              foundSubscription.free_sessions_remaining = (foundSubscription.free_sessions_remaining ?? 0) + diff
-            }
+          if (newPlan && newPlan !== oldPlan && newPlan !== foundSubscription.pending_plan) {
+            // On stocke le nouveau plan en pending_plan
+            // Le basculement plan + sessions se fait au renouvellement dans invoice.paid
+            foundSubscription.pending_plan = newPlan
             await this.subscriptionRepository.save(foundSubscription)
-
-            this.res.status(200).json({ received: true })
-
-            if (isUpgrade) {
-              // Envoyer les QR codes supplémentaires en arrière-plan
-              ;(async () => {
-                try {
-                  const user = await this.userRepository.find(foundSubscription.user_id)
-
-                  const qrBuffers: { buffer: Buffer; index: number }[] = []
-                  for (let i = 0; i < diff; i++) {
-                    const qrToken = randomBytes(32).toString("hex")
-                    await this.freeSessionTokenRepository.save({
-                      sub_id: foundSubscription.id,
-                      qr_token: qrToken,
-                      is_used: false
-                    })
-                    const buffer = await QRCode.toBuffer(qrToken, { width: 300, margin: 2 })
-                    qrBuffers.push({ buffer, index: i + 1 })
-                  }
-
-                  const transporter = createTransporter()
-                  await transporter.sendMail({
-                    from: process.env.MAILER_SENDER,
-                    to: user.email,
-                    subject: `Votre upgrade vers ${newPlan} – ${diff} sessions gratuites supplémentaires`,
-                    attachments: qrBuffers.map((qr) => ({
-                      filename: `session-gratuite-${qr.index}.png`,
-                      content: qr.buffer,
-                      contentType: "image/png"
-                    })),
-                    html: `
-                      <html>
-                        <body style="margin: 0; padding: 0; background-color: #0a0a14; font-family: Arial, sans-serif; color: #ffffff;">
-                          <div style="max-width: 600px; margin: 0 auto; padding: 40px 20px;">
-                            <div style="text-align: center; margin-bottom: 32px;">
-                              <h1 style="color: #245E97; font-size: 28px; margin: 0;">ELSASS SIMRACING</h1>
-                              <p style="color: #aaaaaa; margin: 8px 0 0;">Upgrade vers ${newPlan}</p>
-                            </div>
-                            <div style="background-color: #1a1a2a; border-radius: 12px; padding: 32px; margin-bottom: 24px;">
-                              <h2 style="color: #ffffff; font-size: 18px; margin: 0 0 16px;">Bonjour ${user.firstname} ${user.lastname},</h2>
-                              <p style="color: #cccccc; line-height: 1.6; margin: 0 0 24px;">
-                                Vous êtes passé du plan ${oldPlan} au plan ${newPlan}. Vous trouverez en pièces jointes vos ${diff} QR codes de sessions gratuites supplémentaires pour ce cycle.
-                              </p>
-                            </div>
-                            <div style="background-color: #1a1a2a; border-radius: 12px; padding: 24px; margin-bottom: 24px; border-left: 4px solid #00c764;">
-                              <table style="width: 100%; border-collapse: collapse;">
-                                <tr style="border-bottom: 1px solid #2a2a3a;">
-                                  <td style="padding: 10px 0; color: #aaaaaa;">Ancien plan</td>
-                                  <td style="padding: 10px 0; color: #ffffff; text-align: right; font-weight: bold;">${oldPlan}</td>
-                                </tr>
-                                <tr style="border-bottom: 1px solid #2a2a3a;">
-                                  <td style="padding: 10px 0; color: #aaaaaa;">Nouveau plan</td>
-                                  <td style="padding: 10px 0; color: #00c764; text-align: right; font-weight: bold;">${newPlan}</td>
-                                </tr>
-                                <tr>
-                                  <td style="padding: 10px 0; color: #aaaaaa;">Sessions gratuites ajoutées</td>
-                                  <td style="padding: 10px 0; color: #00c764; text-align: right; font-weight: bold;">+${diff}</td>
-                                </tr>
-                              </table>
-                            </div>
-                            <div style="background-color: #1a1a2a; border-radius: 12px; padding: 24px;">
-                              <h3 style="color: #ffffff; font-size: 15px; margin: 0 0 12px;">Nous contacter</h3>
-                              <p style="color: #cccccc; font-size: 14px; margin: 0;">
-                                📍 11 rue des dominicains, 67500 Haguenau<br>
-                                📞 <a href="tel:+33640583619" style="color: #245E97;">0640583619</a><br>
-                                ✉️ elsass.simracing@gmail.com
-                              </p>
-                            </div>
-                          </div>
-                        </body>
-                      </html>
-                    `
-                  })
-                } catch (error) {
-                  console.log("WEBHOOK UPGRADE ERROR:", error)
-                }
-              })()
-            }
-          } else {
-            this.res.status(200).json({ received: true })
           }
+
+          this.res.status(200).json({ received: true })
+
         } else {
           this.res.status(200).json({ received: true })
         }
@@ -647,7 +570,7 @@ export class OrderController extends Controller {
             await transporter.sendMail({
               from: process.env.MAILER_SENDER,
               to: user.email,
-              subject: `Votre abonnement Elsass SimRacing – Vos sessions gratuites`,
+              subject: `Votre abonnement Elsass SimRacing — Vos sessions gratuites`,
               attachments: qrBuffers.map((qr) => ({
                 filename: `session-gratuite-${qr.index}.png`,
                 content: qr.buffer,
@@ -667,7 +590,7 @@ export class OrderController extends Controller {
                           ${
                 skipFreeSessionGeneration
                   ? `Bienvenue ! Votre abonnement a bien été activé. Vos sessions gratuites seront disponibles à partir du prochain cycle de facturation.`
-                  : `Bienvenue ! Vous trouverez en pièces jointes vos ${PLAN_FREE_SESSIONS[plan]} QR codes de sessions gratuites. Chaque QR code est nominatif et à usage unique – présentez-en un à l'accueil pour chaque session gratuite.`
+                  : `Bienvenue ! Vous trouverez en pièces jointes vos ${PLAN_FREE_SESSIONS[plan]} QR codes de sessions gratuites. Chaque QR code est nominatif et à usage unique — présentez-en un à l'accueil pour chaque session gratuite.`
               }
                         </p>
                       </div>
@@ -745,18 +668,24 @@ export class OrderController extends Controller {
 
               const plan = foundSubscription.plan as SubscriptionPlan
 
-              foundSubscription.free_sessions_remaining = PLAN_FREE_SESSIONS[plan]
+              // Le plan effectif est le pending_plan s'il existe, sinon le plan actuel
+              // C'est ici que le changement de plan devient effectif (upgrade ou downgrade)
+              const activePlan = (foundSubscription.pending_plan ?? plan) as SubscriptionPlan
+
+              foundSubscription.plan = activePlan
+              foundSubscription.pending_plan = null
+              foundSubscription.free_sessions_remaining = PLAN_FREE_SESSIONS[activePlan]
               foundSubscription.current_period_start = new Date(periodStart * 1000)
               foundSubscription.current_period_end = new Date(periodEnd * 1000)
               await this.subscriptionRepository.save(foundSubscription)
 
-              const qrBuffers = await generateFreeSessionQRs(foundSubscription.id, plan)
+              const qrBuffers = await generateFreeSessionQRs(foundSubscription.id, activePlan)
               const transporter = createTransporter()
 
               await transporter.sendMail({
                 from: process.env.MAILER_SENDER,
                 to: user.email,
-                subject: `Renouvellement abonnement – Vos nouvelles sessions gratuites`,
+                subject: `Renouvellement abonnement — Vos nouvelles sessions gratuites`,
                 attachments: qrBuffers.map((qr) => ({
                   filename: `session-gratuite-${qr.index}.png`,
                   content: qr.buffer,
@@ -773,19 +702,18 @@ export class OrderController extends Controller {
                         <div style="background-color: #1a1a2a; border-radius: 12px; padding: 32px; margin-bottom: 24px;">
                           <h2 style="color: #ffffff; font-size: 18px; margin: 0 0 16px;">Bonjour ${user.firstname} ${user.lastname},</h2>
                           <p style="color: #cccccc; line-height: 1.6; margin: 0 0 24px;">
-                            Votre abonnement a été renouvelé. Vous trouverez en pièces jointes vos ${PLAN_FREE_SESSIONS[plan]} nouveaux QR codes de sessions gratuites.
-                            Les anciens QR codes ne sont plus valides.
+                            Votre abonnement a été renouvelé. Vous trouverez en pièces jointes vos ${PLAN_FREE_SESSIONS[activePlan]} nouveaux QR codes de sessions gratuites. Les anciens QR codes ne sont plus valides.
                           </p>
                         </div>
                         <div style="background-color: #1a1a2a; border-radius: 12px; padding: 24px; margin-bottom: 24px; border-left: 4px solid #00c764;">
                           <table style="width: 100%; border-collapse: collapse;">
                             <tr style="border-bottom: 1px solid #2a2a3a;">
                               <td style="padding: 10px 0; color: #aaaaaa;">Plan</td>
-                              <td style="padding: 10px 0; color: #ffffff; text-align: right; font-weight: bold;">${plan}</td>
+                              <td style="padding: 10px 0; color: #ffffff; text-align: right; font-weight: bold;">${activePlan}</td>
                             </tr>
                             <tr>
                               <td style="padding: 10px 0; color: #aaaaaa;">Sessions gratuites rechargées</td>
-                              <td style="padding: 10px 0; color: #00c764; text-align: right; font-weight: bold;">${PLAN_FREE_SESSIONS[plan]}</td>
+                              <td style="padding: 10px 0; color: #00c764; text-align: right; font-weight: bold;">${PLAN_FREE_SESSIONS[activePlan]}</td>
                             </tr>
                           </table>
                         </div>
