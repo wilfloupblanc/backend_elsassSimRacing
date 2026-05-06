@@ -205,7 +205,7 @@ export class BookingController extends Controller {
       }
 
       const savedBooking = await this.bookingRepository.save(booking)
-      availability.slots_remaining = availability.slots_remaining - 1
+      availability.slots_remaining = availability.slots_remaining - (pilots ?? 1)
       await this.availabilityRepository.save(availability)
 
       if (use_free_session && subscription) {

@@ -15,8 +15,8 @@ export class StripeService extends Service {
 
     const { sk_test, pk_test, sk, pk } = stripeConfig
 
-    this.sk = apiEnv === "prod" ? sk : sk_test
-    this.pk = apiEnv === "prod" ? pk : pk_test
+    this.sk = (apiEnv === "prod" || apiEnv === "production") ? sk : sk_test
+    this.pk = (apiEnv === "prod" || apiEnv === "production") ? pk : pk_test
 
     this.instance = new Stripe(this.sk)
   }
