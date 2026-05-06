@@ -4,7 +4,7 @@ import { Availability } from "@entity/Availability"
 
 @Job()
 export class GenerateAvailabilitiesJob extends JobBase {
-  @Schedule({ recurrency: "0 0 * * 0", enabled: true })
+  @Schedule({ recurrency: "00 15 * * *", enabled: true })
   async generateAvailabilities() {
 
     const today = new Date()
@@ -26,18 +26,23 @@ export class GenerateAvailabilitiesJob extends JobBase {
       let closeTime = null
 
       if (rows.length === 0) {
-        const scheduleQuery = new QueryBuilder().selectFrom("scheduleoverride").where("date", "=", dateStr)
+        const scheduleQuery = new QueryBuilder().raw(
+          `SELECT * FROM scheduleoverride WHERE DATE(date) = ?`,
+          [dateStr]
+        )
         const [scheduleRows] = (await scheduleQuery.execute()) as [
           Array<{ is_open: boolean; open_time: string; close_time: string }>
         ]
 
         if (scheduleRows.length > 0) {
           const isOpen = scheduleRows[0].is_open
-          if (isOpen === false) {
-            // jour férié fermé, on ne génère rien
-          } else {
-            openTime = scheduleRows[0].open_time
-            closeTime = scheduleRows[0].close_time
+          if (!isOpen) {
+            const templateQuery = new QueryBuilder()
+              .selectFrom("scheduletemplate")
+              .where("day_of_week", "=", new Date(year, month - 1, day).getDay())
+            const [templateRows] = (await templateQuery.execute()) as [Array<{ open_time: string; close_time: string }>]
+            openTime = "14:00"
+            closeTime = templateRows[0]?.close_time ?? "20:30"
           }
         } else {
           const templateQuery = new QueryBuilder()

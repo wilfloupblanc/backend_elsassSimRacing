@@ -7,7 +7,7 @@ export class ScheduleTemplateFixtures extends Fixture {
     {day_of_week: 2, open_time: new Date('1970-01-01T10:00:00'), close_time: new Date('1970-01-01T20:30:00'), is_open: true},
     {day_of_week: 3, open_time: new Date('1970-01-01T10:00:00'), close_time: new Date('1970-01-01T20:30:00'), is_open: true},
     {day_of_week: 4, open_time: new Date('1970-01-01T10:00:00'), close_time: new Date('1970-01-01T20:30:00'), is_open: true},
-    {day_of_week: 5, open_time: new Date('1970-01-01T10:00:00'), close_time: new Date('1970-01-01T20:30:00'), is_open: true},
+    {day_of_week: 5, open_time: new Date('1970-01-01T10:00:00'), close_time: new Date('1970-01-01T22:30:00'), is_open: true},
     {day_of_week: 6, open_time: new Date('1970-01-01T10:00:00'), close_time: new Date('1970-01-01T22:30:00'), is_open: true},
     {day_of_week: 0, open_time: new Date('1970-01-01T14:00:00'), close_time: new Date('1970-01-01T20:30:00'), is_open: true},
   ]
