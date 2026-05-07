@@ -147,12 +147,6 @@ export class OrderController extends Controller {
         ULTRA: 8
       }
 
-      const PLAN_ORDER: Record<string, number> = {
-        STARTER: 1,
-        PLUS: 2,
-        ULTRA: 3
-      }
-
       const generateFreeSessionQRs = async (subId: number, plan: SubscriptionPlan) => {
         const qrBuffers: { buffer: Buffer; index: number }[] = []
         for (let i = 0; i < PLAN_FREE_SESSIONS[plan]; i++) {
@@ -216,6 +210,7 @@ export class OrderController extends Controller {
             // 3. Créer le booking + orderdetail réservation
             let session = null
             let availability = null
+            let bookingQrBuffer: Buffer | null = null
 
             if (availability_id && session_id) {
               availability = await this.availabilityRepository.find(availability_id)
@@ -246,6 +241,10 @@ export class OrderController extends Controller {
                 availability_id: availability_id,
                 user_id: Number(userId)
               })
+              bookingQrBuffer = await QRCode.toBuffer(
+                `${process.env.CLIENT_APP_URL}/admin/booking/${savedBooking.id}`,
+                { width: 300, margin: 2 }
+              )
 
               savedBooking.status = "confirmed"
               await this.bookingRepository.save(savedBooking)
@@ -255,7 +254,7 @@ export class OrderController extends Controller {
                 [availability.date, availability.start_time, end_time]
               )
               const [affectedSlots] = await slotsQuery.execute()
-              for (const slot of affectedSlots as any[]) {
+              for (const slot of affectedSlots as { id: number }[]) {
                 const slotEntity = await this.availabilityRepository.find(slot.id)
                 if (slotEntity) {
                   slotEntity.slots_remaining -= pilots
@@ -276,7 +275,8 @@ export class OrderController extends Controller {
             // 4. Gérer l'inscription événement
             const event_id = stripeSession.metadata.event_id
             const pilots_count = Number(stripeSession.metadata.pilots_count)
-            console.log("SELECTED VEHICLE:", stripeSession.metadata.selected_vehicle)
+            let savedEventBooking = null
+            let eventQrBuffer: Buffer | null = null
 
             if (event_id) {
               const eventBooking = new Booking()
@@ -296,11 +296,15 @@ export class OrderController extends Controller {
               eventBooking.vehicle = stripeSession.metadata.selected_vehicle || null
 
               await this.bookingRepository.save(eventBooking)
-
-              const savedEventBooking = await this.bookingRepository.findOneBy({
+              savedEventBooking = await this.bookingRepository.findOneBy({
                 event_id: Number(event_id),
                 user_id: Number(userId)
               })
+
+              eventQrBuffer = await QRCode.toBuffer(
+                `${process.env.CLIENT_APP_URL}/admin/booking/${savedEventBooking.id}`,
+                { width: 300, margin: 2 }
+              )
 
               await this.orderDetailsRepository.save({
                 price_each: amount,
@@ -313,6 +317,13 @@ export class OrderController extends Controller {
             }
 
             // 5. Traiter le panier + orderdetails + gift_vouchers
+            interface GiftVoucherMailData {
+              buffer: Buffer
+              recipientEmail: string
+              recipientName: string
+              sessionLabel: string
+            }
+            const giftVoucherMails: GiftVoucherMailData[] = []
             const cart = await this.cartRepository.findOneBy({ user_id: userId })
             if (cart) {
               const items = await this.cartRepository.findUserCartItems(cart.id)
@@ -338,6 +349,13 @@ export class OrderController extends Controller {
                   })
                   const savedGv = await this.giftVoucherRepository.findOneBy({ qr_code: qrCode })
                   if (!firstGiftVoucherId) firstGiftVoucherId = savedGv.id
+                  const qrBuffer = await QRCode.toBuffer(qrCode, { width: 300, margin: 2 })
+                  giftVoucherMails.push({
+                    buffer: qrBuffer,
+                    recipientEmail: r.email,
+                    recipientName: `${r.firstname} ${r.lastname}`,
+                    sessionLabel: `${item.duration_minutes} minutes`
+                  })
                 }
 
                 await this.orderDetailsRepository.save({
@@ -396,6 +414,13 @@ export class OrderController extends Controller {
                 from: process.env.MAILER_SENDER,
                 to: user.email,
                 subject: `Confirmation de réservation N°${orderNumber} — Elsass SimRacing`,
+                attachments: bookingQrBuffer ? [
+                  {
+                    filename: `reservation-${orderNumber}.png`,
+                    content: bookingQrBuffer,
+                    contentType: "image/png"
+                  }
+                ] : [],
                 html: `
                   <html>
                     <body style="margin: 0; padding: 0; background-color: #0a0a14; font-family: Arial, sans-serif; color: #ffffff;">
@@ -441,6 +466,14 @@ export class OrderController extends Controller {
                             le début de la session. Passé ce délai, aucun remboursement ne sera accordé.
                           </p>
                         </div>
+                        <div style="text-align: center; margin-bottom: 24px;">
+                          <a 
+                            href="${process.env.CLIENT_APP_URL}/order/success"
+                            style="display: inline-block; background-color: #245E97; color: #ffffff; text-decoration: none; padding: 14px 32px; border-radius: 8px; font-size: 15px; font-weight: bold;"
+                          >
+                            Voir ma confirmation
+                          </a>
+                        </div>
                         <div style="background-color: #1a1a2a; border-radius: 12px; padding: 24px; margin-bottom: 32px;">
                           <h3 style="color: #ffffff; font-size: 15px; margin: 0 0 12px;">Nous contacter</h3>
                           <p style="color: #cccccc; font-size: 14px; margin: 0;">
@@ -460,6 +493,109 @@ export class OrderController extends Controller {
                     </body>
                   </html>
                 `
+              })
+            }
+
+            if (giftVoucherMails.length > 0) {
+              await transporter.sendMail({
+                from: process.env.MAILER_SENDER,
+                to: user.email,
+                subject: `Vos bons cadeaux Elsass SimRacing – Commande N°${orderNumber}`,
+                attachments: giftVoucherMails.map((gv, index) => ({
+                  filename: `bon-cadeau-${index + 1}-${gv.recipientName.replace(/\s+/g, "-").toLowerCase()}.png`,
+                  content: gv.buffer,
+                  contentType: "image/png"
+                })),
+                html: `
+                        <html>
+                          <body style="margin: 0; padding: 0; background-color: #0a0a14; font-family: Arial, sans-serif; color: #ffffff;">
+                            <div style="max-width: 600px; margin: 0 auto; padding: 40px 20px;">
+                              <div style="text-align: center; margin-bottom: 32px;">
+                                <h1 style="color: #245E97; font-size: 28px; margin: 0;">ELSASS SIMRACING</h1>
+                                <p style="color: #aaaaaa; margin: 8px 0 0;">Vos bons cadeaux</p>
+                              </div>
+                              <div style="background-color: #1a1a2a; border-radius: 12px; padding: 32px; margin-bottom: 24px;">
+                                <h2 style="color: #ffffff; font-size: 18px; margin: 0 0 16px;">Bonjour ${user.firstname} ${user.lastname},</h2>
+                                <p style="color: #cccccc; line-height: 1.6; margin: 0 0 24px;">
+                                  Votre commande N°${orderNumber} a bien été confirmée. Vous trouverez en pièces jointes les QR codes de vos bons cadeaux, à transmettre à leurs destinataires.
+                                </p>
+                                <table style="width: 100%; border-collapse: collapse;">
+                                  ${giftVoucherMails.map((gv, index) => `
+                                    <tr style="border-bottom: 1px solid #2a2a3a;">
+                                      <td style="padding: 10px 0; color: #aaaaaa;">Bon ${index + 1}</td>
+                                      <td style="padding: 10px 0; color: #ffffff; text-align: right;">${gv.recipientName} — ${gv.sessionLabel}</td>
+                                    </tr>
+                                  `).join("")}
+                                </table>
+                              </div>
+                              <div style="background-color: #1a1a2a; border-radius: 12px; padding: 24px; margin-bottom: 32px;">
+                                <h3 style="color: #ffffff; font-size: 15px; margin: 0 0 12px;">Nous contacter</h3>
+                                <p style="color: #cccccc; font-size: 14px; margin: 0;">
+                                  📍 11 rue des dominicains, 67500 Haguenau<br>
+                                  📞 <a href="tel:+33640583619" style="color: #245E97;">0640583619</a><br>
+                                  ✉️ elsass.simracing@gmail.com
+                                </p>
+                              </div>
+                            </div>
+                          </body>
+                        </html>
+                      `
+              })
+            }
+            if (event_id && savedEventBooking) {
+              await transporter.sendMail({
+                from: process.env.MAILER_SENDER,
+                to: user.email,
+                subject: `Confirmation d'inscription événement N°${orderNumber} – Elsass SimRacing`,
+                attachments: eventQrBuffer ? [
+                  {
+                    filename: `inscription-evenement-${orderNumber}.png`,
+                    content: eventQrBuffer,
+                    contentType: "image/png"
+                  }
+                ] : [],
+                html: `
+                        <html>
+                          <body style="margin: 0; padding: 0; background-color: #0a0a14; font-family: Arial, sans-serif; color: #ffffff;">
+                            <div style="max-width: 600px; margin: 0 auto; padding: 40px 20px;">
+                              <div style="text-align: center; margin-bottom: 32px;">
+                                <h1 style="color: #245E97; font-size: 28px; margin: 0;">ELSASS SIMRACING</h1>
+                                <p style="color: #aaaaaa; margin: 8px 0 0;">Confirmation d'inscription événement</p>
+                              </div>
+                              <div style="background-color: #1a1a2a; border-radius: 12px; padding: 32px; margin-bottom: 24px;">
+                                <h2 style="color: #ffffff; font-size: 18px; margin: 0 0 16px;">Bonjour ${user.firstname} ${user.lastname},</h2>
+                                <p style="color: #cccccc; line-height: 1.6; margin: 0 0 24px;">
+                                  Votre inscription a bien été confirmée. Voici le récapitulatif :
+                                </p>
+                                <table style="width: 100%; border-collapse: collapse;">
+                                  <tr style="border-bottom: 1px solid #2a2a3a;">
+                                    <td style="padding: 12px 0; color: #aaaaaa;">Numéro de commande</td>
+                                    <td style="padding: 12px 0; color: #ffffff; text-align: right; font-weight: bold;">N°${orderNumber}</td>
+                                  </tr>
+                                  <tr style="border-bottom: 1px solid #2a2a3a;">
+                                    <td style="padding: 12px 0; color: #aaaaaa;">Montant payé</td>
+                                    <td style="padding: 12px 0; color: #245E97; text-align: right; font-weight: bold; font-size: 18px;">${amount.toFixed(2)} €</td>
+                                  </tr>
+                                </table>
+                              </div>
+                              <div style="background-color: #1a1a2a; border-radius: 12px; padding: 24px; margin-bottom: 24px; border-left: 4px solid #245E97;">
+                                <h3 style="color: #ffffff; font-size: 15px; margin: 0 0 12px;">Votre QR code</h3>
+                                <p style="color: #cccccc; font-size: 14px; line-height: 1.6; margin: 0;">
+                                  Votre QR code d'inscription est joint à cet email. Présentez-le à l'accueil le jour de l'événement.
+                                </p>
+                              </div>
+                              <div style="background-color: #1a1a2a; border-radius: 12px; padding: 24px; margin-bottom: 32px;">
+                                <h3 style="color: #ffffff; font-size: 15px; margin: 0 0 12px;">Nous contacter</h3>
+                                <p style="color: #cccccc; font-size: 14px; margin: 0;">
+                                  📍 11 rue des dominicains, 67500 Haguenau<br>
+                                  📞 <a href="tel:+33640583619" style="color: #245E97;">0640583619</a><br>
+                                  ✉️ elsass.simracing@gmail.com
+                                </p>
+                              </div>
+                            </div>
+                          </body>
+                        </html>
+                      `
               })
             }
           } catch (error) {
