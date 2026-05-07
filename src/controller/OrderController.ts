@@ -250,8 +250,18 @@ export class OrderController extends Controller {
               savedBooking.status = "confirmed"
               await this.bookingRepository.save(savedBooking)
 
-              availability.slots_remaining = availability.slots_remaining - pilots
-              await this.availabilityRepository.save(availability)
+              const slotsQuery = new QueryBuilder().raw(
+                `SELECT * FROM availability WHERE date = ? AND start_time >= ? AND start_time < ? AND is_open = true`,
+                [availability.date, availability.start_time, end_time]
+              )
+              const [affectedSlots] = await slotsQuery.execute()
+              for (const slot of affectedSlots as any[]) {
+                const slotEntity = await this.availabilityRepository.find(slot.id)
+                if (slotEntity) {
+                  slotEntity.slots_remaining -= pilots
+                  await this.availabilityRepository.save(slotEntity)
+                }
+              }
 
               await this.orderDetailsRepository.save({
                 price_each: session.price_normal,

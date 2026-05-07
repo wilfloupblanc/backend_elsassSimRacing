@@ -56,7 +56,7 @@ export class BookingRepository extends Repository<Booking> {
       LEFT JOIN session s ON s.id = b.session_id
       WHERE b.user_id = ?
         AND b.availability_id IS NOT NULL
-        AND b.status = 'confirmed'
+        AND b.status IN ('confirmed', 'pending_payment')
       ORDER BY b.date DESC, b.start_time DESC
     `, [userId])
     const [rows] = await query.execute()

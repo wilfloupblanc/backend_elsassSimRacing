@@ -105,10 +105,8 @@ export class BookingController extends Controller {
       }
 
       // Recrémenter les slots de disponibilité
-      const availability = await this.availabilityRepository.find(booking.availability_id)
-      if (availability) {
-        availability.slots_remaining = availability.slots_remaining + orderDetail.quantity
-        await this.availabilityRepository.save(availability)
+      if (booking.availability_id) {
+        await this.incrementSlots(booking.date, booking.start_time, booking.end_time, booking.pilots ?? 1)
       }
 
       // Recrémenter les sessions gratuites si c'était une session offerte
@@ -205,8 +203,7 @@ export class BookingController extends Controller {
       }
 
       const savedBooking = await this.bookingRepository.save(booking)
-      availability.slots_remaining = availability.slots_remaining - (pilots ?? 1)
-      await this.availabilityRepository.save(availability)
+      await this.decrementSlots(availability.date, availability.start_time, end_time, pilots ?? 1)
 
       if (use_free_session && subscription) {
         subscription.free_sessions_remaining -= 1
@@ -410,6 +407,36 @@ export class BookingController extends Controller {
     }
   }
 
+  private async decrementSlots(date: string | Date, startTime: string, endTime: string, pilots: number) {
+    const query = new QueryBuilder().raw(
+      `SELECT * FROM availability WHERE date = ? AND start_time >= ? AND start_time < ? AND is_open = true`,
+      [date, startTime, endTime]
+    )
+    const [slots] = await query.execute()
+    for (const slot of slots as any[]) {
+      const slotEntity = await this.availabilityRepository.find(slot.id)
+      if (slotEntity) {
+        slotEntity.slots_remaining -= pilots
+        await this.availabilityRepository.save(slotEntity)
+      }
+    }
+  }
+
+  private async incrementSlots(date: string | Date, startTime: string, endTime: string, pilots: number) {
+    const query = new QueryBuilder().raw(
+      `SELECT * FROM availability WHERE date = ? AND start_time >= ? AND start_time < ?`,
+      [date, startTime, endTime]
+    )
+    const [slots] = await query.execute()
+    for (const slot of slots as any[]) {
+      const slotEntity = await this.availabilityRepository.find(slot.id)
+      if (slotEntity) {
+        slotEntity.slots_remaining += pilots
+        await this.availabilityRepository.save(slotEntity)
+      }
+    }
+  }
+
   @Put({ path: "/:booking", resolve: { booking: Booking } })
   async update(booking: Booking) {
     try {
@@ -452,11 +479,7 @@ export class BookingController extends Controller {
 
       // Recrémentation availability
       if (booking.availability_id) {
-        const availability = await this.availabilityRepository.find(booking.availability_id)
-        if (availability) {
-          availability.slots_remaining += booking.pilots ?? 1
-          await this.availabilityRepository.save(availability)
-        }
+        await this.incrementSlots(booking.date, booking.start_time, booking.end_time, booking.pilots ?? 1)
       }
 
       // Recrémentation session gratuite si applicable
@@ -489,11 +512,7 @@ export class BookingController extends Controller {
 
       // Décrémentation availability
       if (booking.availability_id) {
-        const availability = await this.availabilityRepository.find(booking.availability_id)
-        if (availability) {
-          availability.slots_remaining -= booking.pilots ?? 1
-          await this.availabilityRepository.save(availability)
-        }
+        await this.decrementSlots(booking.date, booking.start_time, booking.end_time, booking.pilots ?? 1)
       }
 
       // Décrémentation session gratuite si applicable
