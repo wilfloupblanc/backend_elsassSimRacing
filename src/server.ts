@@ -5,6 +5,7 @@ import bcrypt from "bcrypt"
 import * as dotenv from "dotenv"
 import jwt from "jsonwebtoken"
 import * as process from "node:process"
+import { maintenanceMiddleware } from "@middleware/maintenanceMiddleware"
 
 
 dotenv.config()
@@ -54,6 +55,8 @@ app.use((req, res, next) => {
 
   next()
 })
+
+app.use(maintenanceMiddleware)
 
 // Enable scheduler (optional) - uncomment to activate scheduled jobs
 // Jobs are auto-discovered from src/jobs directory
