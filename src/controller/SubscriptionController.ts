@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, isAuthenticated, Patch, Post, Route } from "@lyra-js/core"
+import { Controller, Delete, Get, isAdmin, isAuthenticated, Patch, Post, Route } from "@lyra-js/core"
 
 import { Subscription } from "@entity/Subscription"
 
@@ -148,6 +148,19 @@ export class SubscriptionController extends Controller {
       })
 
       this.res.status(200).json({ message: "Subscription reactivated successfully" })
+    } catch (error) {
+      this.next(error)
+    }
+  }
+
+  @Patch({ path: "/:subscription/sessions", resolve: { subscription: Subscription }, middlewares: [isAdmin] })
+  async updateSessions(subscription: Subscription) {
+    try {
+      if (!subscription) return this.res.status(404).json({ message: "Subscription not found" })
+      const { free_sessions_remaining } = this.req.body
+      subscription.free_sessions_remaining = free_sessions_remaining
+      await this.subscriptionRepository.save(subscription)
+      this.res.status(200).json({ message: "Sessions updated successfully", subscription })
     } catch (error) {
       this.next(error)
     }

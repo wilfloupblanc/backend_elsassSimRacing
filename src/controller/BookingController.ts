@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, isAuthenticated, Post, Put, QueryBuilder, Route } from "@lyra-js/core"
+import { Controller, Delete, Get, isAdmin, isAuthenticated, Post, Put, QueryBuilder, Route } from "@lyra-js/core"
 import nodemailer from "nodemailer"
 
 import { Booking } from "@entity/Booking"
@@ -439,6 +439,80 @@ export class BookingController extends Controller {
       const updatedBooking = await this.bookingRepository.save(booking)
 
       this.res.status(200).json({ message: "Check-in effectué avec succès", updatedBooking })
+    } catch (error) {
+      this.next(error)
+    }
+  }
+
+  @Put({ path: "/:booking/cancel", resolve: { booking: Booking }, middlewares: [isAdmin] })
+  async adminCancel(booking: Booking) {
+    try {
+      if (!booking) return this.res.status(404).json({ message: "Booking not found" })
+      if (booking.status === "cancelled") return this.res.status(400).json({ message: "Booking already cancelled" })
+
+      // Recrémentation availability
+      if (booking.availability_id) {
+        const availability = await this.availabilityRepository.find(booking.availability_id)
+        if (availability) {
+          availability.slots_remaining += booking.pilots ?? 1
+          await this.availabilityRepository.save(availability)
+        }
+      }
+
+      // Recrémentation session gratuite si applicable
+      if (booking.is_free_session) {
+        const subscription = await this.subscriptionRepository.findOneBy({
+          user_id: booking.user_id,
+          status: "active"
+        })
+        if (subscription) {
+          subscription.free_sessions_remaining += 1
+          await this.subscriptionRepository.save(subscription)
+        }
+      }
+
+      booking.status = "cancelled"
+      booking.cancelled_at = new Date()
+      await this.bookingRepository.save(booking)
+
+      this.res.status(200).json({ message: "Booking cancelled successfully" })
+    } catch (error) {
+      this.next(error)
+    }
+  }
+
+  @Put({ path: "/:booking/restore", resolve: { booking: Booking }, middlewares: [isAdmin] })
+  async adminRestore(booking: Booking) {
+    try {
+      if (!booking) return this.res.status(404).json({ message: "Booking not found" })
+      if (booking.status !== "cancelled") return this.res.status(400).json({ message: "Booking is not cancelled" })
+
+      // Décrémentation availability
+      if (booking.availability_id) {
+        const availability = await this.availabilityRepository.find(booking.availability_id)
+        if (availability) {
+          availability.slots_remaining -= booking.pilots ?? 1
+          await this.availabilityRepository.save(availability)
+        }
+      }
+
+      // Décrémentation session gratuite si applicable
+      if (booking.is_free_session) {
+        const subscription = await this.subscriptionRepository.findOneBy({
+          user_id: booking.user_id,
+          status: "active"
+        })
+        if (subscription) {
+          subscription.free_sessions_remaining -= 1
+          await this.subscriptionRepository.save(subscription)
+        }
+      }
+
+      booking.status = "confirmed"
+      booking.cancelled_at = null
+      await this.bookingRepository.save(booking)
+
+      this.res.status(200).json({ message: "Booking restored successfully" })
     } catch (error) {
       this.next(error)
     }
