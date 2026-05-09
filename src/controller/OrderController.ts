@@ -61,20 +61,29 @@ export class OrderController extends Controller {
   async checkout() {
     try {
       const cart = await this.cartRepository.findOneBy({ user_id: this.req.user.id })
-      const { availability_id, session_id, pilots, event_id, event_price, event_title, pilots_count, selected_vehicle } = this.req.body
+      const {
+        availability_id,
+        session_id,
+        pilots,
+        event_id,
+        event_price,
+        event_title,
+        pilots_count,
+        selected_vehicle
+      } = this.req.body
       const sessions = session_id ? await this.sessionRepository.find(session_id) : null
       const user = await this.userRepository.find(this.req.user.id)
       const sessionPrice = sessions ? (user.is_member ? sessions.price_member : sessions.price_normal) : 0
 
       const cartLineItems = cart
         ? (await this.cartRepository.findUserCartItems(cart.id)).map((item: CartInterface) => ({
-          price_data: {
-            currency: "eur",
-            product_data: { name: `Ticket ${item.duration_minutes} minutes` },
-            unit_amount: item.price_normal * 100
-          },
-          quantity: item.quantity
-        }))
+            price_data: {
+              currency: "eur",
+              product_data: { name: `Ticket ${item.duration_minutes} minutes` },
+              unit_amount: item.price_normal * 100
+            },
+            quantity: item.quantity
+          }))
         : []
 
       const reservationLineItem = sessions
@@ -82,25 +91,33 @@ export class OrderController extends Controller {
           {
             price_data: {
               currency: "eur",
-              product_data: { name: `Réservation simulateur - ${sessions.duration_minutes} minutes` },
-              unit_amount: sessionPrice * 100
+              product_data: { name: `Réservation simulateur - ${sessions.duration_minutes} minutes (membre)` },
+              unit_amount: Math.round(user.is_member ? sessions.price_member * 100 : sessions.price_normal * 100)
             },
-            quantity: pilots
-          }
+            quantity: 1
+          },
+          ...(pilots > 1 ? [{
+            price_data: {
+              currency: "eur",
+              product_data: { name: `Réservation simulateur - ${sessions.duration_minutes} minutes` },
+              unit_amount: Math.round(sessions.price_normal * 100)
+            },
+            quantity: pilots - 1
+          }] : [])
         ]
         : []
 
       const eventLineItem = event_id
         ? [
-          {
-            price_data: {
-              currency: "eur",
-              product_data: { name: `Inscription événement - ${event_title}` },
-              unit_amount: Math.round(event_price * 100)
-            },
-            quantity: 1
-          }
-        ]
+            {
+              price_data: {
+                currency: "eur",
+                product_data: { name: `Inscription événement - ${event_title}` },
+                unit_amount: Math.round(event_price * 100)
+              },
+              quantity: 1
+            }
+          ]
         : []
 
       const lineItems = [...cartLineItems, ...reservationLineItem, ...eventLineItem]
@@ -117,7 +134,7 @@ export class OrderController extends Controller {
           availability_id: availability_id ?? null,
           event_id: event_id ?? null,
           pilots_count: pilots_count ?? null,
-          selected_vehicle: selected_vehicle ?? null,
+          selected_vehicle: selected_vehicle ?? null
         }
       })
 
@@ -162,15 +179,16 @@ export class OrderController extends Controller {
         return qrBuffers
       }
 
-      const createTransporter = () => nodemailer.createTransport({
-        host: process.env.MAILER_HOST,
-        port: Number(process.env.MAILER_PORT),
-        secure: false,
-        auth: {
-          user: process.env.MAILER_USER,
-          pass: process.env.MAILER_PASS
-        }
-      })
+      const createTransporter = () =>
+        nodemailer.createTransport({
+          host: process.env.MAILER_HOST,
+          port: Number(process.env.MAILER_PORT),
+          secure: false,
+          auth: {
+            user: process.env.MAILER_USER,
+            pass: process.env.MAILER_PASS
+          }
+        })
 
       if (event.type === "checkout.session.completed") {
         const stripeSession = event.data.object
@@ -184,7 +202,6 @@ export class OrderController extends Controller {
         const createdAt = new Date()
 
         this.res.status(200).json({ received: true })
-
         ;(async () => {
           try {
             // 1. Créer l'order
@@ -233,8 +250,15 @@ export class OrderController extends Controller {
               booking.date = availability.date
               booking.simulator_id = availableSimulator
               booking.user_id = Number(userId)
-              booking.price_paid = session.price_normal
+              const bookingUser = await this.userRepository.find(Number(userId))
+              const sessionPrice = session
+                ? (bookingUser.is_member
+                  ? session.price_member + (pilots - 1) * session.price_normal
+                  : session.price_normal * pilots)
+                : 0
+              booking.price_paid = sessionPrice
               booking.is_free_session = false
+              booking.pilots = pilots
 
               await this.bookingRepository.save(booking)
               const savedBooking = await this.bookingRepository.findOneBy({
@@ -414,13 +438,15 @@ export class OrderController extends Controller {
                 from: process.env.MAILER_SENDER,
                 to: user.email,
                 subject: `Confirmation de réservation N°${orderNumber} — Elsass SimRacing`,
-                attachments: bookingQrBuffer ? [
-                  {
-                    filename: `reservation-${orderNumber}.png`,
-                    content: bookingQrBuffer,
-                    contentType: "image/png"
-                  }
-                ] : [],
+                attachments: bookingQrBuffer
+                  ? [
+                      {
+                        filename: `reservation-${orderNumber}.png`,
+                        content: bookingQrBuffer,
+                        contentType: "image/png"
+                      }
+                    ]
+                  : [],
                 html: `
                   <html>
                     <body style="margin: 0; padding: 0; background-color: #0a0a14; font-family: Arial, sans-serif; color: #ffffff;">
@@ -520,12 +546,16 @@ export class OrderController extends Controller {
                                   Votre commande N°${orderNumber} a bien été confirmée. Vous trouverez en pièces jointes les QR codes de vos bons cadeaux, à transmettre à leurs destinataires.
                                 </p>
                                 <table style="width: 100%; border-collapse: collapse;">
-                                  ${giftVoucherMails.map((gv, index) => `
+                                  ${giftVoucherMails
+                                    .map(
+                                      (gv, index) => `
                                     <tr style="border-bottom: 1px solid #2a2a3a;">
                                       <td style="padding: 10px 0; color: #aaaaaa;">Bon ${index + 1}</td>
                                       <td style="padding: 10px 0; color: #ffffff; text-align: right;">${gv.recipientName} — ${gv.sessionLabel}</td>
                                     </tr>
-                                  `).join("")}
+                                  `
+                                    )
+                                    .join("")}
                                 </table>
                               </div>
                               <div style="background-color: #1a1a2a; border-radius: 12px; padding: 24px; margin-bottom: 32px;">
@@ -547,13 +577,15 @@ export class OrderController extends Controller {
                 from: process.env.MAILER_SENDER,
                 to: user.email,
                 subject: `Confirmation d'inscription événement N°${orderNumber} – Elsass SimRacing`,
-                attachments: eventQrBuffer ? [
-                  {
-                    filename: `inscription-evenement-${orderNumber}.png`,
-                    content: eventQrBuffer,
-                    contentType: "image/png"
-                  }
-                ] : [],
+                attachments: eventQrBuffer
+                  ? [
+                      {
+                        filename: `inscription-evenement-${orderNumber}.png`,
+                        content: eventQrBuffer,
+                        contentType: "image/png"
+                      }
+                    ]
+                  : [],
                 html: `
                         <html>
                           <body style="margin: 0; padding: 0; background-color: #0a0a14; font-family: Arial, sans-serif; color: #ffffff;">
@@ -602,7 +634,6 @@ export class OrderController extends Controller {
             console.log("WEBHOOK CHECKOUT ERROR:", error)
           }
         })()
-
       } else if (event.type === "customer.subscription.updated") {
         const stripeSubscription = event.data.object
 
@@ -619,7 +650,6 @@ export class OrderController extends Controller {
           foundSubscription.status = "pending_cancellation"
           await this.subscriptionRepository.save(foundSubscription)
           this.res.status(200).json({ received: true })
-
         } else if (
           stripeSubscription.cancel_at_period_end === false &&
           foundSubscription.status === "pending_cancellation"
@@ -628,13 +658,10 @@ export class OrderController extends Controller {
           foundSubscription.status = "active"
           await this.subscriptionRepository.save(foundSubscription)
           this.res.status(200).json({ received: true })
-
         } else if (stripeSubscription.cancel_at_period_end === false) {
           // Changement de plan — on récupère le nouveau plan via stripe_price_id en base
           const newPriceId = stripeSubscription.items.data[0]?.price?.id
-          const newPlanData = newPriceId
-            ? await this.planRepository.findOneBy({ stripe_price_id: newPriceId })
-            : null
+          const newPlanData = newPriceId ? await this.planRepository.findOneBy({ stripe_price_id: newPriceId }) : null
           const newPlan = newPlanData?.plan as SubscriptionPlan
           const oldPlan = foundSubscription.plan as SubscriptionPlan
 
@@ -646,17 +673,14 @@ export class OrderController extends Controller {
           }
 
           this.res.status(200).json({ received: true })
-
         } else {
           this.res.status(200).json({ received: true })
         }
-
       } else if (event.type === "customer.subscription.created") {
         const stripeSubscription = event.data.object
         const customerId = stripeSubscription.customer
 
         this.res.status(200).json({ received: true })
-
         ;(async () => {
           try {
             const checkoutSessions = await this.stripeService.instance.checkout.sessions.list({
@@ -707,9 +731,7 @@ export class OrderController extends Controller {
               stripe_subscription_id: stripeSubscription.id
             })
 
-            const qrBuffers = skipFreeSessionGeneration
-              ? []
-              : await generateFreeSessionQRs(savedSubscription.id, plan)
+            const qrBuffers = skipFreeSessionGeneration ? [] : await generateFreeSessionQRs(savedSubscription.id, plan)
 
             const transporter = createTransporter()
 
@@ -734,10 +756,10 @@ export class OrderController extends Controller {
                         <h2 style="color: #ffffff; font-size: 18px; margin: 0 0 16px;">Bonjour ${user.firstname} ${user.lastname},</h2>
                         <p style="color: #cccccc; line-height: 1.6; margin: 0 0 24px;">
                           ${
-                skipFreeSessionGeneration
-                  ? `Bienvenue ! Votre abonnement a bien été activé. Vos sessions gratuites seront disponibles à partir du prochain cycle de facturation.`
-                  : `Bienvenue ! Vous trouverez en pièces jointes vos ${PLAN_FREE_SESSIONS[plan]} QR codes de sessions gratuites. Chaque QR code est nominatif et à usage unique — présentez-en un à l'accueil pour chaque session gratuite.`
-              }
+                            skipFreeSessionGeneration
+                              ? `Bienvenue ! Votre abonnement a bien été activé. Vos sessions gratuites seront disponibles à partir du prochain cycle de facturation.`
+                              : `Bienvenue ! Vous trouverez en pièces jointes vos ${PLAN_FREE_SESSIONS[plan]} QR codes de sessions gratuites. Chaque QR code est nominatif et à usage unique — présentez-en un à l'accueil pour chaque session gratuite.`
+                          }
                         </p>
                       </div>
                       <div style="background-color: #1a1a2a; border-radius: 12px; padding: 24px; margin-bottom: 24px; border-left: 4px solid #245E97;">
@@ -771,7 +793,6 @@ export class OrderController extends Controller {
             console.log("WEBHOOK SUBSCRIPTION CREATED ERROR:", error)
           }
         })()
-
       } else if (event.type === "customer.subscription.deleted") {
         const stripeSubscription = event.data.object
         const foundSubscription = await this.subscriptionRepository.findOneBy({
@@ -790,7 +811,6 @@ export class OrderController extends Controller {
         await this.subscriptionRepository.save(foundSubscription)
 
         this.res.status(200).json({ received: true })
-
       } else if (event.type === "invoice.paid") {
         const invoice = event.data.object
 
@@ -881,7 +901,6 @@ export class OrderController extends Controller {
             }
           })()
         }
-
       } else {
         this.res.status(200).json({ received: true })
       }

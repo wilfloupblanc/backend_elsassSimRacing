@@ -194,11 +194,15 @@ export class BookingController extends Controller {
         booking.is_free_session = true
         booking.status = "confirmed"
       } else if (pay_on_site) {
-        booking.price_paid = this.req.user.is_member ? session.price_member : session.price_normal
+        booking.price_paid = this.req.user.is_member
+          ? session.price_member + (pilots - 1) * session.price_normal
+          : session.price_normal * pilots
         booking.is_free_session = false
         booking.status = "pending_payment"
       } else {
-        booking.price_paid = this.req.user.is_member ? session.price_member : session.price_normal
+        booking.price_paid = this.req.user.is_member
+          ? session.price_member + (pilots - 1) * session.price_normal
+          : session.price_normal * pilots
         booking.is_free_session = false
       }
 
