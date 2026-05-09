@@ -73,7 +73,6 @@ export class OrderController extends Controller {
       } = this.req.body
       const sessions = session_id ? await this.sessionRepository.find(session_id) : null
       const user = await this.userRepository.find(this.req.user.id)
-      const sessionPrice = sessions ? (user.is_member ? sessions.price_member : sessions.price_normal) : 0
 
       const cartLineItems = cart
         ? (await this.cartRepository.findUserCartItems(cart.id)).map((item: CartInterface) => ({
