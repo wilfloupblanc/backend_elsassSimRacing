@@ -69,20 +69,36 @@ export class OrderController extends Controller {
         event_price,
         event_title,
         pilots_count,
-        selected_vehicle
+        selected_vehicle,
+        discount_code
       } = this.req.body
       const sessions = session_id ? await this.sessionRepository.find(session_id) : null
       const user = await this.userRepository.find(this.req.user.id)
+      const subscription = await this.subscriptionRepository.findOneBy({ user_id: user.id })
+      const hasMemberPrice = user.is_member && subscription?.plan !== "STARTER"
+
+      let discount = null
+      if (discount_code) {
+        discount = await this.discountCodeRepository.findOneBy({ code: discount_code })
+      }
+
+      const applyDiscount = (amountInCents: number): number => {
+        if (!discount) return amountInCents
+        if (discount.type === 'percent') {
+          return Math.round(amountInCents * (1 - discount.value / 100))
+        }
+        return Math.max(0, amountInCents - Math.round(discount.value * 100))
+      }
 
       const cartLineItems = cart
         ? (await this.cartRepository.findUserCartItems(cart.id)).map((item: CartInterface) => ({
-            price_data: {
-              currency: "eur",
-              product_data: { name: `Ticket ${item.duration_minutes} minutes` },
-              unit_amount: item.price_normal * 100
-            },
-            quantity: item.quantity
-          }))
+          price_data: {
+            currency: "eur",
+            product_data: { name: `Ticket ${item.duration_minutes} minutes` },
+            unit_amount: applyDiscount(item.price_normal * 100)
+          },
+          quantity: item.quantity
+        }))
         : []
 
       const reservationLineItem = sessions
@@ -90,8 +106,8 @@ export class OrderController extends Controller {
           {
             price_data: {
               currency: "eur",
-              product_data: { name: `Réservation simulateur - ${sessions.duration_minutes} minutes (membre)` },
-              unit_amount: Math.round(user.is_member ? sessions.price_member * 100 : sessions.price_normal * 100)
+              product_data: { name: `Réservation simulateur - ${sessions.duration_minutes} minutes` },
+              unit_amount: applyDiscount(Math.round(hasMemberPrice ? sessions.price_member * 100 : sessions.price_normal * 100))
             },
             quantity: 1
           },
@@ -99,7 +115,7 @@ export class OrderController extends Controller {
             price_data: {
               currency: "eur",
               product_data: { name: `Réservation simulateur - ${sessions.duration_minutes} minutes` },
-              unit_amount: Math.round(sessions.price_normal * 100)
+              unit_amount: applyDiscount(Math.round(sessions.price_normal * 100))
             },
             quantity: pilots - 1
           }] : [])
@@ -108,15 +124,15 @@ export class OrderController extends Controller {
 
       const eventLineItem = event_id
         ? [
-            {
-              price_data: {
-                currency: "eur",
-                product_data: { name: `Inscription événement - ${event_title}` },
-                unit_amount: Math.round(event_price * 100)
-              },
-              quantity: 1
-            }
-          ]
+          {
+            price_data: {
+              currency: "eur",
+              product_data: { name: `Inscription événement - ${event_title}` },
+              unit_amount: applyDiscount(Math.round(event_price * 100))
+            },
+            quantity: 1
+          }
+        ]
         : []
 
       const lineItems = [...cartLineItems, ...reservationLineItem, ...eventLineItem]
@@ -133,12 +149,14 @@ export class OrderController extends Controller {
           availability_id: availability_id ?? null,
           event_id: event_id ?? null,
           pilots_count: pilots_count ?? null,
-          selected_vehicle: selected_vehicle ?? null
+          selected_vehicle: selected_vehicle ?? null,
+          discount_code: discount_code ?? null
         }
       })
 
       this.res.status(200).json({ url: session.url })
     } catch (error) {
+      console.log("Checkout error:", error)
       this.next(error)
     }
   }
@@ -203,12 +221,25 @@ export class OrderController extends Controller {
         this.res.status(200).json({ received: true })
         ;(async () => {
           try {
+            // 0. Incrémenter uses_count du code de réduction
+            const discount_code = stripeSession.metadata.discount_code
+            if (discount_code) {
+              const discount = await this.discountCodeRepository.findOneBy({ code: discount_code })
+              if (discount) {
+                discount.uses_count += 1
+                if (discount.max_uses !== null && discount.uses_count >= discount.max_uses) {
+                  discount.is_active = 0
+                }
+                await this.discountCodeRepository.save(discount)
+              }
+            }
             // 1. Créer l'order
             await this.orderRepository.save({
               related_user_id: userId,
               amount,
               created_at: createdAt,
-              number: orderNumber
+              number: orderNumber,
+              discount_code: discount_code ?? null
             })
             const savedOrder = await this.orderRepository.findOneBy({ number: orderNumber })
 
@@ -250,8 +281,10 @@ export class OrderController extends Controller {
               booking.simulator_id = availableSimulator
               booking.user_id = Number(userId)
               const bookingUser = await this.userRepository.find(Number(userId))
+              const subscription = await this.subscriptionRepository.findOneBy({ user_id: Number(userId) })
+              const hasMemberPrice = bookingUser.is_member && subscription?.plan !== "STARTER"
               const sessionPrice = session
-                ? (bookingUser.is_member
+                ? (hasMemberPrice
                   ? session.price_member + (pilots - 1) * session.price_normal
                   : session.price_normal * pilots)
                 : 0
@@ -422,13 +455,14 @@ export class OrderController extends Controller {
                 subject: `Nouvelle commande N°${orderNumber} - Elsass SimRacing`,
                 html: `
                   <html><body>
-                    <p>Commande N°: ${orderNumber}</p>
-                    <p>Passée le: ${createdAt}</p>
-                    <p>Client: ${user.firstname} ${user.lastname} (${user.email})</p>
-                    <p>Réservation: ${session?.duration_minutes} minutes - ${pilots} pilote(s)</p>
-                    <p>Date: ${dateFormatted}</p>
-                    <p>Heure de début: ${availability?.start_time}</p>
-                    <p>Montant: ${amount} €</p>
+                      <p>Commande N°: ${orderNumber}</p>
+                      <p>Passée le: ${createdAt}</p>
+                      <p>Client: ${user.firstname} ${user.lastname} (${user.email})</p>
+                      <p>Réservation: ${session?.duration_minutes} minutes - ${pilots} pilote(s)</p>
+                      <p>Date: ${dateFormatted}</p>
+                      <p>Heure de début: ${availability?.start_time}</p>
+                      ${discount_code ? `<p>Code de réduction utilisé: ${discount_code}</p>` : ''}
+                      <p>Montant: ${amount.toFixed(2)} €</p>
                   </body></html>
                 `
               })
@@ -478,9 +512,15 @@ export class OrderController extends Controller {
                               <td style="padding: 12px 0; color: #aaaaaa;">Nombre de pilotes</td>
                               <td style="padding: 12px 0; color: #ffffff; text-align: right;">${pilots}</td>
                             </tr>
+                            ${discount_code ? `
+                            <tr style="border-bottom: 1px solid #2a2a3a;">
+                                <td style="padding: 12px 0; color: #aaaaaa;">Code de réduction</td>
+                                <td style="padding: 12px 0; color: #00c764; text-align: right; font-weight: bold;">${discount_code}</td>
+                            </tr>
+                            ` : ''}
                             <tr>
-                              <td style="padding: 12px 0; color: #aaaaaa;">Montant payé</td>
-                              <td style="padding: 12px 0; color: #245E97; text-align: right; font-weight: bold; font-size: 18px;">${amount.toFixed(2)} €</td>
+                                <td style="padding: 12px 0; color: #aaaaaa;">Montant payé</td>
+                                <td style="padding: 12px 0; color: #245E97; text-align: right; font-weight: bold; font-size: 18px;">${amount.toFixed(2)} €</td>
                             </tr>
                           </table>
                         </div>

@@ -151,8 +151,9 @@ export class AuthController extends Controller {
   async getAuthenticatedUser() {
     try {
       const user = this.req.user as User
-
       if (!user) throw new UnauthorizedException()
+
+      const subscription = await this.subscriptionRepository.findOneBy({ user_id: user.id })
 
       this.res.status(200).json({
         id: user.id,
@@ -160,7 +161,8 @@ export class AuthController extends Controller {
         lastname: user.lastname,
         email: user.email,
         role: user.role,
-        is_member: user.is_member
+        is_member: user.is_member,
+        plan: subscription?.plan ?? null
       })
     } catch (error) {
       this.next(error)

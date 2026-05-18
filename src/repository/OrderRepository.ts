@@ -11,6 +11,7 @@ export class OrderRepository extends Repository<UserOrder> {
            o.amount,
            o.number as order_number,
            o.created_at,
+           o.discount_code,
            od.quantity,
            od.price_each,
            od.gift_voucher_id,
