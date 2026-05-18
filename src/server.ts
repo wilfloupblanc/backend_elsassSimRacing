@@ -1,12 +1,11 @@
 import "reflect-metadata"
 
 import { Config, createServer, LyraConsole, SecurityConfig } from "@lyra-js/core"
+import { maintenanceMiddleware } from "@middleware/maintenanceMiddleware"
 import bcrypt from "bcrypt"
 import * as dotenv from "dotenv"
 import jwt from "jsonwebtoken"
 import * as process from "node:process"
-import { maintenanceMiddleware } from "@middleware/maintenanceMiddleware"
-
 
 dotenv.config()
 process.env.TZ = process.env.TZ || "Europe/Paris"
@@ -31,23 +30,21 @@ app.register(jwt, "jwt")
 
 // CORS middleware
 app.use((req, res, next) => {
-  const allowedOrigins = [
-    process.env.CLIENT_APP_URL,
-    'http://localhost:5173',
-    'http://localhost:5174',
-    'app://.',
-  ]
+  const allowedOrigins = [process.env.CLIENT_APP_URL, "http://localhost:5173", "http://localhost:5174", "app://."]
   const origin = req.headers.origin
 
   if (!origin || allowedOrigins.includes(origin)) {
-    res.setHeader('Access-Control-Allow-Origin', origin || '*')
+    res.setHeader("Access-Control-Allow-Origin", origin || "*")
   }
 
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, PUT, DELETE, OPTIONS')
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Access-Control-Allow-Origin, Access-Control-Allow-Headers')
-  res.setHeader('Access-Control-Allow-Credentials', 'true')
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, PUT, DELETE, OPTIONS")
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Content-Type, Authorization, Access-Control-Allow-Origin, Access-Control-Allow-Headers"
+  )
+  res.setHeader("Access-Control-Allow-Credentials", "true")
 
-  if (req.method === 'OPTIONS') {
+  if (req.method === "OPTIONS") {
     res.statusCode = 204
     res.end()
     return
@@ -66,7 +63,6 @@ app.enableScheduler({ timezone: "Europe/Paris" })
 app.serveStatic("/assets", {
   root: "public/assets"
 })
-
 
 // Controllers are auto-discovered and registered from src/controller directory
 // Repositories and Services are auto-injected via DIContainer

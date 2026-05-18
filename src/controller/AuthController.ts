@@ -12,6 +12,7 @@ import {
 } from "@lyra-js/core"
 
 import { User } from "@entity/User"
+import nodemailer from "nodemailer"
 
 const securityConfig = new SecurityConfig().getConfig()
 
@@ -159,7 +160,7 @@ export class AuthController extends Controller {
         lastname: user.lastname,
         email: user.email,
         role: user.role,
-        is_member: user.is_member,
+        is_member: user.is_member
       })
     } catch (error) {
       this.next(error)
@@ -244,6 +245,96 @@ export class AuthController extends Controller {
         .json({ message: "User authenticated in successfully", user: userWithoutPassword, token, refreshToken })
     } catch (_refreshError) {
       return this.res.redirect(securityConfig.auth_routes.sign_out)
+    }
+  }
+
+  @Post({ path: "/forgot-password" })
+  async forgotPassword() {
+    try {
+      const { email } = this.req.body
+      if (!email) return this.badRequest("Missing required fields")
+
+      const user = await this.userRepository.findOneBy({ email })
+      if (!user) {
+        return this.res.status(200).json({ message: "Si cet email existe, un lien a été envoyé." })
+      }
+
+      const resetToken = this.jwt.sign(
+        { id: user.id, purpose: "password-reset" },
+        securityConfig.jwt.secret_key as string,
+        {
+          algorithm: securityConfig.jwt.algorithm as string,
+          expiresIn: 7200
+        }
+      )
+
+      const resetLink = `${process.env.CLIENT_APP_URL}/reset-password?token=${resetToken}`
+
+      const transporter = nodemailer.createTransport({
+        host: process.env.MAILER_HOST,
+        port: Number(process.env.MAILER_PORT),
+        secure: false,
+        auth: {
+          user: process.env.MAILER_USER,
+          pass: process.env.MAILER_PASS,
+        },
+      })
+
+      await transporter.sendMail({
+        from: process.env.MAILER_SENDER,
+        to: email,
+        subject: "Réinitialisation de ton mot de passe – Elsass SimRacing",
+        html: `
+                <html>
+                  <body>
+                    <p>Bonjour,</p>
+                    <p>Tu as demandé à réinitialiser ton mot de passe.</p>
+                    <p>Clique sur ce lien (valable 1h) :</p>
+                    <a href="${resetLink}">${resetLink}</a>
+                    <p>Si tu n'es pas à l'origine de cette demande, ignore cet email.</p>
+                  </body>
+                </html>
+            `,
+      })
+
+      this.res.status(200).json({ message: "Si cet email existe, un lien a été envoyé." })
+    } catch (error) {
+      this.next(error)
+    }
+  }
+
+  @Post({ path: "/reset-password" })
+  async resetPassword() {
+    try {
+      const { token, password } = this.req.body
+
+      if (!token || !password) return this.badRequest("Missing required fields")
+
+      if (!Validator.isPasswordValid(password)) {
+        return this.badRequest("Invalid password")
+      }
+
+      let decoded: { id: number; purpose: string }
+      try {
+        decoded = this.jwt.verify(token, securityConfig.jwt.secret_key as string) as { id: number; purpose: string }
+      } catch (_) {
+        return this.res.status(400).json({ error: "Token invalide ou expiré." })
+      }
+
+      if (decoded.purpose !== "password-reset") {
+        return this.res.status(400).json({ error: "Token invalide." })
+      }
+
+      const user = await this.userRepository.find(decoded.id)
+      if (!user) return this.badRequest("User not found")
+
+      user.password = await this.bcrypt.hash(password, 10)
+      user.updated_at = new Date()
+      await this.userRepository.save(user)
+
+      this.res.status(200).json({ message: "Mot de passe mis à jour avec succès." })
+    } catch (error) {
+      this.next(error)
     }
   }
 
