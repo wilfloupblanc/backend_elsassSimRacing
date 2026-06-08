@@ -860,22 +860,38 @@ export class OrderController extends Controller {
             try {
               const periodStart = invoice.lines.data[0]?.period?.start
               const periodEnd = invoice.lines.data[0]?.period?.end
-              const customerId = invoice.customer
+
+              const customerId = typeof invoice.customer === "string"
+                ? invoice.customer
+                : (invoice.customer as any)?.id
+
+              const stripeSubscriptionId = typeof invoice.subscription === "string"
+                ? invoice.subscription
+                : (invoice.subscription as any)?.id
+
+              console.log("INVOICE PAID - customerId:", customerId)
+              console.log("INVOICE PAID - stripeSubscriptionId:", stripeSubscriptionId)
+              console.log("INVOICE PAID - billing_reason:", invoice.billing_reason)
 
               const user = await this.userRepository.findOneBy({ stripe_customer_id: customerId })
-              if (!user) return
+              if (!user) {
+                console.log("INVOICE PAID - user not found for customerId:", customerId)
+                return
+              }
 
-              const stripeSubscriptionId = invoice.subscription
               const foundSubscription = await this.subscriptionRepository.findOneBy({
                 stripe_subscription_id: stripeSubscriptionId
               })
-              if (!foundSubscription) return
+              if (!foundSubscription) {
+                console.log("INVOICE PAID - subscription not found for:", stripeSubscriptionId)
+                return
+              }
 
               const plan = foundSubscription.plan as SubscriptionPlan
 
               // Le plan effectif est le pending_plan s'il existe, sinon le plan actuel
               // C'est ici que le changement de plan devient effectif (upgrade ou downgrade)
-              const activePlan = (foundSubscription.pending_plan ?? plan) as SubscriptionPlan
+              const activePlan = (foundSubscription.pending_plan || plan) as SubscriptionPlan
 
               foundSubscription.plan = activePlan
               foundSubscription.pending_plan = null
