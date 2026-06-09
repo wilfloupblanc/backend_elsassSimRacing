@@ -7,10 +7,10 @@ import { randomBytes } from "crypto"
 // CONFIGURATION — remplace par les vraies valeurs prod
 // ============================================================
 const DB_CONFIG = {
-  host: "temp-mariadb",
+  host: "127.0.0.1",
   port: 3306,
-  user: "elsass_simracing",
-  password: "PqV0B7hSldfyGTcirCwjO4dNl3N1ggm",
+  user: "root",
+  password: "root_password",
   database: "elsass_simracing",
 }
 
@@ -75,7 +75,7 @@ for (const subId of SUBSCRIPTION_IDS) {
   for (let i = 0; i < sessionCount; i++) {
     const qrToken = randomBytes(32).toString("hex")
     await db.execute(
-      `INSERT INTO free_session_token (qr_token, is_used, created_at, sub_id) VALUES (?, false, NOW(), ?)`,
+      `INSERT INTO freesessiontoken (qr_token, is_used, created_at, sub_id) VALUES (?, false, NOW(), ?)`,
       [qrToken, subId]
     )
     const buffer = await QRCode.toBuffer(qrToken, { width: 300, margin: 2 })

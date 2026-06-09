@@ -59442,3 +59442,418 @@
 [2026-05-22T07:25:56.366Z] [WARN] [2026-05-22T07:25:56.364Z] GET /api/auth/user ➞ UNAUTHORIZED 401 (2ms)
 [2026-05-22T07:25:56.366Z] [SUCCESS] [2026-05-22T07:25:56.362Z] GET /api/setting/maintenance/status ➞ OK 200 (4ms)
 [2026-05-22T07:25:59.361Z] [SUCCESS] [2026-05-22T07:25:59.357Z] GET /api/setting/maintenance/status ➞ OK 200 (4ms)
+[2026-06-09T14:08:04.935Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T14:08:04.940Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T14:08:11.364Z] [ERROR] [2026-06-09T14:08:11.364Z] POST /order/webhook - undefined - connect ECONNREFUSED 127.0.0.1:3306 | User-Agent: Stripe/1.0 (+https://stripe.com/docs/webhooks) | IP: ::ffff:127.0.0.1
+[2026-06-09T14:08:11.368Z] [ERROR] Stack: Error: connect ECONNREFUSED 127.0.0.1:3306
+    at SettingRepository.Repository.findOneBy (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/src/orm/Repository.ts:83:29)
+    at Object.maintenanceMiddleware (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/src/middleware/maintenanceMiddleware.ts:14:43)
+    at <anonymous> (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1146:39)
+    at new Promise (<anonymous>)
+    at LyraServer.executeMiddlewares (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1132:19)
+    at async LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1275:13)
+[2026-06-09T14:08:11.378Z] [ERROR] [2026-06-09T14:08:11.322Z] POST /order/webhook ➞ INTERNAL_SERVER_ERROR 500 (56ms)
+[2026-06-09T14:08:12.027Z] [ERROR] [2026-06-09T14:08:12.027Z] POST /order/webhook - undefined - connect ECONNREFUSED 127.0.0.1:3306 | User-Agent: Stripe/1.0 (+https://stripe.com/docs/webhooks) | IP: ::ffff:127.0.0.1
+[2026-06-09T14:08:12.030Z] [ERROR] Stack: Error: connect ECONNREFUSED 127.0.0.1:3306
+    at SettingRepository.Repository.findOneBy (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/src/orm/Repository.ts:83:29)
+    at Object.maintenanceMiddleware (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/src/middleware/maintenanceMiddleware.ts:14:43)
+    at <anonymous> (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1146:39)
+    at new Promise (<anonymous>)
+    at LyraServer.executeMiddlewares (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1132:19)
+    at async LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1275:13)
+[2026-06-09T14:08:12.032Z] [ERROR] [2026-06-09T14:08:12.019Z] POST /order/webhook ➞ INTERNAL_SERVER_ERROR 500 (13ms)
+[2026-06-09T14:08:12.483Z] [ERROR] [2026-06-09T14:08:12.483Z] POST /order/webhook - undefined - connect ECONNREFUSED 127.0.0.1:3306 | User-Agent: Stripe/1.0 (+https://stripe.com/docs/webhooks) | IP: ::ffff:127.0.0.1
+[2026-06-09T14:08:12.486Z] [ERROR] Stack: Error: connect ECONNREFUSED 127.0.0.1:3306
+    at SettingRepository.Repository.findOneBy (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/src/orm/Repository.ts:83:29)
+    at Object.maintenanceMiddleware (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/src/middleware/maintenanceMiddleware.ts:14:43)
+    at <anonymous> (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1146:39)
+    at new Promise (<anonymous>)
+    at LyraServer.executeMiddlewares (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1132:19)
+    at async LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1275:13)
+[2026-06-09T14:08:12.488Z] [ERROR] [2026-06-09T14:08:12.474Z] POST /order/webhook ➞ INTERNAL_SERVER_ERROR 500 (14ms)
+[2026-06-09T14:08:12.583Z] [ERROR] [2026-06-09T14:08:12.583Z] POST /order/webhook - undefined - connect ECONNREFUSED 127.0.0.1:3306 | User-Agent: Stripe/1.0 (+https://stripe.com/docs/webhooks) | IP: ::ffff:127.0.0.1
+[2026-06-09T14:08:12.585Z] [ERROR] Stack: Error: connect ECONNREFUSED 127.0.0.1:3306
+    at SettingRepository.Repository.findOneBy (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/src/orm/Repository.ts:83:29)
+    at Object.maintenanceMiddleware (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/src/middleware/maintenanceMiddleware.ts:14:43)
+    at <anonymous> (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1146:39)
+    at new Promise (<anonymous>)
+    at LyraServer.executeMiddlewares (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1132:19)
+    at async LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1275:13)
+[2026-06-09T14:08:12.587Z] [ERROR] [2026-06-09T14:08:12.576Z] POST /order/webhook ➞ INTERNAL_SERVER_ERROR 500 (11ms)
+[2026-06-09T14:08:13.066Z] [ERROR] [2026-06-09T14:08:13.066Z] POST /order/webhook - undefined - connect ECONNREFUSED 127.0.0.1:3306 | User-Agent: Stripe/1.0 (+https://stripe.com/docs/webhooks) | IP: ::ffff:127.0.0.1
+[2026-06-09T14:08:13.067Z] [ERROR] Stack: Error: connect ECONNREFUSED 127.0.0.1:3306
+    at SettingRepository.Repository.findOneBy (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/src/orm/Repository.ts:83:29)
+    at Object.maintenanceMiddleware (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/src/middleware/maintenanceMiddleware.ts:14:43)
+    at <anonymous> (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1146:39)
+    at new Promise (<anonymous>)
+    at LyraServer.executeMiddlewares (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1132:19)
+    at async LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1275:13)
+[2026-06-09T14:08:13.069Z] [ERROR] [2026-06-09T14:08:13.059Z] POST /order/webhook ➞ INTERNAL_SERVER_ERROR 500 (10ms)
+[2026-06-09T14:08:17.206Z] [ERROR] [2026-06-09T14:08:17.206Z] POST /order/webhook - undefined - connect ECONNREFUSED 127.0.0.1:3306 | User-Agent: Stripe/1.0 (+https://stripe.com/docs/webhooks) | IP: ::ffff:127.0.0.1
+[2026-06-09T14:08:17.208Z] [ERROR] Stack: Error: connect ECONNREFUSED 127.0.0.1:3306
+    at SettingRepository.Repository.findOneBy (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/src/orm/Repository.ts:83:29)
+    at Object.maintenanceMiddleware (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/src/middleware/maintenanceMiddleware.ts:14:43)
+    at <anonymous> (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1146:39)
+    at new Promise (<anonymous>)
+    at LyraServer.executeMiddlewares (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1132:19)
+    at async LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1275:13)
+[2026-06-09T14:08:17.211Z] [ERROR] [2026-06-09T14:08:17.199Z] POST /order/webhook ➞ INTERNAL_SERVER_ERROR 500 (11ms)
+[2026-06-09T14:08:17.358Z] [ERROR] [2026-06-09T14:08:17.358Z] POST /order/webhook - undefined - connect ECONNREFUSED 127.0.0.1:3306 | User-Agent: Stripe/1.0 (+https://stripe.com/docs/webhooks) | IP: ::ffff:127.0.0.1
+[2026-06-09T14:08:17.360Z] [ERROR] Stack: Error: connect ECONNREFUSED 127.0.0.1:3306
+    at SettingRepository.Repository.findOneBy (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/src/orm/Repository.ts:83:29)
+    at Object.maintenanceMiddleware (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/src/middleware/maintenanceMiddleware.ts:14:43)
+    at <anonymous> (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1146:39)
+    at new Promise (<anonymous>)
+    at LyraServer.executeMiddlewares (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1132:19)
+    at async LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1275:13)
+[2026-06-09T14:08:17.362Z] [ERROR] [2026-06-09T14:08:17.351Z] POST /order/webhook ➞ INTERNAL_SERVER_ERROR 500 (11ms)
+[2026-06-09T14:08:17.474Z] [ERROR] [2026-06-09T14:08:17.474Z] POST /order/webhook - undefined - connect ECONNREFUSED 127.0.0.1:3306 | User-Agent: Stripe/1.0 (+https://stripe.com/docs/webhooks) | IP: ::ffff:127.0.0.1
+[2026-06-09T14:08:17.475Z] [ERROR] Stack: Error: connect ECONNREFUSED 127.0.0.1:3306
+    at SettingRepository.Repository.findOneBy (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/src/orm/Repository.ts:83:29)
+    at Object.maintenanceMiddleware (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/src/middleware/maintenanceMiddleware.ts:14:43)
+    at <anonymous> (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1146:39)
+    at new Promise (<anonymous>)
+    at LyraServer.executeMiddlewares (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1132:19)
+    at async LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1275:13)
+[2026-06-09T14:08:17.476Z] [ERROR] [2026-06-09T14:08:17.469Z] POST /order/webhook ➞ INTERNAL_SERVER_ERROR 500 (7ms)
+[2026-06-09T14:08:17.600Z] [ERROR] [2026-06-09T14:08:17.600Z] POST /order/webhook - undefined - connect ECONNREFUSED 127.0.0.1:3306 | User-Agent: Stripe/1.0 (+https://stripe.com/docs/webhooks) | IP: ::ffff:127.0.0.1
+[2026-06-09T14:08:17.601Z] [ERROR] Stack: Error: connect ECONNREFUSED 127.0.0.1:3306
+    at SettingRepository.Repository.findOneBy (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/src/orm/Repository.ts:83:29)
+    at Object.maintenanceMiddleware (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/src/middleware/maintenanceMiddleware.ts:14:43)
+    at <anonymous> (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1146:39)
+    at new Promise (<anonymous>)
+    at LyraServer.executeMiddlewares (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1132:19)
+    at async LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1275:13)
+[2026-06-09T14:08:17.602Z] [ERROR] [2026-06-09T14:08:17.594Z] POST /order/webhook ➞ INTERNAL_SERVER_ERROR 500 (8ms)
+[2026-06-09T14:08:17.701Z] [ERROR] [2026-06-09T14:08:17.701Z] POST /order/webhook - undefined - connect ECONNREFUSED 127.0.0.1:3306 | User-Agent: Stripe/1.0 (+https://stripe.com/docs/webhooks) | IP: ::ffff:127.0.0.1
+[2026-06-09T14:08:17.702Z] [ERROR] Stack: Error: connect ECONNREFUSED 127.0.0.1:3306
+    at SettingRepository.Repository.findOneBy (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/src/orm/Repository.ts:83:29)
+    at Object.maintenanceMiddleware (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/src/middleware/maintenanceMiddleware.ts:14:43)
+    at <anonymous> (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1146:39)
+    at new Promise (<anonymous>)
+    at LyraServer.executeMiddlewares (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1132:19)
+    at async LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1275:13)
+[2026-06-09T14:08:17.705Z] [ERROR] [2026-06-09T14:08:17.695Z] POST /order/webhook ➞ INTERNAL_SERVER_ERROR 500 (9ms)
+[2026-06-09T14:08:17.849Z] [ERROR] [2026-06-09T14:08:17.849Z] POST /order/webhook - undefined - connect ECONNREFUSED 127.0.0.1:3306 | User-Agent: Stripe/1.0 (+https://stripe.com/docs/webhooks) | IP: ::ffff:127.0.0.1
+[2026-06-09T14:08:17.850Z] [ERROR] Stack: Error: connect ECONNREFUSED 127.0.0.1:3306
+    at SettingRepository.Repository.findOneBy (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/src/orm/Repository.ts:83:29)
+    at Object.maintenanceMiddleware (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/src/middleware/maintenanceMiddleware.ts:14:43)
+    at <anonymous> (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1146:39)
+    at new Promise (<anonymous>)
+    at LyraServer.executeMiddlewares (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1132:19)
+    at async LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1275:13)
+[2026-06-09T14:08:17.852Z] [ERROR] [2026-06-09T14:08:17.844Z] POST /order/webhook ➞ INTERNAL_SERVER_ERROR 500 (8ms)
+[2026-06-09T14:08:18.012Z] [ERROR] [2026-06-09T14:08:18.012Z] POST /order/webhook - undefined - connect ECONNREFUSED 127.0.0.1:3306 | User-Agent: Stripe/1.0 (+https://stripe.com/docs/webhooks) | IP: ::ffff:127.0.0.1
+[2026-06-09T14:08:18.014Z] [ERROR] Stack: Error: connect ECONNREFUSED 127.0.0.1:3306
+    at SettingRepository.Repository.findOneBy (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/src/orm/Repository.ts:83:29)
+    at Object.maintenanceMiddleware (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/src/middleware/maintenanceMiddleware.ts:14:43)
+    at <anonymous> (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1146:39)
+    at new Promise (<anonymous>)
+    at LyraServer.executeMiddlewares (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1132:19)
+    at async LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1275:13)
+[2026-06-09T14:08:18.016Z] [ERROR] [2026-06-09T14:08:18.006Z] POST /order/webhook ➞ INTERNAL_SERVER_ERROR 500 (10ms)
+[2026-06-09T14:08:29.194Z] [ERROR] [2026-06-09T14:08:29.193Z] POST /order/webhook - undefined - connect ECONNREFUSED 127.0.0.1:3306 | User-Agent: Stripe/1.0 (+https://stripe.com/docs/webhooks) | IP: ::ffff:127.0.0.1
+[2026-06-09T14:08:29.195Z] [ERROR] Stack: Error: connect ECONNREFUSED 127.0.0.1:3306
+    at SettingRepository.Repository.findOneBy (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/src/orm/Repository.ts:83:29)
+    at Object.maintenanceMiddleware (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/src/middleware/maintenanceMiddleware.ts:14:43)
+    at <anonymous> (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1146:39)
+    at new Promise (<anonymous>)
+    at LyraServer.executeMiddlewares (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1132:19)
+    at async LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1275:13)
+[2026-06-09T14:08:29.197Z] [ERROR] [2026-06-09T14:08:29.189Z] POST /order/webhook ➞ INTERNAL_SERVER_ERROR 500 (7ms)
+[2026-06-09T14:08:36.838Z] [ERROR] [2026-06-09T14:08:36.838Z] POST /order/webhook - undefined - connect ECONNREFUSED 127.0.0.1:3306 | User-Agent: Stripe/1.0 (+https://stripe.com/docs/webhooks) | IP: ::ffff:127.0.0.1
+[2026-06-09T14:08:36.839Z] [ERROR] Stack: Error: connect ECONNREFUSED 127.0.0.1:3306
+    at SettingRepository.Repository.findOneBy (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/src/orm/Repository.ts:83:29)
+    at Object.maintenanceMiddleware (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/src/middleware/maintenanceMiddleware.ts:14:43)
+    at <anonymous> (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1146:39)
+    at new Promise (<anonymous>)
+    at LyraServer.executeMiddlewares (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1132:19)
+    at async LyraServer.handleRequest (/home/wilf_loupblanc/Bureau/elsass-simracing/backend_elsassSimRacing/node_modules/@lyra-js/core/dist/server/LyraServer.js:1275:13)
+[2026-06-09T14:08:36.840Z] [ERROR] [2026-06-09T14:08:36.833Z] POST /order/webhook ➞ INTERNAL_SERVER_ERROR 500 (7ms)
+[2026-06-09T14:09:37.723Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T14:09:37.726Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T14:09:46.867Z] [WARN] [2026-06-09T14:09:46.771Z] POST /order/webhook ➞ NOT_FOUND 404 (95ms)
+[2026-06-09T14:09:48.006Z] [WARN] [2026-06-09T14:09:47.995Z] POST /order/webhook ➞ NOT_FOUND 404 (11ms)
+[2026-06-09T14:09:48.106Z] [WARN] [2026-06-09T14:09:48.095Z] POST /order/webhook ➞ NOT_FOUND 404 (11ms)
+[2026-06-09T14:09:48.133Z] [WARN] [2026-06-09T14:09:48.123Z] POST /order/webhook ➞ NOT_FOUND 404 (10ms)
+[2026-06-09T14:09:48.621Z] [WARN] [2026-06-09T14:09:48.610Z] POST /order/webhook ➞ NOT_FOUND 404 (11ms)
+[2026-06-09T14:09:52.221Z] [WARN] [2026-06-09T14:09:52.213Z] POST /order/webhook ➞ NOT_FOUND 404 (7ms)
+[2026-06-09T14:09:52.260Z] [WARN] [2026-06-09T14:09:52.252Z] POST /order/webhook ➞ NOT_FOUND 404 (8ms)
+[2026-06-09T14:09:52.421Z] [WARN] [2026-06-09T14:09:52.414Z] POST /order/webhook ➞ NOT_FOUND 404 (7ms)
+[2026-06-09T14:09:52.473Z] [WARN] [2026-06-09T14:09:52.465Z] POST /order/webhook ➞ NOT_FOUND 404 (7ms)
+[2026-06-09T14:09:52.570Z] [WARN] [2026-06-09T14:09:52.565Z] POST /order/webhook ➞ NOT_FOUND 404 (5ms)
+[2026-06-09T14:09:52.705Z] [WARN] [2026-06-09T14:09:52.698Z] POST /order/webhook ➞ NOT_FOUND 404 (7ms)
+[2026-06-09T14:09:52.816Z] [WARN] [2026-06-09T14:09:52.810Z] POST /order/webhook ➞ NOT_FOUND 404 (6ms)
+[2026-06-09T14:10:03.874Z] [WARN] [2026-06-09T14:10:03.866Z] POST /order/webhook ➞ NOT_FOUND 404 (8ms)
+[2026-06-09T14:11:09.286Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T14:11:09.287Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T14:11:15.883Z] [WARN] [2026-06-09T14:11:15.824Z] POST /order/webhook ➞ NOT_FOUND 404 (59ms)
+[2026-06-09T14:11:16.762Z] [WARN] [2026-06-09T14:11:16.754Z] POST /order/webhook ➞ NOT_FOUND 404 (8ms)
+[2026-06-09T14:11:17.269Z] [WARN] [2026-06-09T14:11:17.265Z] POST /order/webhook ➞ NOT_FOUND 404 (4ms)
+[2026-06-09T14:11:17.305Z] [WARN] [2026-06-09T14:11:17.299Z] POST /order/webhook ➞ NOT_FOUND 404 (6ms)
+[2026-06-09T14:11:17.821Z] [WARN] [2026-06-09T14:11:17.814Z] POST /order/webhook ➞ NOT_FOUND 404 (7ms)
+[2026-06-09T14:11:20.782Z] [WARN] [2026-06-09T14:11:20.775Z] POST /order/webhook ➞ NOT_FOUND 404 (7ms)
+[2026-06-09T14:11:20.944Z] [WARN] [2026-06-09T14:11:20.935Z] POST /order/webhook ➞ NOT_FOUND 404 (9ms)
+[2026-06-09T14:11:20.973Z] [WARN] [2026-06-09T14:11:20.961Z] POST /order/webhook ➞ NOT_FOUND 404 (12ms)
+[2026-06-09T14:11:21.006Z] [WARN] [2026-06-09T14:11:20.998Z] POST /order/webhook ➞ NOT_FOUND 404 (8ms)
+[2026-06-09T14:11:21.098Z] [WARN] [2026-06-09T14:11:21.094Z] POST /order/webhook ➞ NOT_FOUND 404 (4ms)
+[2026-06-09T14:11:21.233Z] [WARN] [2026-06-09T14:11:21.229Z] POST /order/webhook ➞ NOT_FOUND 404 (4ms)
+[2026-06-09T14:11:21.413Z] [WARN] [2026-06-09T14:11:21.404Z] POST /order/webhook ➞ NOT_FOUND 404 (9ms)
+[2026-06-09T14:12:10.222Z] [WARN] [2026-06-09T14:12:10.215Z] POST /order/webhook ➞ NOT_FOUND 404 (7ms)
+[2026-06-09T14:12:11.000Z] [WARN] [2026-06-09T14:12:10.993Z] POST /order/webhook ➞ NOT_FOUND 404 (7ms)
+[2026-06-09T14:12:11.386Z] [WARN] [2026-06-09T14:12:11.380Z] POST /order/webhook ➞ NOT_FOUND 404 (6ms)
+[2026-06-09T14:12:11.489Z] [WARN] [2026-06-09T14:12:11.484Z] POST /order/webhook ➞ NOT_FOUND 404 (5ms)
+[2026-06-09T14:12:12.034Z] [WARN] [2026-06-09T14:12:12.027Z] POST /order/webhook ➞ NOT_FOUND 404 (7ms)
+[2026-06-09T14:12:12.471Z] [WARN] [2026-06-09T14:12:12.464Z] POST /order/webhook ➞ NOT_FOUND 404 (7ms)
+[2026-06-09T14:12:15.212Z] [WARN] [2026-06-09T14:12:15.203Z] POST /order/webhook ➞ NOT_FOUND 404 (9ms)
+[2026-06-09T14:12:15.421Z] [WARN] [2026-06-09T14:12:15.415Z] POST /order/webhook ➞ NOT_FOUND 404 (6ms)
+[2026-06-09T14:12:15.544Z] [WARN] [2026-06-09T14:12:15.536Z] POST /order/webhook ➞ NOT_FOUND 404 (8ms)
+[2026-06-09T14:12:15.573Z] [WARN] [2026-06-09T14:12:15.564Z] POST /order/webhook ➞ NOT_FOUND 404 (9ms)
+[2026-06-09T14:12:23.037Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T14:12:23.041Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T14:12:28.054Z] [WARN] [2026-06-09T14:12:28.002Z] POST /order/webhook ➞ NOT_FOUND 404 (52ms)
+[2026-06-09T14:12:28.925Z] [WARN] [2026-06-09T14:12:28.916Z] POST /order/webhook ➞ NOT_FOUND 404 (9ms)
+[2026-06-09T14:12:29.417Z] [WARN] [2026-06-09T14:12:29.409Z] POST /order/webhook ➞ NOT_FOUND 404 (8ms)
+[2026-06-09T14:12:29.517Z] [WARN] [2026-06-09T14:12:29.508Z] POST /order/webhook ➞ NOT_FOUND 404 (9ms)
+[2026-06-09T14:12:30.035Z] [WARN] [2026-06-09T14:12:30.030Z] POST /order/webhook ➞ NOT_FOUND 404 (4ms)
+[2026-06-09T14:12:33.096Z] [WARN] [2026-06-09T14:12:33.087Z] POST /order/webhook ➞ NOT_FOUND 404 (9ms)
+[2026-06-09T14:12:33.218Z] [WARN] [2026-06-09T14:12:33.210Z] POST /order/webhook ➞ NOT_FOUND 404 (8ms)
+[2026-06-09T14:12:33.313Z] [WARN] [2026-06-09T14:12:33.304Z] POST /order/webhook ➞ NOT_FOUND 404 (7ms)
+[2026-06-09T14:12:33.387Z] [WARN] [2026-06-09T14:12:33.380Z] POST /order/webhook ➞ NOT_FOUND 404 (7ms)
+[2026-06-09T14:12:33.477Z] [WARN] [2026-06-09T14:12:33.467Z] POST /order/webhook ➞ NOT_FOUND 404 (10ms)
+[2026-06-09T14:12:33.610Z] [WARN] [2026-06-09T14:12:33.599Z] POST /order/webhook ➞ NOT_FOUND 404 (11ms)
+[2026-06-09T14:12:33.721Z] [WARN] [2026-06-09T14:12:33.713Z] POST /order/webhook ➞ NOT_FOUND 404 (8ms)
+[2026-06-09T14:13:19.934Z] [WARN] [2026-06-09T14:13:19.928Z] POST /order/webhook ➞ NOT_FOUND 404 (6ms)
+[2026-06-09T14:13:22.393Z] [WARN] [2026-06-09T14:13:22.385Z] POST /order/webhook ➞ NOT_FOUND 404 (8ms)
+[2026-06-09T14:14:18.184Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T14:14:18.187Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T14:14:24.600Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T14:14:24.601Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T14:14:36.801Z] [WARN] [2026-06-09T14:14:36.733Z] POST /order/webhook ➞ NOT_FOUND 404 (68ms)
+[2026-06-09T14:14:37.061Z] [WARN] [2026-06-09T14:14:37.046Z] POST /order/webhook ➞ NOT_FOUND 404 (14ms)
+[2026-06-09T14:14:37.476Z] [WARN] [2026-06-09T14:14:37.465Z] POST /order/webhook ➞ NOT_FOUND 404 (11ms)
+[2026-06-09T14:14:37.554Z] [WARN] [2026-06-09T14:14:37.542Z] POST /order/webhook ➞ NOT_FOUND 404 (12ms)
+[2026-06-09T14:14:38.207Z] [WARN] [2026-06-09T14:14:38.196Z] POST /order/webhook ➞ NOT_FOUND 404 (11ms)
+[2026-06-09T14:14:42.290Z] [WARN] [2026-06-09T14:14:42.279Z] POST /order/webhook ➞ NOT_FOUND 404 (11ms)
+[2026-06-09T14:14:42.454Z] [WARN] [2026-06-09T14:14:42.447Z] POST /order/webhook ➞ NOT_FOUND 404 (7ms)
+[2026-06-09T14:14:42.612Z] [WARN] [2026-06-09T14:14:42.603Z] POST /order/webhook ➞ NOT_FOUND 404 (9ms)
+[2026-06-09T14:14:42.719Z] [WARN] [2026-06-09T14:14:42.715Z] POST /order/webhook ➞ NOT_FOUND 404 (4ms)
+[2026-06-09T14:14:42.949Z] [WARN] [2026-06-09T14:14:42.941Z] POST /order/webhook ➞ NOT_FOUND 404 (8ms)
+[2026-06-09T14:14:43.044Z] [WARN] [2026-06-09T14:14:43.038Z] POST /order/webhook ➞ NOT_FOUND 404 (6ms)
+[2026-06-09T14:14:43.197Z] [WARN] [2026-06-09T14:14:43.185Z] POST /order/webhook ➞ NOT_FOUND 404 (12ms)
+[2026-06-09T14:15:36.336Z] [WARN] [2026-06-09T14:15:36.330Z] POST /order/webhook ➞ NOT_FOUND 404 (6ms)
+[2026-06-09T14:16:10.859Z] [SUCCESS] [2026-06-09T14:16:10.849Z] POST /api/order/webhook ➞ OK 200 (10ms)
+[2026-06-09T14:16:11.602Z] [SUCCESS] [2026-06-09T14:16:11.595Z] POST /api/order/webhook ➞ OK 200 (7ms)
+[2026-06-09T14:16:11.960Z] [SUCCESS] [2026-06-09T14:16:11.952Z] POST /api/order/webhook ➞ OK 200 (8ms)
+[2026-06-09T14:16:12.160Z] [SUCCESS] [2026-06-09T14:16:12.155Z] POST /api/order/webhook ➞ OK 200 (5ms)
+[2026-06-09T14:16:12.690Z] [SUCCESS] [2026-06-09T14:16:12.682Z] POST /api/order/webhook ➞ OK 200 (8ms)
+[2026-06-09T14:16:17.008Z] [SUCCESS] [2026-06-09T14:16:17.000Z] POST /api/order/webhook ➞ OK 200 (7ms)
+[2026-06-09T14:16:17.058Z] [SUCCESS] [2026-06-09T14:16:17.052Z] POST /api/order/webhook ➞ OK 200 (6ms)
+[2026-06-09T14:16:17.230Z] [SUCCESS] [2026-06-09T14:16:17.225Z] POST /api/order/webhook ➞ OK 200 (5ms)
+[2026-06-09T14:16:17.337Z] [SUCCESS] [2026-06-09T14:16:17.327Z] POST /api/order/webhook ➞ OK 200 (10ms)
+[2026-06-09T14:16:17.500Z] [SUCCESS] [2026-06-09T14:16:17.493Z] POST /api/order/webhook ➞ OK 200 (7ms)
+[2026-06-09T14:16:18.111Z] [SUCCESS] [2026-06-09T14:16:18.105Z] POST /api/order/webhook ➞ OK 200 (6ms)
+[2026-06-09T14:16:18.119Z] [SUCCESS] [2026-06-09T14:16:18.113Z] POST /api/order/webhook ➞ OK 200 (6ms)
+[2026-06-09T14:16:51.241Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T14:16:51.247Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T14:17:03.617Z] [SUCCESS] [2026-06-09T14:17:03.601Z] POST /api/order/webhook ➞ OK 200 (16ms)
+[2026-06-09T14:17:04.325Z] [SUCCESS] [2026-06-09T14:17:04.320Z] POST /api/order/webhook ➞ OK 200 (5ms)
+[2026-06-09T14:17:04.663Z] [SUCCESS] [2026-06-09T14:17:04.647Z] POST /api/order/webhook ➞ OK 200 (15ms)
+[2026-06-09T14:17:04.722Z] [SUCCESS] [2026-06-09T14:17:04.718Z] POST /api/order/webhook ➞ OK 200 (4ms)
+[2026-06-09T14:17:05.403Z] [SUCCESS] [2026-06-09T14:17:05.397Z] POST /api/order/webhook ➞ OK 200 (6ms)
+[2026-06-09T14:17:08.598Z] [SUCCESS] [2026-06-09T14:17:08.595Z] POST /api/order/webhook ➞ OK 200 (3ms)
+[2026-06-09T14:17:08.640Z] [SUCCESS] [2026-06-09T14:17:08.636Z] POST /api/order/webhook ➞ OK 200 (4ms)
+[2026-06-09T14:17:08.781Z] [SUCCESS] [2026-06-09T14:17:08.775Z] POST /api/order/webhook ➞ OK 200 (6ms)
+[2026-06-09T14:17:08.833Z] [SUCCESS] [2026-06-09T14:17:08.829Z] POST /api/order/webhook ➞ OK 200 (4ms)
+[2026-06-09T14:17:08.918Z] [SUCCESS] [2026-06-09T14:17:08.914Z] POST /api/order/webhook ➞ OK 200 (4ms)
+[2026-06-09T14:17:09.041Z] [SUCCESS] [2026-06-09T14:17:09.037Z] POST /api/order/webhook ➞ OK 200 (4ms)
+[2026-06-09T14:17:09.119Z] [SUCCESS] [2026-06-09T14:17:09.115Z] POST /api/order/webhook ➞ OK 200 (4ms)
+[2026-06-09T14:17:09.152Z] [SUCCESS] [2026-06-09T14:17:09.149Z] POST /api/order/webhook ➞ OK 200 (3ms)
+[2026-06-09T14:17:32.829Z] [SUCCESS] [2026-06-09T14:17:32.820Z] POST /api/order/webhook ➞ OK 200 (8ms)
+[2026-06-09T15:09:17.500Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T15:09:17.504Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T15:10:07.334Z] [SUCCESS] [2026-06-09T15:10:07.318Z] POST /api/order/webhook ➞ OK 200 (16ms)
+[2026-06-09T15:10:08.088Z] [SUCCESS] [2026-06-09T15:10:08.084Z] POST /api/order/webhook ➞ OK 200 (4ms)
+[2026-06-09T15:10:08.509Z] [SUCCESS] [2026-06-09T15:10:08.505Z] POST /api/order/webhook ➞ OK 200 (4ms)
+[2026-06-09T15:10:08.562Z] [SUCCESS] [2026-06-09T15:10:08.558Z] POST /api/order/webhook ➞ OK 200 (4ms)
+[2026-06-09T15:10:09.226Z] [SUCCESS] [2026-06-09T15:10:09.222Z] POST /api/order/webhook ➞ OK 200 (4ms)
+[2026-06-09T15:10:12.495Z] [SUCCESS] [2026-06-09T15:10:12.492Z] POST /api/order/webhook ➞ OK 200 (3ms)
+[2026-06-09T15:10:12.708Z] [SUCCESS] [2026-06-09T15:10:12.703Z] POST /api/order/webhook ➞ OK 200 (5ms)
+[2026-06-09T15:10:12.949Z] [SUCCESS] [2026-06-09T15:10:12.930Z] POST /api/order/webhook ➞ OK 200 (19ms)
+[2026-06-09T15:10:13.033Z] [SUCCESS] [2026-06-09T15:10:13.031Z] POST /api/order/webhook ➞ OK 200 (2ms)
+[2026-06-09T15:10:13.046Z] [SUCCESS] [2026-06-09T15:10:13.044Z] POST /api/order/webhook ➞ OK 200 (1ms)
+[2026-06-09T15:10:13.248Z] [SUCCESS] [2026-06-09T15:10:13.246Z] POST /api/order/webhook ➞ OK 200 (2ms)
+[2026-06-09T15:10:13.457Z] [SUCCESS] [2026-06-09T15:10:13.455Z] POST /api/order/webhook ➞ OK 200 (2ms)
+[2026-06-09T15:10:34.201Z] [SUCCESS] [2026-06-09T15:10:34.199Z] POST /api/order/webhook ➞ OK 200 (2ms)
+[2026-06-09T15:25:15.644Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T15:25:15.647Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T16:02:41.177Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T16:02:41.179Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T16:03:18.120Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T16:03:18.124Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T16:03:34.812Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T16:03:34.813Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T16:03:40.707Z] [SUCCESS] [2026-06-09T16:03:40.696Z] POST /api/order/webhook ➞ OK 200 (11ms)
+[2026-06-09T16:03:40.750Z] [SUCCESS] [2026-06-09T16:03:40.747Z] POST /api/order/webhook ➞ OK 200 (3ms)
+[2026-06-09T16:03:41.156Z] [SUCCESS] [2026-06-09T16:03:41.153Z] POST /api/order/webhook ➞ OK 200 (3ms)
+[2026-06-09T16:03:41.508Z] [SUCCESS] [2026-06-09T16:03:41.503Z] POST /api/order/webhook ➞ OK 200 (4ms)
+[2026-06-09T16:03:41.563Z] [SUCCESS] [2026-06-09T16:03:41.559Z] POST /api/order/webhook ➞ OK 200 (4ms)
+[2026-06-09T16:03:44.928Z] [SUCCESS] [2026-06-09T16:03:44.921Z] POST /api/order/webhook ➞ OK 200 (6ms)
+[2026-06-09T16:03:45.130Z] [SUCCESS] [2026-06-09T16:03:45.125Z] POST /api/order/webhook ➞ OK 200 (4ms)
+[2026-06-09T16:03:45.198Z] [SUCCESS] [2026-06-09T16:03:45.194Z] POST /api/order/webhook ➞ OK 200 (4ms)
+[2026-06-09T16:03:45.254Z] [SUCCESS] [2026-06-09T16:03:45.250Z] POST /api/order/webhook ➞ OK 200 (4ms)
+[2026-06-09T16:03:45.400Z] [SUCCESS] [2026-06-09T16:03:45.382Z] POST /api/order/webhook ➞ OK 200 (18ms)
+[2026-06-09T16:03:45.441Z] [SUCCESS] [2026-06-09T16:03:45.436Z] POST /api/order/webhook ➞ OK 200 (5ms)
+[2026-06-09T16:03:45.547Z] [SUCCESS] [2026-06-09T16:03:45.542Z] POST /api/order/webhook ➞ OK 200 (4ms)
+[2026-06-09T16:03:45.674Z] [SUCCESS] [2026-06-09T16:03:45.669Z] POST /api/order/webhook ➞ OK 200 (5ms)
+[2026-06-09T16:03:45.812Z] [SUCCESS] [2026-06-09T16:03:45.808Z] POST /api/order/webhook ➞ OK 200 (4ms)
+[2026-06-09T16:03:46.527Z] [SUCCESS] [2026-06-09T16:03:46.510Z] POST /api/order/webhook ➞ OK 200 (17ms)
+[2026-06-09T16:03:48.486Z] [SUCCESS] [2026-06-09T16:03:48.481Z] POST /api/order/webhook ➞ OK 200 (5ms)
+[2026-06-09T16:04:42.016Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T16:04:42.018Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T16:05:09.539Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T16:05:09.543Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T16:06:12.412Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T16:06:12.414Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T16:06:38.912Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T16:06:38.914Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T16:06:48.046Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T16:06:48.050Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T16:06:54.833Z] [SUCCESS] [2026-06-09T16:06:54.793Z] POST /api/order/webhook ➞ OK 200 (40ms)
+[2026-06-09T16:06:54.840Z] [SUCCESS] [2026-06-09T16:06:54.835Z] POST /api/order/webhook ➞ OK 200 (5ms)
+[2026-06-09T16:06:55.233Z] [SUCCESS] [2026-06-09T16:06:55.229Z] POST /api/order/webhook ➞ OK 200 (4ms)
+[2026-06-09T16:06:55.660Z] [SUCCESS] [2026-06-09T16:06:55.657Z] POST /api/order/webhook ➞ OK 200 (2ms)
+[2026-06-09T16:06:55.744Z] [SUCCESS] [2026-06-09T16:06:55.742Z] POST /api/order/webhook ➞ OK 200 (2ms)
+[2026-06-09T16:06:59.063Z] [SUCCESS] [2026-06-09T16:06:59.059Z] POST /api/order/webhook ➞ OK 200 (4ms)
+[2026-06-09T16:06:59.270Z] [SUCCESS] [2026-06-09T16:06:59.266Z] POST /api/order/webhook ➞ OK 200 (4ms)
+[2026-06-09T16:06:59.449Z] [SUCCESS] [2026-06-09T16:06:59.443Z] POST /api/order/webhook ➞ OK 200 (6ms)
+[2026-06-09T16:06:59.474Z] [SUCCESS] [2026-06-09T16:06:59.467Z] POST /api/order/webhook ➞ OK 200 (7ms)
+[2026-06-09T16:06:59.624Z] [SUCCESS] [2026-06-09T16:06:59.608Z] POST /api/order/webhook ➞ OK 200 (16ms)
+[2026-06-09T16:06:59.661Z] [SUCCESS] [2026-06-09T16:06:59.656Z] POST /api/order/webhook ➞ OK 200 (5ms)
+[2026-06-09T16:06:59.755Z] [SUCCESS] [2026-06-09T16:06:59.748Z] POST /api/order/webhook ➞ OK 200 (6ms)
+[2026-06-09T16:06:59.845Z] [SUCCESS] [2026-06-09T16:06:59.842Z] POST /api/order/webhook ➞ OK 200 (3ms)
+[2026-06-09T16:06:59.960Z] [SUCCESS] [2026-06-09T16:06:59.954Z] POST /api/order/webhook ➞ OK 200 (6ms)
+[2026-06-09T16:07:00.586Z] [SUCCESS] [2026-06-09T16:07:00.574Z] POST /api/order/webhook ➞ OK 200 (12ms)
+[2026-06-09T16:07:34.845Z] [SUCCESS] [2026-06-09T16:07:34.842Z] POST /api/order/webhook ➞ OK 200 (3ms)
+[2026-06-09T16:08:10.428Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T16:08:10.431Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T16:08:26.135Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T16:08:26.138Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T16:08:33.142Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T16:08:33.145Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T16:08:58.223Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T16:08:58.226Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T16:09:50.649Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T16:09:50.652Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T16:10:36.427Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T16:10:36.430Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T16:10:46.524Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T16:10:46.529Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T16:10:53.355Z] [SUCCESS] [2026-06-09T16:10:53.334Z] POST /api/order/webhook ➞ OK 200 (21ms)
+[2026-06-09T16:10:53.429Z] [SUCCESS] [2026-06-09T16:10:53.419Z] POST /api/order/webhook ➞ OK 200 (10ms)
+[2026-06-09T16:10:53.758Z] [SUCCESS] [2026-06-09T16:10:53.751Z] POST /api/order/webhook ➞ OK 200 (6ms)
+[2026-06-09T16:10:54.404Z] [SUCCESS] [2026-06-09T16:10:54.399Z] POST /api/order/webhook ➞ OK 200 (5ms)
+[2026-06-09T16:10:54.425Z] [SUCCESS] [2026-06-09T16:10:54.423Z] POST /api/order/webhook ➞ OK 200 (2ms)
+[2026-06-09T16:10:58.608Z] [SUCCESS] [2026-06-09T16:10:58.601Z] POST /api/order/webhook ➞ OK 200 (6ms)
+[2026-06-09T16:10:58.875Z] [SUCCESS] [2026-06-09T16:10:58.868Z] POST /api/order/webhook ➞ OK 200 (7ms)
+[2026-06-09T16:10:58.895Z] [SUCCESS] [2026-06-09T16:10:58.891Z] POST /api/order/webhook ➞ OK 200 (4ms)
+[2026-06-09T16:10:58.912Z] [SUCCESS] [2026-06-09T16:10:58.906Z] POST /api/order/webhook ➞ OK 200 (6ms)
+[2026-06-09T16:10:59.033Z] [SUCCESS] [2026-06-09T16:10:59.007Z] POST /api/order/webhook ➞ OK 200 (25ms)
+[2026-06-09T16:10:59.106Z] [SUCCESS] [2026-06-09T16:10:59.101Z] POST /api/order/webhook ➞ OK 200 (5ms)
+[2026-06-09T16:10:59.202Z] [SUCCESS] [2026-06-09T16:10:59.196Z] POST /api/order/webhook ➞ OK 200 (6ms)
+[2026-06-09T16:10:59.423Z] [SUCCESS] [2026-06-09T16:10:59.418Z] POST /api/order/webhook ➞ OK 200 (5ms)
+[2026-06-09T16:10:59.462Z] [SUCCESS] [2026-06-09T16:10:59.460Z] POST /api/order/webhook ➞ OK 200 (1ms)
+[2026-06-09T16:11:41.009Z] [SUCCESS] [2026-06-09T16:11:41.003Z] POST /api/order/webhook ➞ OK 200 (6ms)
+[2026-06-09T16:11:43.842Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T16:11:43.846Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T16:11:47.180Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T16:11:47.182Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T16:12:30.838Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T16:12:30.840Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T16:12:38.833Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T16:12:38.835Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T16:13:19.783Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T16:13:19.785Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T16:13:30.872Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T16:13:30.875Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T16:13:39.800Z] [SUCCESS] [2026-06-09T16:13:39.785Z] POST /api/order/webhook ➞ OK 200 (15ms)
+[2026-06-09T16:13:40.585Z] [SUCCESS] [2026-06-09T16:13:40.580Z] POST /api/order/webhook ➞ OK 200 (5ms)
+[2026-06-09T16:13:41.068Z] [SUCCESS] [2026-06-09T16:13:41.057Z] POST /api/order/webhook ➞ OK 200 (11ms)
+[2026-06-09T16:13:41.108Z] [SUCCESS] [2026-06-09T16:13:41.102Z] POST /api/order/webhook ➞ OK 200 (6ms)
+[2026-06-09T16:13:41.813Z] [SUCCESS] [2026-06-09T16:13:41.809Z] POST /api/order/webhook ➞ OK 200 (4ms)
+[2026-06-09T16:13:44.989Z] [SUCCESS] [2026-06-09T16:13:44.981Z] POST /api/order/webhook ➞ OK 200 (7ms)
+[2026-06-09T16:13:45.014Z] [SUCCESS] [2026-06-09T16:13:45.009Z] POST /api/order/webhook ➞ OK 200 (5ms)
+[2026-06-09T16:13:45.268Z] [SUCCESS] [2026-06-09T16:13:45.263Z] POST /api/order/webhook ➞ OK 200 (5ms)
+[2026-06-09T16:13:45.299Z] [SUCCESS] [2026-06-09T16:13:45.294Z] POST /api/order/webhook ➞ OK 200 (5ms)
+[2026-06-09T16:13:45.431Z] [SUCCESS] [2026-06-09T16:13:45.423Z] POST /api/order/webhook ➞ OK 200 (8ms)
+[2026-06-09T16:13:45.477Z] [SUCCESS] [2026-06-09T16:13:45.474Z] POST /api/order/webhook ➞ OK 200 (3ms)
+[2026-06-09T16:13:45.678Z] [SUCCESS] [2026-06-09T16:13:45.671Z] POST /api/order/webhook ➞ OK 200 (7ms)
+[2026-06-09T16:14:32.652Z] [SUCCESS] [2026-06-09T16:14:32.648Z] POST /api/order/webhook ➞ OK 200 (4ms)
+[2026-06-09T16:14:40.914Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T16:14:40.917Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T16:16:04.140Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T16:16:04.143Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T16:16:39.702Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T16:16:39.705Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T16:16:42.509Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T16:16:42.511Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T16:16:58.504Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T16:16:58.507Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T16:17:36.322Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T16:17:36.323Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T16:17:41.822Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T16:17:41.824Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T16:17:57.273Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T16:17:57.276Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T16:19:25.544Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T16:19:25.546Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T16:20:17.597Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T16:20:17.600Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T16:21:08.778Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T16:21:08.781Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T16:21:27.744Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T16:21:27.748Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T16:22:41.515Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T16:22:41.517Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T16:23:02.289Z] [SUCCESS] [2026-06-09T16:23:02.281Z] POST /api/order/webhook ➞ OK 200 (8ms)
+[2026-06-09T16:23:02.555Z] [SUCCESS] [2026-06-09T16:23:02.549Z] POST /api/order/webhook ➞ OK 200 (6ms)
+[2026-06-09T16:23:05.723Z] [SUCCESS] [2026-06-09T16:23:05.716Z] POST /api/order/webhook ➞ OK 200 (6ms)
+[2026-06-09T16:23:05.812Z] [SUCCESS] [2026-06-09T16:23:05.806Z] POST /api/order/webhook ➞ OK 200 (6ms)
+[2026-06-09T16:23:05.872Z] [SUCCESS] [2026-06-09T16:23:05.868Z] POST /api/order/webhook ➞ OK 200 (4ms)
+[2026-06-09T16:23:05.895Z] [SUCCESS] [2026-06-09T16:23:05.888Z] POST /api/order/webhook ➞ OK 200 (7ms)
+[2026-06-09T16:23:08.641Z] [SUCCESS] [2026-06-09T16:23:08.637Z] POST /api/order/webhook ➞ OK 200 (4ms)
+[2026-06-09T16:25:45.633Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T16:25:45.636Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T16:25:52.490Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T16:25:52.494Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T16:28:02.888Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T16:28:02.890Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T16:28:44.776Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T16:28:44.778Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T16:30:00.954Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T16:30:00.955Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T16:30:20.076Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T16:30:20.079Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T16:31:25.812Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T16:31:25.816Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T16:32:02.167Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T16:32:02.169Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T16:32:57.758Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T16:32:57.761Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T16:33:12.017Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T16:33:12.020Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T16:33:37.977Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T16:33:37.979Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T16:33:53.708Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T16:33:53.712Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T16:34:19.678Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T16:34:19.681Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T16:34:29.895Z] [WARN] Skipping disabled schedule: ExampleJob.sendDailyReport
+[2026-06-09T16:34:29.897Z] [SUCCESS] ✓ Scheduler started successfully
+[2026-06-09T16:34:44.950Z] [SUCCESS] [2026-06-09T16:34:44.935Z] POST /api/order/webhook ➞ OK 200 (15ms)
+[2026-06-09T16:34:45.196Z] [SUCCESS] [2026-06-09T16:34:45.190Z] POST /api/order/webhook ➞ OK 200 (5ms)
+[2026-06-09T16:34:48.334Z] [SUCCESS] [2026-06-09T16:34:48.325Z] POST /api/order/webhook ➞ OK 200 (8ms)
+[2026-06-09T16:34:48.343Z] [SUCCESS] [2026-06-09T16:34:48.335Z] POST /api/order/webhook ➞ OK 200 (8ms)
+[2026-06-09T16:34:48.415Z] [SUCCESS] [2026-06-09T16:34:48.409Z] POST /api/order/webhook ➞ OK 200 (6ms)
+[2026-06-09T16:34:48.544Z] [SUCCESS] [2026-06-09T16:34:48.530Z] POST /api/order/webhook ➞ OK 200 (14ms)
+[2026-06-09T16:34:51.407Z] [SUCCESS] [2026-06-09T16:34:51.399Z] POST /api/order/webhook ➞ OK 200 (8ms)
