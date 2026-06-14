@@ -7,10 +7,10 @@ import { randomBytes } from "crypto"
 // CONFIGURATION — remplace par les vraies valeurs prod
 // ============================================================
 const DB_CONFIG = {
-  host: "127.0.0.1",
+  host: "temp-mariadb",
   port: 3306,
-  user: "root",
-  password: "root_password",
+  user: "elsass_simracing",
+  password: "PqV0B7hSldfyGTcirCwjO4dNl3N1ggm",
   database: "elsass_simracing",
 }
 
@@ -29,7 +29,7 @@ const CLIENT_APP_URL = "https://elsass-simracing.fr/"
 
 // IDs des subscriptions à rattraper — à remplir
 const SUBSCRIPTION_IDS = [
-  12, 15
+  6,7
 ]
 
 const PLAN_FREE_SESSIONS = {

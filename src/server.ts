@@ -4,8 +4,10 @@ import { Config, createServer, LyraConsole, SecurityConfig } from "@lyra-js/core
 import { maintenanceMiddleware } from "@middleware/maintenanceMiddleware"
 import bcrypt from "bcrypt"
 import * as dotenv from "dotenv"
+import { config } from "dotenv"
 import jwt from "jsonwebtoken"
 import * as process from "node:process"
+config({ path: ".env.build" })
 
 dotenv.config()
 process.env.TZ = process.env.TZ || "Europe/Paris"
