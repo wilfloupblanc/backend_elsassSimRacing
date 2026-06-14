@@ -29,7 +29,7 @@ const CLIENT_APP_URL = "https://elsass-simracing.fr/"
 
 // IDs des subscriptions à rattraper — à remplir
 const SUBSCRIPTION_IDS = [
-  2, 3, 4, 5
+  12, 15
 ]
 
 const PLAN_FREE_SESSIONS = {

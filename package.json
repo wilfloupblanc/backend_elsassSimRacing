@@ -2,8 +2,8 @@
   "name": "lyrajs_api",
   "type": "module",
   "scripts": {
-    "dev": "tsx watch src/server.ts",
-    "start": "tsx src/server.ts",
+    "dev": "BUILD_DATE=$(date -u +%Y-%m-%dT%H:%M:%SZ) tsx watch src/server.ts",
+    "start": "BUILD_DATE=$(date -u +%Y-%m-%dT%H:%M:%SZ) tsx src/server.ts",
     "maestro": "maestro",
     "build": "tsc"
   },
