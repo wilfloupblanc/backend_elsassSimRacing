@@ -2,7 +2,7 @@ import { Controller, Get, Route } from "@lyra-js/core"
 
 @Route({ path: "/version" })
 export class VersionController extends Controller {
-  @Get({ path: "/" })
+  @Get({ path: "" })
   async version() {
     this.res.status(200).json({
       version: process.env.npm_package_version,

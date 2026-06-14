@@ -4,8 +4,10 @@ import { SettingRepository } from "@repository/SettingRepository"
 
 export const maintenanceMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   if (
+    req.method === "OPTIONS" ||
     req.url.startsWith("/api/auth") ||
     req.url.startsWith("/api/setting/maintenance") ||
+    req.url.startsWith("/api/discount-code/active") ||
     req.url.startsWith("/api/order/webhook")
   ) {
     return next()

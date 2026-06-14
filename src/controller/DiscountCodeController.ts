@@ -1,5 +1,7 @@
 import { Controller, Delete, Get, isAdmin, isAuthenticated, Post, Route } from "@lyra-js/core"
 
+import { DiscountCode } from "@entity/DiscountCode"
+
 @Route({ path: "/discount-code" })
 export class DiscountCodeController extends Controller {
   @Get({ path: "/", middlewares: [isAuthenticated, isAdmin] })
@@ -86,6 +88,36 @@ export class DiscountCodeController extends Controller {
           type: discount.type,
           value: discount.value,
           applies_to: discount.applies_to
+        }
+      })
+    } catch (error) {
+      this.next(error)
+    }
+  }
+
+  @Get({ path: "/active" })
+  async getActive() {
+    try {
+      const codes = await this.discountCodeRepository.findAll()
+      const now = new Date()
+
+      const active = codes.find(
+        (c: DiscountCode) =>
+          c.is_active &&
+          (c.expires_at === null || new Date(c.expires_at) > now) &&
+          (c.max_uses === null || c.uses_count < c.max_uses)
+      )
+
+      if (!active) return this.res.status(200).json({ active: false })
+
+      this.res.status(200).json({
+        active: true,
+        promo: {
+          code: active.code,
+          type: active.type,
+          value: active.value,
+          applies_to: active.applies_to,
+          expires_at: active.expires_at ?? null
         }
       })
     } catch (error) {

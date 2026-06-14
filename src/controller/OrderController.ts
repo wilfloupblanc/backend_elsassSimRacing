@@ -1,8 +1,8 @@
 import { Controller, Delete, Get, isAuthenticated, Post, Put, QueryBuilder, Route } from "@lyra-js/core"
+import Stripe from "stripe"
 
 import { UserOrder } from "@entity/UserOrder"
 import { CartInterface } from "@repository/CartRepository"
-import Stripe from "stripe"
 
 @Route({ path: "/order" })
 export class OrderController extends Controller {
@@ -81,7 +81,7 @@ export class OrderController extends Controller {
 
       const applyDiscount = (amountInCents: number): number => {
         if (!discount) return amountInCents
-        if (discount.type === 'percent') {
+        if (discount.type === "percent") {
           return Math.round(amountInCents * (1 - discount.value / 100))
         }
         return Math.max(0, amountInCents - Math.round(discount.value * 100))
@@ -89,47 +89,53 @@ export class OrderController extends Controller {
 
       const cartLineItems = cart
         ? (await this.cartRepository.findUserCartItems(cart.id)).map((item: CartInterface) => ({
-          price_data: {
-            currency: "eur",
-            product_data: { name: `Ticket ${item.duration_minutes} minutes` },
-            unit_amount: applyDiscount(item.price_normal * 100)
-          },
-          quantity: item.quantity
-        }))
+            price_data: {
+              currency: "eur",
+              product_data: { name: `Ticket ${item.duration_minutes} minutes` },
+              unit_amount: applyDiscount(item.price_normal * 100)
+            },
+            quantity: item.quantity
+          }))
         : []
 
       const reservationLineItem = sessions
         ? [
-          {
-            price_data: {
-              currency: "eur",
-              product_data: { name: `Réservation simulateur - ${sessions.duration_minutes} minutes` },
-              unit_amount: applyDiscount(Math.round(hasMemberPrice ? sessions.price_member * 100 : sessions.price_normal * 100))
+            {
+              price_data: {
+                currency: "eur",
+                product_data: { name: `Réservation simulateur - ${sessions.duration_minutes} minutes` },
+                unit_amount: applyDiscount(
+                  Math.round(hasMemberPrice ? sessions.price_member * 100 : sessions.price_normal * 100)
+                )
+              },
+              quantity: 1
             },
-            quantity: 1
-          },
-          ...(pilots > 1 ? [{
-            price_data: {
-              currency: "eur",
-              product_data: { name: `Réservation simulateur - ${sessions.duration_minutes} minutes` },
-              unit_amount: applyDiscount(Math.round(sessions.price_normal * 100))
-            },
-            quantity: pilots - 1
-          }] : [])
-        ]
+            ...(pilots > 1
+              ? [
+                  {
+                    price_data: {
+                      currency: "eur",
+                      product_data: { name: `Réservation simulateur - ${sessions.duration_minutes} minutes` },
+                      unit_amount: applyDiscount(Math.round(sessions.price_normal * 100))
+                    },
+                    quantity: pilots - 1
+                  }
+                ]
+              : [])
+          ]
         : []
 
       const eventLineItem = event_id
         ? [
-          {
-            price_data: {
-              currency: "eur",
-              product_data: { name: `Inscription événement - ${event_title}` },
-              unit_amount: applyDiscount(Math.round(event_price * 100))
-            },
-            quantity: 1
-          }
-        ]
+            {
+              price_data: {
+                currency: "eur",
+                product_data: { name: `Inscription événement - ${event_title}` },
+                unit_amount: applyDiscount(Math.round(event_price * 100))
+              },
+              quantity: 1
+            }
+          ]
         : []
 
       const lineItems = [...cartLineItems, ...reservationLineItem, ...eventLineItem]
@@ -173,13 +179,17 @@ export class OrderController extends Controller {
 
       if (event.type === "checkout.session.completed") {
         this.res.status(200).json({ received: true })
-        ;(async () => { await this.stripeService.handleCheckoutCompleted(event) })()
+        ;(async () => {
+          await this.stripeService.handleCheckoutCompleted(event)
+        })()
       } else if (event.type === "customer.subscription.updated") {
         await this.stripeService.handleSubscriptionUpdated(event)
         this.res.status(200).json({ received: true })
       } else if (event.type === "customer.subscription.created") {
         this.res.status(200).json({ received: true })
-        ;(async () => { await this.stripeService.handleSubscriptionCreated(event) })()
+        ;(async () => {
+          await this.stripeService.handleSubscriptionCreated(event)
+        })()
       } else if (event.type === "customer.subscription.deleted") {
         await this.stripeService.handleSubscriptionDeleted(event)
         this.res.status(200).json({ received: true })
@@ -187,9 +197,11 @@ export class OrderController extends Controller {
         this.res.status(200).json({ received: true })
         const invoice = event.data.object as Stripe.Invoice & { billing_reason: string }
         if (invoice.billing_reason !== "subscription_create") {
-          ;(async () => { await this.stripeService.handleInvoicePaid(event) })()
+          ;(async () => {
+            await this.stripeService.handleInvoicePaid(event)
+          })()
         }
-      }else {
+      } else {
         this.res.status(200).json({ received: true })
       }
     } catch (error) {
