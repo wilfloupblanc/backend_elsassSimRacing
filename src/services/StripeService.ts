@@ -1,12 +1,12 @@
 import { Config, QueryBuilder, Service } from "@lyra-js/core"
-
-import { EmailTemplateService } from "./EmailTemplateService"
 import { randomBytes } from "crypto"
 import nodemailer from "nodemailer"
 import QRCode from "qrcode"
 import Stripe from "stripe"
 
 import { Booking } from "@entity/Booking"
+
+import { EmailTemplateService } from "./EmailTemplateService"
 
 type SubscriptionPlan = "STARTER" | "PLUS" | "ULTRA"
 
@@ -188,6 +188,9 @@ export class StripeService extends Service {
       subscription: string | { id: string } | null
       billing_reason: string
     }
+
+    console.log("INVOICE PAID - raw subscription:", JSON.stringify(invoice.subscription))
+    console.log("INVOICE PAID - raw customer:", JSON.stringify(invoice.customer))
 
     try {
       const periodStart = invoice.lines.data[0]?.period?.start
@@ -546,12 +549,7 @@ export class StripeService extends Service {
             content: gv.buffer,
             contentType: "image/png"
           })),
-          html: EmailTemplateService.giftVoucherMail(
-            user.firstname,
-            user.lastname,
-            orderNumber,
-            giftVoucherMails
-          )
+          html: EmailTemplateService.giftVoucherMail(user.firstname, user.lastname, orderNumber, giftVoucherMails)
         })
       }
 
@@ -569,12 +567,7 @@ export class StripeService extends Service {
                 }
               ]
             : [],
-          html: EmailTemplateService.eventBookingMail(
-            user.firstname,
-            user.lastname,
-            orderNumber,
-            amount
-          )
+          html: EmailTemplateService.eventBookingMail(user.firstname, user.lastname, orderNumber, amount)
         })
       }
     } catch (error) {
