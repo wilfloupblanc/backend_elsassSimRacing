@@ -189,7 +189,7 @@ export class StripeService extends Service {
       billing_reason: string
     }
 
-    console.log("INVOICE PAID - raw subscription:", JSON.stringify(invoice.subscription))
+    console.log("INVOICE PAID - lines subscription:", JSON.stringify(invoice.lines.data[0]?.subscription))
     console.log("INVOICE PAID - raw customer:", JSON.stringify(invoice.customer))
 
     try {
@@ -199,8 +199,7 @@ export class StripeService extends Service {
       const customerId =
         typeof invoice.customer === "string" ? invoice.customer : (invoice.customer as { id: string })?.id
 
-      const stripeSubscriptionId =
-        typeof invoice.subscription === "string" ? invoice.subscription : (invoice.subscription as { id: string })?.id
+      const stripeSubscriptionId = invoice.lines.data[0]?.subscription as string | undefined
 
       console.log("INVOICE PAID - customerId:", customerId)
       console.log("INVOICE PAID - stripeSubscriptionId:", stripeSubscriptionId)
@@ -249,6 +248,8 @@ export class StripeService extends Service {
           this.PLAN_FREE_SESSIONS[activePlan]
         )
       })
+      console.log("INVOICE PAID - mail envoyé:")
+      console.log("INVOICE PAID - qr sending:", qrBuffers)
     } catch (error) {
       console.log("WEBHOOK INVOICE PAID ERROR:", error)
     }
