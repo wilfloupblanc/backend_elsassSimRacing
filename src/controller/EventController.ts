@@ -46,18 +46,26 @@ export class EventController extends Controller {
     try {
       const data = this.req.body
       const event = await this.eventRepository.save(data)
-      const dateStr = new Date(new Date(event.date).getTime() + 2 * 60 * 60 * 1000)
-        .toISOString()
-        .split('T')[0]
+      const dateStr = new Date(event.date).toLocaleDateString('fr-CA', {
+        timeZone: 'Europe/Paris'
+      })
+
+      const startTime = event.start_time.length === 5
+        ? event.start_time + ':00'
+        : event.start_time
+
+      const endTime = event.end_time === '00:00' || event.end_time === '00:00:00'
+        ? '23:59:59'
+        : (event.end_time.length === 5 ? event.end_time + ':00' : event.end_time)
 
       const query = new QueryBuilder()
         .raw(
           `UPDATE availability
            SET slots_remaining = GREATEST(0, slots_remaining - ?)
            WHERE date = ? 
-         AND start_time >= ? 
-         AND start_time < ?`,
-          [event.simulators_count, dateStr, event.start_time, event.end_time]
+     AND start_time >= ? 
+     AND start_time <= ?`,
+          [event.simulators_count, dateStr, startTime, endTime]
         )
       await query.execute()
 
@@ -83,12 +91,13 @@ export class EventController extends Controller {
           year: "numeric"
         })
 
-        for (const member of activeMembers) {
-          await transporter.sendMail({
-            from: process.env.MAILER_SENDER,
-            to: member.email,
-            subject: `🏁 Nouvel événement Elsass SimRacing — ${event.title}`,
-            html: `
+        try {
+          for (const member of activeMembers) {
+            await transporter.sendMail({
+              from: process.env.MAILER_SENDER,
+              to: member.email,
+              subject: `🏁 Nouvel événement Elsass SimRacing — ${event.title}`,
+              html: `
               <html>
                 <body style="font-family: sans-serif; background: #1a1a1a; color: #f8f8f8; padding: 40px;">
                   <div style="max-width: 600px; margin: 0 auto; background: #242424; border-radius: 12px; padding: 32px;">
@@ -105,10 +114,12 @@ export class EventController extends Controller {
                 </body>
               </html>
             `
-          })
+            })
+          }
+        } catch (error: unknown) {
+          console.error("Mail sending failed:", error)
         }
       }
-
       this.res.status(201).json({ message: "Event created successfully", event })
     } catch (error) {
       this.next(error)
@@ -133,19 +144,24 @@ export class EventController extends Controller {
       if (!event?.id) {
         return this.res.status(400).json({ message: "Invalid Event id" })
       }
-      const dateStr = new Date(new Date(event.date).getTime() + 2 * 60 * 60 * 1000)
-        .toISOString()
-        .split('T')[0]
+      const dateStr = new Date(event.date).toLocaleDateString('fr-CA', {
+        timeZone: 'Europe/Paris'
+      })
+
+      const endTime = event.end_time === '00:00' || event.end_time === '00:00:00'
+        ? '24:00:00'
+        : event.end_time
 
       // Restaurer les slots
+
       const slotsQuery = new QueryBuilder()
         .raw(
           `UPDATE availability 
-         SET slots_remaining = LEAST(slots_total, slots_remaining + ?)
-         WHERE date = ? 
-         AND start_time >= ? 
-         AND start_time < ?`,
-          [event.simulators_count, dateStr, event.start_time, event.end_time]
+     SET slots_remaining = LEAST(slots_total, slots_remaining + ?)
+     WHERE date = ? 
+     AND start_time >= ? 
+     AND start_time < ?`,
+          [event.simulators_count, dateStr, event.start_time, endTime]
         )
       await slotsQuery.execute()
 
