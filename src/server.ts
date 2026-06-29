@@ -40,6 +40,8 @@ app.use((req, res, next) => {
     "app://."
   ]
   const origin = req.headers.origin
+  console.log("ORIGIN:", JSON.stringify(origin))
+  console.log("INCLUDES:", allowedOrigins.includes(origin))
 
   if (!origin || allowedOrigins.includes(origin)) {
     res.setHeader("Access-Control-Allow-Origin", origin || "*")
