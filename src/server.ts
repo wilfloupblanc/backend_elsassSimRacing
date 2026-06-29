@@ -32,7 +32,13 @@ app.register(jwt, "jwt")
 
 // CORS middleware
 app.use((req, res, next) => {
-  const allowedOrigins = [process.env.CLIENT_APP_URL, "http://localhost:5173", "http://localhost:5174", "app://."]
+  const allowedOrigins = [
+    process.env.CLIENT_APP_URL,
+    "https://www.elsass-simracing.fr",
+    "http://localhost:5173",
+    "http://localhost:5174",
+    "app://."
+  ]
   const origin = req.headers.origin
 
   if (!origin || allowedOrigins.includes(origin)) {
