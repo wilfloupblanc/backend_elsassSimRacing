@@ -11,6 +11,13 @@ export class UserFixtures extends Fixture {
       password: "Titouandu88*",
       role: "ROLE_ADMIN"
     },
+    {
+      firstname: "Julien",
+      lastname: "Zaug",
+      email: "zaugjulien@gmail.com",
+      password: "Jrocky67*",
+      role: "ROLE_ADMIN"
+    }
   ]
 
   load = async () => {

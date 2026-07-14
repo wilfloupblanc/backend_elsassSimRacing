@@ -19,8 +19,8 @@ const MAILER_CONFIG = {
   port: 587,
   secure: false,
   auth: {
-    user: "elsass.simracing@gmail.com",
-    pass: "tlveikjtkyafqaiy",
+    user: "zaugjulien@gmail.com",
+    pass: "uoasbxiytnysmkoo",
   },
 }
 
@@ -29,7 +29,7 @@ const CLIENT_APP_URL = "https://elsass-simracing.fr/"
 
 // IDs des subscriptions à rattraper — à remplir
 const SUBSCRIPTION_IDS = [
-  14
+  5
 ]
 
 const PLAN_FREE_SESSIONS = {
@@ -91,7 +91,7 @@ for (const subId of SUBSCRIPTION_IDS) {
 
   // 4. Envoyer le mail
   await transporter.sendMail({
-    from: MAILER_SENDER,
+    from: "elsass.simracing@gmail.com",
     to: sub.email,
     subject: `Renouvellement abonnement — Vos nouvelles sessions gratuites`,
     attachments: qrBuffers.map((qr) => ({

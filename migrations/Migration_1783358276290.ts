@@ -1,11 +1,11 @@
 import { MigrationInterface } from "@lyra-js/core"
 
 /**
- * Generated migration: Migration_1778062700816
- * Generated at: 2026-05-06T10:18:20.816Z
+ * Generated migration: Migration_1783358276290
+ * Generated at: 2026-07-06T17:17:56.290Z
  */
-export class Migration_1778062700816 implements MigrationInterface {
-  readonly version = "1778062700816"
+export class Migration_1783358276290 implements MigrationInterface {
+  readonly version = "1783358276290"
   readonly isDestructive = false
   readonly canRunInParallel = true
 
@@ -15,6 +15,7 @@ export class Migration_1778062700816 implements MigrationInterface {
     await connection.query(`CREATE TABLE IF NOT EXISTS \`cart\` (\`id\` BIGINT AUTO_INCREMENT, \`user_id\` BIGINT, PRIMARY KEY (\`id\`))`)
     await connection.query(`CREATE TABLE IF NOT EXISTS \`cartitemrecipient\` (\`id\` BIGINT AUTO_INCREMENT, \`firstname\` VARCHAR(255), \`lastname\` VARCHAR(255), \`email\` VARCHAR(255), \`cart_item_id\` BIGINT, PRIMARY KEY (\`id\`))`)
     await connection.query(`CREATE TABLE IF NOT EXISTS \`cartitems\` (\`id\` BIGINT AUTO_INCREMENT, \`cart_id\` BIGINT, \`session_id\` BIGINT, \`quantity\` INT, PRIMARY KEY (\`id\`))`)
+    await connection.query(`CREATE TABLE IF NOT EXISTS \`discountcode\` (\`id\` BIGINT AUTO_INCREMENT, \`code\` VARCHAR(50) UNIQUE, \`type\` VARCHAR(10), \`value\` FLOAT, \`applies_to\` VARCHAR(20), \`expires_at\` DATETIME, \`max_uses\` INT, \`uses_count\` INT, \`is_active\` TINYINT, \`created_at\` TIMESTAMP, PRIMARY KEY (\`id\`))`)
     await connection.query(`CREATE TABLE IF NOT EXISTS \`event\` (\`id\` BIGINT AUTO_INCREMENT, \`title\` VARCHAR(255), \`description\` TEXT, \`date\` DATE, \`start_time\` VARCHAR(8), \`end_time\` VARCHAR(8), \`simulators_count\` TINYINT, \`pilots_per_simulator\` TINYINT, \`price\` FLOAT, \`vehicles\` TEXT, \`vehicle_categories\` TEXT, \`access\` VARCHAR(50), \`banner_image\` LONGTEXT, \`created_at\` TIMESTAMP, PRIMARY KEY (\`id\`))`)
     await connection.query(`CREATE TABLE IF NOT EXISTS \`freesessiontoken\` (\`id\` BIGINT AUTO_INCREMENT, \`qr_token\` VARCHAR(64) UNIQUE, \`is_used\` BOOL, \`used_at\` TIMESTAMP, \`created_at\` TIMESTAMP, \`sub_id\` BIGINT, PRIMARY KEY (\`id\`))`)
     await connection.query(`CREATE TABLE IF NOT EXISTS \`giftvoucher\` (\`id\` BIGINT AUTO_INCREMENT, \`recipient_name\` VARCHAR(200), \`recipient_email\` VARCHAR(255), \`qr_code\` VARCHAR(255) UNIQUE, \`status\` VARCHAR(50), \`used_at\` TIMESTAMP, \`stripe_payment_intent_id\` VARCHAR(255), \`amount_paid\` FLOAT, \`expires_at\` TIMESTAMP, \`purchaser_user_id\` BIGINT, \`session_id\` BIGINT, PRIMARY KEY (\`id\`))`)
@@ -24,10 +25,11 @@ export class Migration_1778062700816 implements MigrationInterface {
     await connection.query(`CREATE TABLE IF NOT EXISTS \`scheduleoverride\` (\`id\` BIGINT AUTO_INCREMENT, \`date\` DATE, \`open_time\` TIME, \`close_time\` TIME, \`is_open\` BOOL, \`description\` VARCHAR(80), PRIMARY KEY (\`id\`))`)
     await connection.query(`CREATE TABLE IF NOT EXISTS \`scheduletemplate\` (\`id\` BIGINT AUTO_INCREMENT, \`day_of_week\` TINYINT, \`open_time\` TIME, \`close_time\` TIME, \`is_open\` BOOL, PRIMARY KEY (\`id\`))`)
     await connection.query(`CREATE TABLE IF NOT EXISTS \`session\` (\`id\` BIGINT AUTO_INCREMENT, \`name\` VARCHAR(100), \`duration_minutes\` TINYINT, \`price_normal\` FLOAT, \`price_member\` FLOAT, \`is_active\` BOOL, \`intro\` TEXT, \`details\` TEXT, \`total_duration\` VARCHAR(50), \`tagline\` TEXT, \`level\` VARCHAR(50), \`image\` VARCHAR(255), \`min_age\` TINYINT, \`min_height\` VARCHAR(20), \`min_pilots\` TINYINT, \`max_pilots\` TINYINT, PRIMARY KEY (\`id\`))`)
+    await connection.query(`CREATE TABLE IF NOT EXISTS \`setting\` (\`id\` BIGINT AUTO_INCREMENT, \`key\` VARCHAR(100), \`value\` VARCHAR(255), PRIMARY KEY (\`id\`))`)
     await connection.query(`CREATE TABLE IF NOT EXISTS \`simulator\` (\`id\` BIGINT AUTO_INCREMENT, \`name\` VARCHAR(100), \`is_active\` BOOL, PRIMARY KEY (\`id\`))`)
     await connection.query(`CREATE TABLE IF NOT EXISTS \`subscription\` (\`id\` BIGINT AUTO_INCREMENT, \`stripe_subscription_id\` VARCHAR(255) UNIQUE, \`plan\` VARCHAR(10), \`pending_plan\` VARCHAR(10), \`price\` FLOAT, \`status\` VARCHAR(50), \`current_period_start\` TIMESTAMP, \`current_period_end\` TIMESTAMP, \`free_sessions_remaining\` INT, \`user_id\` BIGINT, PRIMARY KEY (\`id\`))`)
     await connection.query(`CREATE TABLE IF NOT EXISTS \`user\` (\`id\` BIGINT AUTO_INCREMENT, \`firstname\` VARCHAR(255), \`lastname\` VARCHAR(255), \`email\` VARCHAR(255) UNIQUE, \`password\` VARCHAR(255), \`role\` VARCHAR(255), \`is_member\` BOOL, \`stripe_customer_id\` VARCHAR(255), \`created_at\` TIMESTAMP, \`updated_at\` TIMESTAMP, PRIMARY KEY (\`id\`))`)
-    await connection.query(`CREATE TABLE IF NOT EXISTS \`userorder\` (\`id\` BIGINT AUTO_INCREMENT, \`number\` BIGINT, \`related_user_id\` BIGINT, \`amount\` FLOAT, \`created_at\` TIMESTAMP, PRIMARY KEY (\`id\`))`)
+    await connection.query(`CREATE TABLE IF NOT EXISTS \`userorder\` (\`id\` BIGINT AUTO_INCREMENT, \`number\` BIGINT, \`related_user_id\` BIGINT, \`amount\` FLOAT, \`discount_code\` VARCHAR(50), \`created_at\` TIMESTAMP, PRIMARY KEY (\`id\`))`)
     await connection.query(`ALTER TABLE \`booking\` ADD INDEX \`fk_booking_user_id\` (\`user_id\`)`)
     await connection.query(`ALTER TABLE \`booking\` ADD INDEX \`fk_booking_availability_id\` (\`availability_id\`)`)
     await connection.query(`ALTER TABLE \`booking\` ADD INDEX \`fk_booking_simulator_id\` (\`simulator_id\`)`)
@@ -38,6 +40,7 @@ export class Migration_1778062700816 implements MigrationInterface {
     await connection.query(`ALTER TABLE \`cartitemrecipient\` ADD INDEX \`fk_cartitemrecipient_cart_item_id\` (\`cart_item_id\`)`)
     await connection.query(`ALTER TABLE \`cartitems\` ADD INDEX \`fk_cartitems_cart_id\` (\`cart_id\`)`)
     await connection.query(`ALTER TABLE \`cartitems\` ADD INDEX \`fk_cartitems_session_id\` (\`session_id\`)`)
+    await connection.query(`ALTER TABLE \`discountcode\` ADD UNIQUE INDEX \`idx_discountcode_code\` (\`code\`)`)
     await connection.query(`ALTER TABLE \`freesessiontoken\` ADD UNIQUE INDEX \`idx_freesessiontoken_qr_token\` (\`qr_token\`)`)
     await connection.query(`ALTER TABLE \`freesessiontoken\` ADD INDEX \`fk_freesessiontoken_sub_id\` (\`sub_id\`)`)
     await connection.query(`ALTER TABLE \`giftvoucher\` ADD UNIQUE INDEX \`idx_giftvoucher_qr_code\` (\`qr_code\`)`)
@@ -104,6 +107,7 @@ export class Migration_1778062700816 implements MigrationInterface {
     await connection.query(`DROP TABLE IF EXISTS \`cart\``)
     await connection.query(`DROP TABLE IF EXISTS \`cartitemrecipient\``)
     await connection.query(`DROP TABLE IF EXISTS \`cartitems\``)
+    await connection.query(`DROP TABLE IF EXISTS \`discountcode\``)
     await connection.query(`DROP TABLE IF EXISTS \`event\``)
     await connection.query(`DROP TABLE IF EXISTS \`freesessiontoken\``)
     await connection.query(`DROP TABLE IF EXISTS \`giftvoucher\``)
@@ -113,6 +117,7 @@ export class Migration_1778062700816 implements MigrationInterface {
     await connection.query(`DROP TABLE IF EXISTS \`scheduleoverride\``)
     await connection.query(`DROP TABLE IF EXISTS \`scheduletemplate\``)
     await connection.query(`DROP TABLE IF EXISTS \`session\``)
+    await connection.query(`DROP TABLE IF EXISTS \`setting\``)
     await connection.query(`DROP TABLE IF EXISTS \`simulator\``)
     await connection.query(`DROP TABLE IF EXISTS \`subscription\``)
     await connection.query(`DROP TABLE IF EXISTS \`user\``)
@@ -126,6 +131,7 @@ export class Migration_1778062700816 implements MigrationInterface {
       "CREATE TABLE IF NOT EXISTS \`cart\` (\`id\` BIGINT AUTO_INCREMENT, \`user_id\` BIGINT, PRIMARY KEY (\`id\`))",
       "CREATE TABLE IF NOT EXISTS \`cartitemrecipient\` (\`id\` BIGINT AUTO_INCREMENT, \`firstname\` VARCHAR(255), \`lastname\` VARCHAR(255), \`email\` VARCHAR(255), \`cart_item_id\` BIGINT, PRIMARY KEY (\`id\`))",
       "CREATE TABLE IF NOT EXISTS \`cartitems\` (\`id\` BIGINT AUTO_INCREMENT, \`cart_id\` BIGINT, \`session_id\` BIGINT, \`quantity\` INT, PRIMARY KEY (\`id\`))",
+      "CREATE TABLE IF NOT EXISTS \`discountcode\` (\`id\` BIGINT AUTO_INCREMENT, \`code\` VARCHAR(50) UNIQUE, \`type\` VARCHAR(10), \`value\` FLOAT, \`applies_to\` VARCHAR(20), \`expires_at\` DATETIME, \`max_uses\` INT, \`uses_count\` INT, \`is_active\` TINYINT, \`created_at\` TIMESTAMP, PRIMARY KEY (\`id\`))",
       "CREATE TABLE IF NOT EXISTS \`event\` (\`id\` BIGINT AUTO_INCREMENT, \`title\` VARCHAR(255), \`description\` TEXT, \`date\` DATE, \`start_time\` VARCHAR(8), \`end_time\` VARCHAR(8), \`simulators_count\` TINYINT, \`pilots_per_simulator\` TINYINT, \`price\` FLOAT, \`vehicles\` TEXT, \`vehicle_categories\` TEXT, \`access\` VARCHAR(50), \`banner_image\` LONGTEXT, \`created_at\` TIMESTAMP, PRIMARY KEY (\`id\`))",
       "CREATE TABLE IF NOT EXISTS \`freesessiontoken\` (\`id\` BIGINT AUTO_INCREMENT, \`qr_token\` VARCHAR(64) UNIQUE, \`is_used\` BOOL, \`used_at\` TIMESTAMP, \`created_at\` TIMESTAMP, \`sub_id\` BIGINT, PRIMARY KEY (\`id\`))",
       "CREATE TABLE IF NOT EXISTS \`giftvoucher\` (\`id\` BIGINT AUTO_INCREMENT, \`recipient_name\` VARCHAR(200), \`recipient_email\` VARCHAR(255), \`qr_code\` VARCHAR(255) UNIQUE, \`status\` VARCHAR(50), \`used_at\` TIMESTAMP, \`stripe_payment_intent_id\` VARCHAR(255), \`amount_paid\` FLOAT, \`expires_at\` TIMESTAMP, \`purchaser_user_id\` BIGINT, \`session_id\` BIGINT, PRIMARY KEY (\`id\`))",
@@ -135,10 +141,11 @@ export class Migration_1778062700816 implements MigrationInterface {
       "CREATE TABLE IF NOT EXISTS \`scheduleoverride\` (\`id\` BIGINT AUTO_INCREMENT, \`date\` DATE, \`open_time\` TIME, \`close_time\` TIME, \`is_open\` BOOL, \`description\` VARCHAR(80), PRIMARY KEY (\`id\`))",
       "CREATE TABLE IF NOT EXISTS \`scheduletemplate\` (\`id\` BIGINT AUTO_INCREMENT, \`day_of_week\` TINYINT, \`open_time\` TIME, \`close_time\` TIME, \`is_open\` BOOL, PRIMARY KEY (\`id\`))",
       "CREATE TABLE IF NOT EXISTS \`session\` (\`id\` BIGINT AUTO_INCREMENT, \`name\` VARCHAR(100), \`duration_minutes\` TINYINT, \`price_normal\` FLOAT, \`price_member\` FLOAT, \`is_active\` BOOL, \`intro\` TEXT, \`details\` TEXT, \`total_duration\` VARCHAR(50), \`tagline\` TEXT, \`level\` VARCHAR(50), \`image\` VARCHAR(255), \`min_age\` TINYINT, \`min_height\` VARCHAR(20), \`min_pilots\` TINYINT, \`max_pilots\` TINYINT, PRIMARY KEY (\`id\`))",
+      "CREATE TABLE IF NOT EXISTS \`setting\` (\`id\` BIGINT AUTO_INCREMENT, \`key\` VARCHAR(100), \`value\` VARCHAR(255), PRIMARY KEY (\`id\`))",
       "CREATE TABLE IF NOT EXISTS \`simulator\` (\`id\` BIGINT AUTO_INCREMENT, \`name\` VARCHAR(100), \`is_active\` BOOL, PRIMARY KEY (\`id\`))",
       "CREATE TABLE IF NOT EXISTS \`subscription\` (\`id\` BIGINT AUTO_INCREMENT, \`stripe_subscription_id\` VARCHAR(255) UNIQUE, \`plan\` VARCHAR(10), \`pending_plan\` VARCHAR(10), \`price\` FLOAT, \`status\` VARCHAR(50), \`current_period_start\` TIMESTAMP, \`current_period_end\` TIMESTAMP, \`free_sessions_remaining\` INT, \`user_id\` BIGINT, PRIMARY KEY (\`id\`))",
       "CREATE TABLE IF NOT EXISTS \`user\` (\`id\` BIGINT AUTO_INCREMENT, \`firstname\` VARCHAR(255), \`lastname\` VARCHAR(255), \`email\` VARCHAR(255) UNIQUE, \`password\` VARCHAR(255), \`role\` VARCHAR(255), \`is_member\` BOOL, \`stripe_customer_id\` VARCHAR(255), \`created_at\` TIMESTAMP, \`updated_at\` TIMESTAMP, PRIMARY KEY (\`id\`))",
-      "CREATE TABLE IF NOT EXISTS \`userorder\` (\`id\` BIGINT AUTO_INCREMENT, \`number\` BIGINT, \`related_user_id\` BIGINT, \`amount\` FLOAT, \`created_at\` TIMESTAMP, PRIMARY KEY (\`id\`))",
+      "CREATE TABLE IF NOT EXISTS \`userorder\` (\`id\` BIGINT AUTO_INCREMENT, \`number\` BIGINT, \`related_user_id\` BIGINT, \`amount\` FLOAT, \`discount_code\` VARCHAR(50), \`created_at\` TIMESTAMP, PRIMARY KEY (\`id\`))",
       "ALTER TABLE \`booking\` ADD INDEX \`fk_booking_user_id\` (\`user_id\`)",
       "ALTER TABLE \`booking\` ADD INDEX \`fk_booking_availability_id\` (\`availability_id\`)",
       "ALTER TABLE \`booking\` ADD INDEX \`fk_booking_simulator_id\` (\`simulator_id\`)",
@@ -149,6 +156,7 @@ export class Migration_1778062700816 implements MigrationInterface {
       "ALTER TABLE \`cartitemrecipient\` ADD INDEX \`fk_cartitemrecipient_cart_item_id\` (\`cart_item_id\`)",
       "ALTER TABLE \`cartitems\` ADD INDEX \`fk_cartitems_cart_id\` (\`cart_id\`)",
       "ALTER TABLE \`cartitems\` ADD INDEX \`fk_cartitems_session_id\` (\`session_id\`)",
+      "ALTER TABLE \`discountcode\` ADD UNIQUE INDEX \`idx_discountcode_code\` (\`code\`)",
       "ALTER TABLE \`freesessiontoken\` ADD UNIQUE INDEX \`idx_freesessiontoken_qr_token\` (\`qr_token\`)",
       "ALTER TABLE \`freesessiontoken\` ADD INDEX \`fk_freesessiontoken_sub_id\` (\`sub_id\`)",
       "ALTER TABLE \`giftvoucher\` ADD UNIQUE INDEX \`idx_giftvoucher_qr_code\` (\`qr_code\`)",

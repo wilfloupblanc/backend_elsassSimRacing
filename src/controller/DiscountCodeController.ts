@@ -4,10 +4,28 @@ import { DiscountCode } from "@entity/DiscountCode"
 
 @Route({ path: "/discount-code" })
 export class DiscountCodeController extends Controller {
+  private async deactivateIfExpired(discount: DiscountCode): Promise<DiscountCode> {
+    const now = new Date()
+    const shouldBeInactive =
+      discount.is_active &&
+      ((discount.expires_at && new Date(discount.expires_at) < now) ||
+        (discount.max_uses !== null && discount.uses_count >= discount.max_uses))
+
+    if (shouldBeInactive) {
+      await this.discountCodeRepository.update(discount.id, { is_active: 0 })
+      discount.is_active = 0
+    }
+
+    return discount
+  }
+
   @Get({ path: "/", middlewares: [isAuthenticated, isAdmin] })
   async list() {
     try {
       const codes = await this.discountCodeRepository.findAll()
+      for (const c of codes) {
+        await this.deactivateIfExpired(c)
+      }
       this.res.status(200).json({ message: "Discount codes fetched successfully", codes })
     } catch (error) {
       this.next(error)
@@ -63,18 +81,16 @@ export class DiscountCodeController extends Controller {
 
       if (!code) return this.badRequest("Missing code")
 
-      const discount = await this.discountCodeRepository.findOneBy({ code: code.toUpperCase() })
+      let discount = await this.discountCodeRepository.findOneBy({ code: code.toUpperCase() })
 
       if (!discount || !discount.is_active) {
         return this.res.status(404).json({ error: "Code invalide ou inactif." })
       }
 
-      if (discount.expires_at && new Date(discount.expires_at) < new Date()) {
-        return this.res.status(400).json({ error: "Ce code a expiré." })
-      }
+      discount = await this.deactivateIfExpired(discount)
 
-      if (discount.max_uses !== null && discount.uses_count >= discount.max_uses) {
-        return this.res.status(400).json({ error: "Ce code a atteint sa limite d'utilisation." })
+      if (!discount.is_active) {
+        return this.res.status(400).json({ error: "Ce code a expiré ou atteint sa limite d'utilisation." })
       }
 
       if (discount.applies_to !== "both" && discount.applies_to !== applies_to) {
@@ -99,14 +115,12 @@ export class DiscountCodeController extends Controller {
   async getActive() {
     try {
       const codes = await this.discountCodeRepository.findAll()
-      const now = new Date()
 
-      const active = codes.find(
-        (c: DiscountCode) =>
-          c.is_active &&
-          (c.expires_at === null || new Date(c.expires_at) > now) &&
-          (c.max_uses === null || c.uses_count < c.max_uses)
-      )
+      for (const c of codes) {
+        await this.deactivateIfExpired(c)
+      }
+
+      const active = codes.find((c: DiscountCode) => c.is_active)
 
       if (!active) return this.res.status(200).json({ active: false })
 

@@ -4,7 +4,7 @@ import { Availability } from "@entity/Availability"
 
 @Job()
 export class GenerateAvailabilitiesJob extends JobBase {
-  @Schedule({ recurrency: "0 0 * * 0", enabled: true })
+  @Schedule({ recurrency: "19 19 * * *", enabled: true })
   async generateAvailabilities() {
 
     const today = new Date()
