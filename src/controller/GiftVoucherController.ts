@@ -68,6 +68,57 @@ export class GiftVoucherController extends Controller {
     }
   }
 
+  @Put({ path: "/validate/:code" })
+  async validate() {
+    try {
+      const { code } = this.req.params
+      const giftvoucher = await this.giftVoucherRepository.findOneBy({ qr_code: code })
+
+      if (!giftvoucher) {
+        return this.res.status(404).json({ valid: false, reason: "Bon cadeau introuvable" })
+      }
+
+      if (giftvoucher.status === "used") {
+        return this.res.status(409).json({
+          valid: false,
+          reason: "Bon cadeau déjà utilisé",
+          used_at: giftvoucher.used_at
+        })
+      }
+
+      if (giftvoucher.status !== "valid") {
+        return this.res.status(409).json({
+          valid: false,
+          reason: "Bon cadeau invalide"
+        })
+      }
+
+      if (giftvoucher.expires_at && new Date(giftvoucher.expires_at) < new Date()) {
+        return this.res.status(409).json({
+          valid: false,
+          reason: "Bon cadeau expiré",
+          expires_at: giftvoucher.expires_at
+        })
+      }
+
+      // Invalider le bon cadeau
+      giftvoucher.status = "used"
+      giftvoucher.used_at = new Date()
+      await this.giftVoucherRepository.save(giftvoucher)
+
+      // Récupérer la session associée pour l'affichage
+      const session = await this.sessionRepository.find(giftvoucher.session_id)
+
+      this.res.status(200).json({
+        valid: true,
+        giftvoucher,
+        session
+      })
+    } catch (error) {
+      this.next(error)
+    }
+  }
+
   @Delete({ path: "/:giftvoucher", resolve: { giftvoucher: GiftVoucher } })
   async delete(giftvoucher: GiftVoucher) {
     try {
